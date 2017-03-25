@@ -10,7 +10,7 @@
         android:id="@+id/login"
         android:layout_width="154dp"
         android:layout_height="63dp"
-        android:text="Login"
+        android:text="@string/loginButto"
         android:textSize="26dp"
         tools:layout_editor_absoluteX="115dp"
         tools:layout_editor_absoluteY="318dp" />
@@ -19,7 +19,7 @@
         android:id="@+id/register"
         android:layout_width="154dp"
         android:layout_height="63dp"
-        android:text="Register"
+        android:text="@string/registerButton"
         android:textSize="26dp"
         tools:layout_editor_absoluteX="115dp"
         tools:layout_editor_absoluteY="410dp" />
@@ -28,7 +28,7 @@
         android:id="@+id/email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="E-Mail"
+        android:text="@string/EMail"
         android:textSize="30dp"
         tools:layout_editor_absoluteX="149dp"
         tools:layout_editor_absoluteY="46dp" />
@@ -37,7 +37,7 @@
         android:id="@+id/password"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Password"
+        android:text="@string/password"
         android:textSize="30dp"
         tools:layout_editor_absoluteX="122dp"
         tools:layout_editor_absoluteY="180dp" />
