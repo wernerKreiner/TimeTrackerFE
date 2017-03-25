@@ -1,5 +1,6 @@
 package at.jku.se.timetrackerfrontend;
 
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -10,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -34,6 +36,15 @@ public class HomeActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
+
+        final Button registerButton = (Button) findViewById(R.id.registerButton);
+        registerButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v){
+                // Start new Activity.
+                Intent intent = new Intent(HomeActivity.this, RegisterActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void addDrawerItems() {
