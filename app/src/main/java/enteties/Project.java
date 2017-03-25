@@ -1,13 +1,12 @@
 package enteties;
-import java.util.ArrayList;
+
+import java.util.LinkedList;
 import java.util.List;
 
 public class Project {
     protected int id;
     protected String name;
     protected String description;
-    public List Category = new ArrayList();
-    public List Cooperation = new ArrayList();
-
-    //lists: Cooperation, Category
+    protected List<Category> Categories = new LinkedList<Category>();
+    protected List<Cooperation> Cooperations = new LinkedList<Cooperation>();
 }

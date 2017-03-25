@@ -10,6 +10,4 @@ public class TimeEntry {
     protected Measurment measurmentId;
     protected User userId;
     protected Category categoryId;
-
-    //lists:---
 }

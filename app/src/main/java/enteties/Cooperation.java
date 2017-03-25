@@ -5,6 +5,4 @@ public class Cooperation {
     protected User userId;
     protected Project projectId;
     protected Role roleId;
-
-    //lists: ---
 }

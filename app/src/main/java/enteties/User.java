@@ -1,5 +1,8 @@
 package enteties;
 
+import java.util.LinkedList;
+import java.util.List;
+
 public class User {
     protected int id;
     protected String firstName;
@@ -8,6 +11,6 @@ public class User {
     protected String email;
     protected String password;
     protected int quickstart;
-
-    //lists: Cooperation, TimeEntry
+    protected List<Cooperation> Cooperations = new LinkedList<Cooperation>();
+    protected List<TimeEntry> TimeEntries = new LinkedList<TimeEntry>();
 }
