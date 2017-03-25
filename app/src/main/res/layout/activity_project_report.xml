@@ -6,4 +6,58 @@
     android:layout_height="match_parent"
     tools:context="at.jku.se.timetrackerfrontend.ProjectReportActivity">
 
+    <Button
+        android:id="@+id/button3"
+        android:layout_width="138dp"
+        android:layout_height="63dp"
+        android:text="Login"
+        android:textSize="24sp"
+        tools:layout_editor_absoluteX="123dp"
+        tools:layout_editor_absoluteY="331dp" />
+
+    <Button
+        android:id="@+id/button4"
+        android:layout_width="138dp"
+        android:layout_height="63dp"
+        android:text="Register"
+        android:textSize="24sp"
+        tools:layout_editor_absoluteX="123dp"
+        tools:layout_editor_absoluteY="415dp" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="92dp"
+        android:layout_height="41dp"
+        android:text="E-Mail"
+        android:textSize="30sp"
+        tools:layout_editor_absoluteY="64dp"
+        tools:layout_editor_absoluteX="146dp" />
+
+    <EditText
+        android:id="@+id/editText"
+        android:layout_width="257dp"
+        android:layout_height="44dp"
+        android:ems="10"
+        android:inputType="textEmailAddress"
+        tools:layout_editor_absoluteX="64dp"
+        tools:layout_editor_absoluteY="105dp" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="136dp"
+        android:layout_height="39dp"
+        android:text="Password"
+        android:textSize="30sp"
+        tools:layout_editor_absoluteY="217dp"
+        tools:layout_editor_absoluteX="124dp" />
+
+    <EditText
+        android:id="@+id/editText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textEmailAddress"
+        tools:layout_editor_absoluteX="85dp"
+        tools:layout_editor_absoluteY="256dp" />
+
 </android.support.constraint.ConstraintLayout>

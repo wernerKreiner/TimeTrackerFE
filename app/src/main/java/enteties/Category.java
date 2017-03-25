@@ -7,5 +7,7 @@ public class Category {
     protected Project projectId;
 
 
+
+
     //lists: TimeEntry
 }
