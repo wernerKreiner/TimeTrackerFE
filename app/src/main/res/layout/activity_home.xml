@@ -23,20 +23,35 @@
             android:text="Holy Operating Systems, Batdroid!"
             android:textSize="24sp"
             android:gravity="center"
-            android:layout_marginTop="100dp"/>
+            android:layout_marginTop="100dp"
+            android:id="@+id/textView" />
 
         <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Swich to Register activity"
-            android:id="@+id/registerButton"
-            />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Swich to Register activity"
+        android:id="@+id/registerButton"
+        />
+
+
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"/>
+            android:layout_centerHorizontal="true"
+            android:id="@+id/imageView" />
+
+        <Button
+            android:id="@+id/btnSettings"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textView"
+            android:layout_marginEnd="41dp"
+            android:layout_marginTop="40dp"
+            android:layout_toStartOf="@+id/imageView"
+            android:text="Switch to Settings Activity" />
+
 
     </RelativeLayout>
 

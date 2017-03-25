@@ -16,5 +16,9 @@
     <string name="passwordConfirm">Password confirm: </string>
     <string name="back">Back</string>
     <string name="register">Register</string>
+    <string name="newPassword">New password: </string>
+    <string name="newPasswordConfirm">New password confirm: </string>
+    <string name="apply">Apply</string>
+    <string name="quickStart">Quickstart</string>
 
 </resources>

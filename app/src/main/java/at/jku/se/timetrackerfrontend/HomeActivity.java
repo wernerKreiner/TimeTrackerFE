@@ -45,6 +45,15 @@ public class HomeActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        final Button settingsButton = (Button) findViewById(R.id.btnSettings);
+        settingsButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v){
+                // Start new Activity.
+                Intent intent = new Intent(HomeActivity.this, SettingsActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void addDrawerItems() {
