@@ -24,5 +24,12 @@
     <string name="categoryName">Name of Category</string>
     <string name="estimatedTime">Estimated time</string>
     <string name="delete">Delete</string>
+    <string name="addTeamMember">Add team member</string>
+
+    <string name="rolePrompt">Choose a role</string>
+    <string-array name="rolesArray">
+        <item>Project Manager</item>
+        <item>Project Co-worker</item>
+    </string-array>
 
 </resources>

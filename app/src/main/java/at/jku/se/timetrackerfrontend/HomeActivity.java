@@ -1,5 +1,7 @@
 package at.jku.se.timetrackerfrontend;
 
+import android.app.DialogFragment;
+import android.app.FragmentManager;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.support.v4.widget.DrawerLayout;
@@ -60,6 +62,15 @@ public class HomeActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(HomeActivity.this, ManageCategoryActivity.class);
                 startActivity(intent);
+            }
+        });
+
+        final Button btnAddTeamMember = (Button) findViewById(R.id.btnAddTeamMember);
+        btnAddTeamMember.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                FragmentManager fm = getFragmentManager();
+                DialogFragment dialogFragment = new ManageProjectTeamEditDialogFragment();
+                dialogFragment.show(fm, "sdf");
             }
         });
     }
