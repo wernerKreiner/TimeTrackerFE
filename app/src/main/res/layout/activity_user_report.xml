@@ -1,9 +1,156 @@
-<?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="at.jku.se.timetrackerfrontend.UserReportActivity">
+    android:layout_height="wrap_content">
 
-</android.support.constraint.ConstraintLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <GridLayout
+            android:id="@+id/layout_userReport_gridLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:columnCount="2"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_columnSpan="2"
+                android:layout_gravity="center_horizontal"
+                android:text="@string/userReport"
+                android:textSize="@dimen/title" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_columnSpan="1"
+                android:text="@string/from"
+                android:textSize="@dimen/casualText" />
+
+            <EditText
+                android:id="@+id/eText_userReport_from"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_columnSpan="1"
+                android:layout_gravity="fill_horizontal"
+                android:width="0dp"
+                android:hint="@string/dateFormat"
+                android:textSize="@dimen/casualText" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_columnSpan="1"
+                android:text="@string/to"
+                android:textSize="@dimen/casualText" />
+
+            <EditText
+                android:id="@+id/eText_userReport_to"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_columnSpan="1"
+                android:layout_gravity="fill_horizontal"
+                android:width="0dp"
+                android:hint="@string/dateFormat"
+                android:textSize="@dimen/casualText" />
+
+            <TextView
+                android:id="@+id/tView_projectReport_project"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_columnSpan="2"
+                android:text="@string/project"
+                android:textSize="@dimen/casualText" />
+
+            <Spinner
+                android:id="@+id/spinner_userReport_projectSelection"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_columnSpan="2"
+                android:background="@android:drawable/btn_dropdown"
+                android:spinnerMode="dropdown" />
+
+            <TextView
+                android:id="@+id/tView_projectReport_exportExcel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_columnSpan="1"
+                android:paddingRight="20dp"
+                android:text="@string/exportExcel"
+                android:textSize="@dimen/casualText"
+                android:textStyle="italic" />
+
+            <Button
+                android:id="@+id/btn_projectReport_exportExcel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_columnSpan="1"
+                android:text="@string/download"
+                android:textSize="@dimen/casualText" />
+
+        </GridLayout>
+
+        <HorizontalScrollView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:fillViewport="true">
+
+            <TableLayout
+                android:id="@+id/layout_userReport_table"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@color/white"
+                android:stretchColumns="*">
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/date"
+                        android:layout_margin="2dp"
+                        android:textSize="@dimen/tableHeader" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/from"
+                        android:layout_margin="2dp"
+                        android:textSize="@dimen/tableHeader" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/to"
+                        android:layout_margin="2dp"
+                        android:textSize="@dimen/tableHeader" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/duration"
+                        android:layout_margin="2dp"
+                        android:textSize="@dimen/tableHeader" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/project"
+                        android:layout_margin="2dp"
+                        android:textSize="@dimen/tableHeader" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/category"
+                        android:layout_margin="2dp"
+                        android:textSize="@dimen/tableHeader" />
+                </TableRow>
+            </TableLayout>
+        </HorizontalScrollView>
+    </LinearLayout>
+</ScrollView>

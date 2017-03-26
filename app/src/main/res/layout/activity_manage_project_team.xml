@@ -6,4 +6,50 @@
     android:layout_height="match_parent"
     tools:context="at.jku.se.timetrackerfrontend.ManageProjectTeamActivity">
 
+    <include layout="@layout/content_listview_members"
+        android:visibility="invisible"
+        android:id="@+id/includeList"></include>
+
+    <include layout="@layout/activity_add_member"
+        android:visibility="invisible"
+        android:id="@+id/includeMember"></include>
+
+    <ListView
+        android:id="@+id/members"
+        android:layout_width="347dp"
+        android:layout_height="479dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/includeList"
+        android:layout_marginTop="77dp"
+        app:layout_constraintHorizontal_bias="0.523" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="8dp"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/members" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/floatingActionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        app:fabSize="mini"
+        app:srcCompat="@android:drawable/ic_input_add"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="24dp"
+        app:layout_constraintRight_toRightOf="parent" />
+
 </android.support.constraint.ConstraintLayout>

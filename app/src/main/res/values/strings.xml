@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">TimeTrackerFrontend</string>
+    <string name="app_name">Time Tracker</string>
     <string name="title_activity_navigation_drawer">NavigationDrawerActivity</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -7,6 +7,7 @@
 
     <string name="action_settings">Settings</string>
     <string name="title_activity_drawer_layout">DrawerLayoutActivity</string>
+
 
     <string name="firstName">Firstname: </string>
     <string name="sureName">Surename: </string>
@@ -32,4 +33,25 @@
         <item>Project Co-worker</item>
     </string-array>
 
+
+    <string name="projectReport">Project Report</string>
+    <string name="project">Project</string>
+    <string name="exportExcel">Export as Excel</string>
+    <string name="exportPdf">Export as Pdf</string>
+    <string name="download">Download</string>
+    <string name="category">Category</string>
+    <string name="estimatedTime">Est. Time</string>
+    <string name="time">Time</string>
+    <string name="difference">Difference</string>
+    <string name="userReport">User Report</string>
+    <string name="from">from</string>
+    <string name="to">to</string>
+    <string name="dateFormat">dd.MM.yyyy</string>
+    <string name="date">Date</string>
+    <string name="duration">Duration</string>
+
+    <string-array name="members_role">
+        +        <item>Member</item>
+        +        <item>Admin</item>
+        +    </string-array>
 </resources>
