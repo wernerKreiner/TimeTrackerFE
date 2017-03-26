@@ -23,5 +23,6 @@
     <string name="addCategory">Add Category</string>
     <string name="categoryName">Name of Category</string>
     <string name="estimatedTime">Estimated time</string>
+    <string name="delete">Delete</string>
 
 </resources>
