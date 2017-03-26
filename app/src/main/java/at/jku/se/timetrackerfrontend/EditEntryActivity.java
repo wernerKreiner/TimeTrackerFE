@@ -84,13 +84,13 @@ public class EditEntryActivity extends AppCompatActivity {
         } else if (id == R.id.manageProj) {
             startActivity(new Intent(this, ManageProjectActivity.class));
         } else if (id == R.id.manageCateg) {
-
+            startActivity(new Intent(this, ManageCategoryActivity.class));
         } else if (id == R.id.projReport) {
-
+            startActivity(new Intent(this, ProjectReportActivity.class));
         } else if (id == R.id.userReport) {
-
+            startActivity(new Intent(this, UserReportActivity.class));
         } else if (id == R.id.settings) {
-
+            startActivity(new Intent(this, SettingsActivity.class));
         }
 
         return true;

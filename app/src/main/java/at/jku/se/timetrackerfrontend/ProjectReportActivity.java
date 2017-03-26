@@ -5,6 +5,9 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.Spinner;
@@ -167,13 +170,13 @@ public class ProjectReportActivity extends AppCompatActivity {
         } else if (id == R.id.manageProj) {
             startActivity(new Intent(this, ManageProjectActivity.class));
         } else if (id == R.id.manageCateg) {
-
+            startActivity(new Intent(this, ManageCategoryActivity.class));
         } else if (id == R.id.projReport) {
-
+            startActivity(new Intent(this, ProjectReportActivity.class));
         } else if (id == R.id.userReport) {
-
+            startActivity(new Intent(this, UserReportActivity.class));
         } else if (id == R.id.settings) {
-
+            startActivity(new Intent(this, SettingsActivity.class));
         }
 
         return true;
