@@ -1,20 +1,22 @@
 package at.jku.se.timetrackerfrontend;
 
 import android.content.Intent;
-import android.support.annotation.NonNull;
-import android.support.design.widget.NavigationView;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-public class ManageCategoryActivity extends AppCompatActivity {
+/**
+ * Created by Anna on 26.03.2017.
+ */
+
+public class MemberAddActivity extends AppCompatActivity{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_manage_category);
+        setContentView(R.layout.activity_add_member);
     }
 
     @Override
@@ -53,4 +55,5 @@ public class ManageCategoryActivity extends AppCompatActivity {
 
         return true;
     }
+
 }
