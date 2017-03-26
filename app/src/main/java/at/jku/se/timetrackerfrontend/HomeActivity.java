@@ -54,6 +54,14 @@ public class HomeActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        final Button manageCategoryBtn = (Button) findViewById(R.id.btnManageCategory);
+        manageCategoryBtn.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent = new Intent(HomeActivity.this, ManageCategoryActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void addDrawerItems() {
