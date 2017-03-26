@@ -24,4 +24,9 @@
     <string name="dateFormat">dd.MM.yyyy</string>
     <string name="date">Date</string>
     <string name="duration">Duration</string>
+
+    <string-array name="members_role">
+        +        <item>Member</item>
+        +        <item>Admin</item>
+        +    </string-array>
 </resources>
