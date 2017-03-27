@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <group >
+        <item android:title="Time entries">
+            <menu>
+                <item
+                    android:id="@+id/autoEntry"
+                    android:title="Automatically time entry" />
+                <item
+                    android:id="@+id/manEntry"
+                    android:title="Manually time entry" />
+                <item
+                    android:id="@+id/detailEntry"
+                    android:title="View your time entries" />
+            </menu>
+        </item>
+    </group>
+
+    <item android:title="Project">
+        <menu>
+            <item
+                android:id="@+id/newProj"
+                android:title="Create a Project" />
+            <item
+                android:id="@+id/manageProj"
+                android:title="Manage your Projects" />
+            <item
+                android:id="@+id/manageTeam"
+                android:title="Manage your Team" />
+            <item
+                android:id="@+id/manageCateg"
+                android:title="Manage your Categories" />
+        </menu>
+    </item>
+
+    <item android:title="Report">
+        <menu>
+            <item
+                android:id="@+id/projReport"
+                android:title="Project Report" />
+            <item
+                android:id="@+id/userReport"
+                android:title="UserReport" />
+        </menu>
+    </item>
+
+    <item
+        android:id="@+id/settings"
+        android:title="Settings" />
+
+</menu>
