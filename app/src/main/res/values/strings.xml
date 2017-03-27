@@ -11,7 +11,7 @@
 
     <string name="firstName">Firstname: </string>
     <string name="sureName">Surename: </string>
-    <string name="nickName">Nickname </string>
+    <string name="nickName">Nickname: </string>
     <string name="email">Email: </string>
     <string name="password">Password: </string>
     <string name="passwordConfirm">Password confirm: </string>
@@ -23,7 +23,6 @@
     <string name="add">Add</string>
     <string name="addCategory">Add Category</string>
     <string name="categoryName">Name of Category</string>
-    <string name="estimatedTime">Estimated time</string>
     <string name="delete">Delete</string>
     <string name="addTeamMember">Add team member</string>
 
