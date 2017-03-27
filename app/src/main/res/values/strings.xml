@@ -9,6 +9,31 @@
     <string name="title_activity_drawer_layout">DrawerLayoutActivity</string>
 
 
+    <string name="firstName">Firstname: </string>
+    <string name="sureName">Surename: </string>
+    <string name="nickName">Nickname </string>
+    <string name="email">Email: </string>
+    <string name="password">Password: </string>
+    <string name="passwordConfirm">Password confirm: </string>
+    <string name="back">Back</string>
+    <string name="register">Register</string>
+    <string name="newPassword">New password: </string>
+    <string name="apply">Apply</string>
+    <string name="quickStart">Quickstart</string>
+    <string name="add">Add</string>
+    <string name="addCategory">Add Category</string>
+    <string name="categoryName">Name of Category</string>
+    <string name="estimatedTime">Estimated time</string>
+    <string name="delete">Delete</string>
+    <string name="addTeamMember">Add team member</string>
+
+    <string name="rolePrompt">Choose a role</string>
+    <string-array name="rolesArray">
+        <item>Project Manager</item>
+        <item>Project Co-worker</item>
+    </string-array>
+
+
     <string name="projectReport">Project Report</string>
     <string name="project">Project</string>
     <string name="exportExcel">Export as Excel</string>
