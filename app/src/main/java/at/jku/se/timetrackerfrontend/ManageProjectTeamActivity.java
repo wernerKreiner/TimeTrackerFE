@@ -1,23 +1,21 @@
 package at.jku.se.timetrackerfrontend;
 
-import android.content.Context;
+import android.app.FragmentManager;
 import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.NavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+
+import enteties.User;
 
 
 public class ManageProjectTeamActivity extends AppCompatActivity {
@@ -27,46 +25,23 @@ public class ManageProjectTeamActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage_project_team);
 
-        Spinner spinner = (Spinner) findViewById(R.id.spinner);
-        ArrayAdapter<CharSequence> stringAdapter = ArrayAdapter.createFromResource(this, R.array.members_role, android.R.layout.simple_spinner_item);
-        stringAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(stringAdapter);
 
         final ListView listview = (ListView) findViewById(R.id.members);
-        String[] values = new String[] { "Anna", "Dominik", "Antonia" };
+        User[] values = new User[] { new User("Anna"), new User("Dominik"), new User("Antonia") };
 
-        final ArrayList<String> list = new ArrayList<String>();
+        final ArrayList<User> list = new ArrayList<User>();
         for (int i = 0; i < values.length; ++i) {
             list.add(values[i]);
         }
-        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                R.layout.content_listview_members, R.id.listName, list);
+        final UserAdapter adapter = new UserAdapter(this, list);
         listview.setAdapter(adapter);
 
-        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> parent, final View view,
-                                    int position, long id) {
-                final String item = (String) parent.getItemAtPosition(position);
-                view.animate().setDuration(2000).alpha(0)
-                        .withEndAction(new Runnable() {
-                            @Override
-                            public void run() {
-                                list.remove(item);
-                                adapter.notifyDataSetChanged();
-                                view.setAlpha(1);
-                            }
-                        });
-            }
-
-        });
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.floatingActionButton);
-        fab.setOnClickListener(new View.OnClickListener(){
-            @Override
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.floatingBtnAddMember);
+        fab.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                startActivity(new Intent(ManageProjectTeamActivity.this, MemberAddActivity.class));
+                FragmentManager fm = getFragmentManager();
+                android.app.DialogFragment dialogFragment = new ManageProjectTeamEditDialogFragment();
+                dialogFragment.show(fm, "HEADER");
             }
         });
     }
