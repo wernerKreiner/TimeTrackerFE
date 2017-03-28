@@ -26,6 +26,12 @@ public class ManageProjectActivity extends AppCompatActivity {
         stringAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(stringAdapter);
 
+        TextView estiTime = (TextView) findViewById(R.id.estimateTimeTextView);
+        TextView descrption = (TextView) findViewById(R.id.descriptionTextView);
+
+        estiTime.setText("200 hours");
+        descrption.setText("Our first Android Project");
+
 
     }
 
