@@ -1,10 +1,7 @@
 package at.jku.se.timetrackerfrontend;
 
-import android.content.Context;
+import android.app.FragmentManager;
 import android.content.Intent;
-import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.NavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -12,13 +9,15 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Spinner;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.Date;
+
+import enteties.Category;
+import enteties.Measurment;
+import enteties.TimeEntry;
+import enteties.User;
 
 public class EditEntryActivity extends AppCompatActivity {
 
@@ -28,15 +27,24 @@ public class EditEntryActivity extends AppCompatActivity {
         setContentView(R.layout.activity_edit_entry);
 
         final ListView listview = (ListView) findViewById(R.id.entries);
-        String[] values = new String[] { "Anna", "Dominik", "Antonia" };
+        TimeEntry[] values = new TimeEntry[] { new TimeEntry(1, "Impletation", new Date (20,03,2017), new Date(22,03,2017),"blabla", new Measurment(1,"man"), new User(), new Category()),
+                new TimeEntry(2, "Organisation", new Date (20,03,2017), new Date(22,03,2017),"blabla", new Measurment(1,"man"), new User(), new Category())};
 
-        final ArrayList<String> list = new ArrayList<String>();
+        final ArrayList<TimeEntry> list = new ArrayList<TimeEntry>();
         for (int i = 0; i < values.length; ++i) {
             list.add(values[i]);
         }
-        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                R.layout.content_listview_entries, R.id.entry_name, list);
+        final EntryAdapter adapter = new EntryAdapter(this,
+                list);
         listview.setAdapter(adapter);
+
+        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                FragmentManager fm = getFragmentManager();
+                android.app.DialogFragment dialogFragment = new EditTimeEtryFragment();
+                dialogFragment.show(fm, "HEADER");
+            }
+        });
 
 
 

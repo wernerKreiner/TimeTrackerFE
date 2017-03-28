@@ -85,7 +85,7 @@
                     app:layout_constraintTop_toTopOf="@+id/etNickname" />
 
                 <EditText
-                    android:id="@+id/etEmail"
+                    android:id="@+id/newMemberName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
@@ -101,11 +101,11 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
                     android:layout_marginStart="8dp"
-                    android:labelFor="@id/etEmail"
+                    android:labelFor="@id/newMemberName"
                     android:text="@string/email"
-                    app:layout_constraintBottom_toBottomOf="@+id/etEmail"
+                    app:layout_constraintBottom_toBottomOf="@+id/newMemberName"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/etEmail" />
+                    app:layout_constraintTop_toTopOf="@+id/newMemberName" />
 
                 <EditText
                     android:id="@+id/etNewPassword"
@@ -116,10 +116,10 @@
                     android:ems="10"
                     android:inputType="textPassword"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/etEmail" />
+                    app:layout_constraintTop_toBottomOf="@+id/newMemberName" />
 
                 <TextView
-                    android:id="@+id/textView4"
+                    android:id="@+id/userName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"

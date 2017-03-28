@@ -116,7 +116,7 @@
         app:layout_constraintVertical_bias="0.4" />
 
     <EditText
-        android:id="@+id/etEmail"
+        android:id="@+id/newMemberName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
@@ -131,10 +131,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/email"
-        android:labelFor="@id/etEmail"
-        app:layout_constraintTop_toTopOf="@+id/etEmail"
+        android:labelFor="@id/newMemberName"
+        app:layout_constraintTop_toTopOf="@+id/newMemberName"
         android:layout_marginTop="0dp"
-        app:layout_constraintBottom_toBottomOf="@+id/etEmail"
+        app:layout_constraintBottom_toBottomOf="@+id/newMemberName"
         android:layout_marginBottom="8dp"
         android:layout_marginStart="8dp"
         app:layout_constraintLeft_toLeftOf="parent" />
@@ -148,7 +148,7 @@
         android:ems="10"
         android:inputType="textPassword"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etEmail" />
+        app:layout_constraintTop_toBottomOf="@+id/newMemberName" />
 
     <TextView
         android:id="@+id/textView10"
