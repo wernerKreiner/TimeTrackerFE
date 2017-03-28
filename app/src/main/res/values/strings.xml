@@ -32,6 +32,10 @@
         <item>Project Co-worker</item>
     </string-array>
 
+    <string-array name="projects">
+        <item>SE Project</item>
+        <item>Smart Home</item>
+    </string-array>
 
     <string name="projectReport">Project Report</string>
     <string name="project">Project</string>
