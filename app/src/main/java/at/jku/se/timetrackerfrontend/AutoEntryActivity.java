@@ -12,7 +12,16 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.Spinner;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
+
+import java.util.Timer;
 
 public class AutoEntryActivity extends AppCompatActivity{
 
@@ -20,6 +29,42 @@ public class AutoEntryActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_auto_entry);
+
+        final TextView txtTimer = (TextView) findViewById(R.id.txt_autoEntry_time);
+
+
+        final Button btnStartTimer = (Button) findViewById(R.id.btn_autoEntry_start);
+        btnStartTimer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (btnStartTimer.getText().equals("Start")) {
+                    btnStartTimer.setText("Stop");
+                    txtTimer.setText("01:05:27");
+                } else {
+                    startActivity(new Intent(AutoEntryActivity.this, EditEntryDetailActivity.class));
+                }
+            }
+        });
+
+        final Button btnCancel = (Button) findViewById(R.id.btn_autoEntry_cancel);
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                btnStartTimer.setText("Start");
+                txtTimer.setText("HH:MM:SS");
+
+            }
+        });
+
+        Spinner spnProject = (Spinner) findViewById(R.id.spinner_autoEntry_projectSelection);
+        String[] projects = new String[]{"","PR SE", "PR SE Prototyp", "KT CE"};
+        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, projects);
+        spnProject.setAdapter(spinnerAdapter);
+
+        Spinner spnCategory = (Spinner) findViewById(R.id.spinner_autoEntry_categorySelection);
+        String[] categories = new String[]{"","Entwurf", "Prototyp", "Doku"};
+        ArrayAdapter<String> spinnerAdapter2 = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, categories);
+        spnCategory.setAdapter(spinnerAdapter2);
     }
 
     @Override

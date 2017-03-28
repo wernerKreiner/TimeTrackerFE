@@ -1,9 +1,171 @@
-<?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="at.jku.se.timetrackerfrontend.EditEntryDetailActivity">
+    android:layout_height="wrap_content">
 
-</android.support.constraint.ConstraintLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <GridLayout
+            android:id="@+id/layout_manualEntry_gridLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:columnCount="3"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_columnSpan="3"
+                android:layout_gravity="center_horizontal"
+                android:text="Edit Time Entry"
+                android:textSize="30dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_columnSpan="1"
+                android:text="from:"
+                android:textSize="20dp" />
+
+            <EditText
+                android:id="@+id/eText_manualEntry_fromDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_columnSpan="1"
+                android:layout_gravity="fill_horizontal"
+                android:width="0dp"
+                android:inputType="date"
+                android:hint="dd.mm.yyyy"
+                android:textSize="20dp" />
+
+            <EditText
+                android:id="@+id/eText_manualEntry_fromTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_columnSpan="1"
+                android:layout_gravity="center"
+                android:inputType="time"
+                android:hint="hh:mm"
+                android:textSize="20dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_columnSpan="1"
+                android:text="to"
+                android:textSize="20dp"
+                />
+
+            <EditText
+                android:id="@+id/eText_manualEntry_toDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_columnSpan="1"
+                android:layout_gravity="fill_horizontal"
+                android:width="0dp"
+                android:hint="dd.mm.yyyy"
+                android:inputType="date"
+                android:textSize="20dp" />
+
+            <EditText
+                android:id="@+id/eText_manualEntry_toTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_columnSpan="1"
+                android:layout_gravity="center"
+                android:inputType="time"
+                android:hint="hh:mm"
+                android:textSize="20dp" />
+
+            <TextView
+                android:layout_columnSpan="3"
+                android:text="project: "
+                android:textSize="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <Spinner
+                android:id="@+id/spinner_editEntry_projectSelection"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_columnSpan="3"
+
+                android:background="@android:drawable/btn_dropdown"
+                android:spinnerMode="dropdown" />
+
+            <TextView
+                android:layout_columnSpan="3"
+                android:text="category: "
+                android:textSize="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <Spinner
+                android:id="@+id/spinner_editEntry_categorySelection"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_columnSpan="3"
+
+                android:background="@android:drawable/btn_dropdown"
+                android:spinnerMode="dropdown" />
+
+
+            <TextView
+                android:layout_columnSpan="3"
+                android:text="notice: "
+                android:textSize="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <EditText
+                android:id="@+id/eText_manualEntry_notice"
+                android:layout_width="wrap_content"
+                android:layout_height="120dp"
+                android:layout_columnSpan="3"
+                android:layout_gravity="fill_horizontal"
+                android:inputType="text"
+                android:textSize="20dp" />
+
+            <Button
+                android:id="@+id/btn_editEntry_ok"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:layout_columnSpan="1"
+                android:text="OK"
+                android:textSize="20dp" />
+
+            <Button
+                android:id="@+id/btn_editEntry_cancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_columnSpan="1"
+                android:text="Cancel"
+                android:textSize="20dp" />
+
+            <Button
+                android:id="@+id/btn_editEntry_delete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_columnSpan="1"
+                android:text="Delete Entry"
+                android:textSize="20dp" />
+
+        </GridLayout>
+
+        <!--
+                <HorizontalScrollView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:fillViewport="true">
+
+                </HorizontalScrollView> -->
+
+    </LinearLayout>
+
+
+
+</ScrollView>
+
