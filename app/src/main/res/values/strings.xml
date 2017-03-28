@@ -40,7 +40,7 @@
     <string name="exportPdf">Export as Pdf</string>
     <string name="download">Download</string>
     <string name="category">Category</string>
-    <string name="estimatedTime">Est. Time</string>
+ <!--   <string name="estimatedTime">Est. Time</string> -->
     <string name="time">Time</string>
     <string name="difference">Difference</string>
     <string name="userReport">User Report</string>
