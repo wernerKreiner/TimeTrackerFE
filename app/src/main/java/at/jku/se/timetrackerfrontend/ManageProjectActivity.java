@@ -8,6 +8,11 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 public class ManageProjectActivity extends AppCompatActivity {
 
@@ -15,6 +20,13 @@ public class ManageProjectActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage_project);
+
+        Spinner spinner = (Spinner) findViewById(R.id.spinnerProj);
+        ArrayAdapter<CharSequence> stringAdapter = ArrayAdapter.createFromResource(this, R.array.projects, android.R.layout.simple_spinner_item);
+        stringAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(stringAdapter);
+
+
     }
 
     @Override
