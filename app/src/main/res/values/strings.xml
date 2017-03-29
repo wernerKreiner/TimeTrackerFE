@@ -30,6 +30,7 @@
     <string name="categoryName">Name of Category</string>
     <string name="delete">Delete</string>
     <string name="addTeamMember">Add team member</string>
+    <string name="estimatedTime">Add team member</string>
 
     <string name="rolePrompt">Choose a role</string>
     <string-array name="rolesArray">

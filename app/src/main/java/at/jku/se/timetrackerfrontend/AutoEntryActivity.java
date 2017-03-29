@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Chronometer;
 import android.widget.FrameLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -30,29 +31,23 @@ public class AutoEntryActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_auto_entry);
 
-        final TextView txtTimer = (TextView) findViewById(R.id.txt_autoEntry_time);
-
-
         final Button btnStartTimer = (Button) findViewById(R.id.btn_autoEntry_start);
+        final Button btnCancel = (Button) findViewById(R.id.btn_autoEntry_cancel);
+
+        final Chronometer focus = (Chronometer) findViewById(R.id.chronometer);
+
         btnStartTimer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (btnStartTimer.getText().equals("Start")) {
-                    btnStartTimer.setText("Stop");
-                    txtTimer.setText("01:05:27");
-                } else {
-                    startActivity(new Intent(AutoEntryActivity.this, EditEntryDetailActivity.class));
-                }
+                focus.start();
             }
         });
 
-        final Button btnCancel = (Button) findViewById(R.id.btn_autoEntry_cancel);
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                btnStartTimer.setText("Start");
-                txtTimer.setText("HH:MM:SS");
-
+                focus.stop();
+                startActivity(new Intent(AutoEntryActivity.this, EditEntryDetailActivity.class));
             }
         });
 
