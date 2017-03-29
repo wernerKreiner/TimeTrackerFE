@@ -26,7 +26,7 @@ public class RegisterActivity extends AppCompatActivity {
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(RegisterActivity.this, HomeActivity.class));
+                startActivity(new Intent(RegisterActivity.this, EditEntryActivity.class));
             }
         });
     }

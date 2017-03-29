@@ -35,7 +35,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(email.getText().toString().equals("test@jku.at") && password.getText().toString().equals("1234")){
-                    startActivity(new Intent(LoginActivity.this, HomeActivity.class));
+                    startActivity(new Intent(LoginActivity.this, EditEntryActivity.class));
                 }else {
                     Toast toast = new Toast(LoginActivity.this);
                     toast.makeText(LoginActivity.this, "Not a member yet? Yout can register now!", Toast.LENGTH_LONG).show();
