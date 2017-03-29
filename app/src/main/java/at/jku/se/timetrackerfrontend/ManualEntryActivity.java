@@ -32,16 +32,14 @@ public class ManualEntryActivity extends AppCompatActivity {
         });
 
         Spinner spnProject = (Spinner) findViewById(R.id.spinner_manualEntry_projectSelection);
-        String[] projects = new String[]{"PR SE", "PR SE Prototyp", "KT CE"};
+        String[] projects = new String[]{"","PR SE", "PR SE Prototyp", "KT CE"};
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, projects);
         spnProject.setAdapter(spinnerAdapter);
 
         Spinner spnCategory = (Spinner) findViewById(R.id.spinner_manualEntry_categorySelection);
-        String[] categories = new String[]{"Entwurf", "Prototyp", "Doku"};
+        String[] categories = new String[]{"","Entwurf", "Prototyp", "Doku"};
         ArrayAdapter<String> spinnerAdapter2 = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, categories);
         spnCategory.setAdapter(spinnerAdapter2);
-
-
     }
 
     @Override

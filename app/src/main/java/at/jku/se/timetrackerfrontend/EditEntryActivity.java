@@ -40,9 +40,11 @@ public class EditEntryActivity extends AppCompatActivity {
 
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                FragmentManager fm = getFragmentManager();
-                    android.app.DialogFragment dialogFragment = new EditTimeEntryFragment();
-                dialogFragment.show(fm, "HEADER");
+                    startActivity(new Intent(EditEntryActivity.this, EditEntryDetailActivity.class));
+                    //FragmentManager fm = getFragmentManager();
+                //   android.app.DialogFragment dialogFragment = new EditTimeEntryFragment();
+                //dialogFragment.show(fm, "HEADER");
+
             }
         });
 
