@@ -6,13 +6,9 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.TextView;
 
 
-public class EditTimeEtryFragment extends DialogFragment {
+public class EditTimeEntryFragment extends DialogFragment {
 
 
     @Override
@@ -35,7 +31,7 @@ public class EditTimeEtryFragment extends DialogFragment {
                 })
                 .setNegativeButton(R.string.back, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        EditTimeEtryFragment.this.getDialog().cancel();
+                        EditTimeEntryFragment.this.getDialog().cancel();
                     }
                 });
 

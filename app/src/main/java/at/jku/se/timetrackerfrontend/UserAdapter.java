@@ -11,8 +11,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import enteties.TimeEntry;
-import enteties.User;
+import entities.User;
 
 /**
  * Created by Anna on 28.03.2017.
@@ -37,7 +36,7 @@ public class UserAdapter extends ArrayAdapter<User>{
         User currentItem = getItem(position);
 
         TextView name = (TextView) listItemView.findViewById(R.id.userName);
-        name.setText(currentItem.getFirstName());
+        name.setText(currentItem.getNickname());
 
         Spinner spinner = (Spinner) listItemView.findViewById(R.id.spinnerRole);
         ArrayAdapter<CharSequence> stringAdapter = ArrayAdapter.createFromResource(getContext(), R.array.rolesArray, android.R.layout.simple_spinner_item);

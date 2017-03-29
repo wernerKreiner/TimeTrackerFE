@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import enteties.TimeEntry;
+import entities.TimeEntry;
 
 public class EntryAdapter extends ArrayAdapter<TimeEntry> {
 
@@ -34,7 +34,7 @@ public class EntryAdapter extends ArrayAdapter<TimeEntry> {
         name.setText(currentItem.getName());
 
         TextView date = (TextView) listItemView.findViewById(R.id.dateListEntry);
-        date.setText(currentItem.getUntil().toString());
+        date.setText(currentItem.getTo().toString());
 
         return listItemView;
     }

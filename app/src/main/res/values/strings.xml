@@ -14,7 +14,7 @@
 
 
     <string name="firstName">Firstname: </string>
-    <string name="sureName">Surename: </string>
+    <string name="surName">Surname: </string>
     <string name="nickName">Nickname: </string>
     <string name="email">Email: </string>
     <string name="password">Password: </string>
@@ -30,7 +30,8 @@
     <string name="categoryName">Name of Category</string>
     <string name="delete">Delete</string>
     <string name="addTeamMember">Add team member</string>
-    <string name="estimatedTime">Add team member</string>
+    <string name="estimatedTime">Est. Time</string>
+    <string name="cancel">Cancel</string>
 
     <string name="rolePrompt">Choose a role</string>
     <string-array name="rolesArray">

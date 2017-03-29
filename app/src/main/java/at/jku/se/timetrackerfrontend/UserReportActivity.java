@@ -26,7 +26,7 @@ public class UserReportActivity extends AppCompatActivity {
         setContentView(R.layout.activity_user_report);
 
         Spinner dropdown = (Spinner) findViewById(R.id.spinner_userReport_projectSelection);
-        String[] projects = new String[]{"PR SE", "PR SE Prototyp", "KT CE"};
+        String[] projects = new String[]{"", "PR SE", "PR SE Prototyp", "KT CE"};
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, projects);
         dropdown.setAdapter(spinnerAdapter);
 
@@ -117,18 +117,16 @@ public class UserReportActivity extends AppCompatActivity {
             startActivity(new Intent(this,EditEntryActivity.class));
         } else if (id == R.id.newProj) {
             startActivity(new Intent(this,CreateProjectActivity.class));
-        } else if (id == R.id.manageTeam) {
-            startActivity(new Intent(this, ManageProjectTeamActivity.class));
         } else if (id == R.id.manageProj) {
             startActivity(new Intent(this, ManageProjectActivity.class));
-        } else if (id == R.id.manageCateg) {
-            startActivity(new Intent(this, ManageCategoryActivity.class));
         } else if (id == R.id.projReport) {
             startActivity(new Intent(this, ProjectReportActivity.class));
         } else if (id == R.id.userReport) {
             startActivity(new Intent(this, UserReportActivity.class));
         } else if (id == R.id.settings) {
             startActivity(new Intent(this, SettingsActivity.class));
+        } else if (id == R.id.logout) {
+            startActivity(new Intent(this, LoginActivity.class));
         }
 
         return true;
