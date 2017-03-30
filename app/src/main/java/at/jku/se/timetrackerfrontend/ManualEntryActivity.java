@@ -32,16 +32,14 @@ public class ManualEntryActivity extends AppCompatActivity {
         });
 
         Spinner spnProject = (Spinner) findViewById(R.id.spinner_manualEntry_projectSelection);
-        String[] projects = new String[]{"PR SE", "PR SE Prototyp", "KT CE"};
+        String[] projects = new String[]{"","PR SE", "PR SE Prototyp", "KT CE"};
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, projects);
         spnProject.setAdapter(spinnerAdapter);
 
         Spinner spnCategory = (Spinner) findViewById(R.id.spinner_manualEntry_categorySelection);
-        String[] categories = new String[]{"Entwurf", "Prototyp", "Doku"};
+        String[] categories = new String[]{"","Entwurf", "Prototyp", "Doku"};
         ArrayAdapter<String> spinnerAdapter2 = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, categories);
         spnCategory.setAdapter(spinnerAdapter2);
-
-
     }
 
     @Override
@@ -64,18 +62,16 @@ public class ManualEntryActivity extends AppCompatActivity {
             startActivity(new Intent(this,EditEntryActivity.class));
         } else if (id == R.id.newProj) {
             startActivity(new Intent(this,CreateProjectActivity.class));
-        } else if (id == R.id.manageTeam) {
-            startActivity(new Intent(this, ManageProjectTeamActivity.class));
         } else if (id == R.id.manageProj) {
             startActivity(new Intent(this, ManageProjectActivity.class));
-        } else if (id == R.id.manageCateg) {
-            startActivity(new Intent(this, ManageCategoryActivity.class));
         } else if (id == R.id.projReport) {
             startActivity(new Intent(this, ProjectReportActivity.class));
         } else if (id == R.id.userReport) {
             startActivity(new Intent(this, UserReportActivity.class));
         } else if (id == R.id.settings) {
             startActivity(new Intent(this, SettingsActivity.class));
+        } else if (id == R.id.logout) {
+            startActivity(new Intent(this, LoginActivity.class));
         }
 
         return true;

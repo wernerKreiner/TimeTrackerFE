@@ -8,7 +8,9 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
 
 public class EditEntryDetailActivity extends AppCompatActivity {
@@ -17,6 +19,31 @@ public class EditEntryDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_entry_detail);
+
+        final Button btnOk = (Button) findViewById(R.id.btn_editEntry_ok);
+        final Button btnCancel = (Button) findViewById(R.id.btn_editEntry_cancel);
+        final Button btnDeleteEntry = (Button) findViewById(R.id.btn_editEntry_delete);
+
+        btnOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(EditEntryDetailActivity.this, EditEntryActivity.class));
+            }
+        });
+
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(EditEntryDetailActivity.this, EditEntryActivity.class));
+            }
+        });
+
+        btnDeleteEntry.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(EditEntryDetailActivity.this, EditEntryActivity.class));
+            }
+        });
 
 
         Spinner spnProject = (Spinner) findViewById(R.id.spinner_editEntry_projectSelection);
@@ -50,18 +77,16 @@ public class EditEntryDetailActivity extends AppCompatActivity {
             startActivity(new Intent(this,EditEntryActivity.class));
         } else if (id == R.id.newProj) {
             startActivity(new Intent(this,CreateProjectActivity.class));
-        } else if (id == R.id.manageTeam) {
-            startActivity(new Intent(this, ManageProjectTeamActivity.class));
         } else if (id == R.id.manageProj) {
             startActivity(new Intent(this, ManageProjectActivity.class));
-        } else if (id == R.id.manageCateg) {
-            startActivity(new Intent(this, ManageCategoryActivity.class));
         } else if (id == R.id.projReport) {
             startActivity(new Intent(this, ProjectReportActivity.class));
         } else if (id == R.id.userReport) {
             startActivity(new Intent(this, UserReportActivity.class));
         } else if (id == R.id.settings) {
             startActivity(new Intent(this, SettingsActivity.class));
+        } else if (id == R.id.logout) {
+            startActivity(new Intent(this, LoginActivity.class));
         }
 
         return true;

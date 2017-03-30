@@ -14,10 +14,10 @@ import android.widget.ListView;
 import java.util.ArrayList;
 import java.util.Date;
 
-import enteties.Category;
-import enteties.Measurment;
-import enteties.TimeEntry;
-import enteties.User;
+import entities.Category;
+import entities.Measurement;
+import entities.TimeEntry;
+import entities.User;
 
 public class EditEntryActivity extends AppCompatActivity {
 
@@ -27,8 +27,8 @@ public class EditEntryActivity extends AppCompatActivity {
         setContentView(R.layout.activity_edit_entry);
 
         final ListView listview = (ListView) findViewById(R.id.entries);
-        TimeEntry[] values = new TimeEntry[] { new TimeEntry(1, "Impletation", new Date (20,03,2017), new Date(22,03,2017),"blabla", new Measurment(1,"man"), new User(), new Category()),
-                new TimeEntry(2, "Organisation", new Date (20,03,2017), new Date(22,03,2017),"blabla", new Measurment(1,"man"), new User(), new Category())};
+        TimeEntry[] values = new TimeEntry[]{new TimeEntry(1, "Implementation", new Date(20, 03, 2017), new Date(22, 03, 2017), "blabla", Measurement.MANUAL, new User(), new Category()),
+                new TimeEntry(2, "Organisation", new Date(20, 03, 2017), new Date(22, 03, 2017), "blabla", Measurement.MANUAL, new User(), new Category())};
 
         final ArrayList<TimeEntry> list = new ArrayList<TimeEntry>();
         for (int i = 0; i < values.length; ++i) {
@@ -40,9 +40,11 @@ public class EditEntryActivity extends AppCompatActivity {
 
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                FragmentManager fm = getFragmentManager();
-                android.app.DialogFragment dialogFragment = new EditTimeEtryFragment();
-                dialogFragment.show(fm, "HEADER");
+                    startActivity(new Intent(EditEntryActivity.this, EditEntryDetailActivity.class));
+                    //FragmentManager fm = getFragmentManager();
+                //   android.app.DialogFragment dialogFragment = new EditTimeEntryFragment();
+                //dialogFragment.show(fm, "HEADER");
+
             }
         });
 
@@ -72,18 +74,16 @@ public class EditEntryActivity extends AppCompatActivity {
             startActivity(new Intent(this,EditEntryActivity.class));
         } else if (id == R.id.newProj) {
             startActivity(new Intent(this,CreateProjectActivity.class));
-        } else if (id == R.id.manageTeam) {
-            startActivity(new Intent(this, ManageProjectTeamActivity.class));
         } else if (id == R.id.manageProj) {
             startActivity(new Intent(this, ManageProjectActivity.class));
-        } else if (id == R.id.manageCateg) {
-            startActivity(new Intent(this, ManageCategoryActivity.class));
         } else if (id == R.id.projReport) {
             startActivity(new Intent(this, ProjectReportActivity.class));
         } else if (id == R.id.userReport) {
             startActivity(new Intent(this, UserReportActivity.class));
         } else if (id == R.id.settings) {
             startActivity(new Intent(this, SettingsActivity.class));
+        } else if (id == R.id.logout) {
+            startActivity(new Intent(this, LoginActivity.class));
         }
 
         return true;

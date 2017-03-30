@@ -8,6 +8,9 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -15,7 +18,24 @@ public class SettingsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
+
+        Button cancel = (Button) findViewById(R.id.btn_settings_cancel);
+        Button apply = (Button) findViewById(R.id.btn_settings_apply);
+
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(SettingsActivity.this, EditEntryActivity.class));
+            }
+        });
+        apply.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(SettingsActivity.this, EditEntryActivity.class));
+            }
+        });
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -36,20 +56,19 @@ public class SettingsActivity extends AppCompatActivity {
             startActivity(new Intent(this,EditEntryActivity.class));
         } else if (id == R.id.newProj) {
             startActivity(new Intent(this,CreateProjectActivity.class));
-        } else if (id == R.id.manageTeam) {
-            startActivity(new Intent(this, ManageProjectTeamActivity.class));
         } else if (id == R.id.manageProj) {
             startActivity(new Intent(this, ManageProjectActivity.class));
-        } else if (id == R.id.manageCateg) {
-            startActivity(new Intent(this, ManageCategoryActivity.class));
         } else if (id == R.id.projReport) {
             startActivity(new Intent(this, ProjectReportActivity.class));
         } else if (id == R.id.userReport) {
             startActivity(new Intent(this, UserReportActivity.class));
         } else if (id == R.id.settings) {
             startActivity(new Intent(this, SettingsActivity.class));
+        } else if (id == R.id.logout) {
+            startActivity(new Intent(this, LoginActivity.class));
         }
 
         return true;
     }
+
 }

@@ -7,10 +7,10 @@
             <menu>
                 <item
                     android:id="@+id/autoEntry"
-                    android:title="Automatically time entry" />
+                    android:title="Automatic time entry" />
                 <item
                     android:id="@+id/manEntry"
-                    android:title="Manually time entry" />
+                    android:title="Manual time entry" />
                 <item
                     android:id="@+id/detailEntry"
                     android:title="View your time entries" />
@@ -26,12 +26,6 @@
             <item
                 android:id="@+id/manageProj"
                 android:title="Manage your Projects" />
-            <item
-                android:id="@+id/manageTeam"
-                android:title="Manage your Team" />
-            <item
-                android:id="@+id/manageCateg"
-                android:title="Manage your Categories" />
         </menu>
     </item>
 
@@ -42,12 +36,16 @@
                 android:title="Project Report" />
             <item
                 android:id="@+id/userReport"
-                android:title="UserReport" />
+                android:title="User Report" />
         </menu>
     </item>
 
     <item
         android:id="@+id/settings"
         android:title="Settings" />
+
+    <item
+        android:id="@+id/logout"
+        android:title="Logout" />
 
 </menu>

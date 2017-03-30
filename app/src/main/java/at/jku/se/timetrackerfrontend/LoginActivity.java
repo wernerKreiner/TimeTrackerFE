@@ -22,7 +22,9 @@ public class LoginActivity extends AppCompatActivity {
         Button register = (Button) findViewById(R.id.registerButton);
 
         final EditText email = (EditText) findViewById(R.id.emailInput);
+        email.setText("test@jku.at");
         final EditText password = (EditText) findViewById(R.id.passwordInput);
+        password.setText("1234");
 
         register.setOnClickListener(new View.OnClickListener() {
             @Override

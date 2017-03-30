@@ -13,10 +13,10 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        Button back = (Button) findViewById(R.id.btnBackRegister);
-        final Button register = (Button) findViewById(R.id.btnRegisterCommit);
+        Button cancel = (Button) findViewById(R.id.btn_register_cancel);
+        Button register = (Button) findViewById(R.id.btn_register_register);
 
-        back.setOnClickListener(new View.OnClickListener() {
+        cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
