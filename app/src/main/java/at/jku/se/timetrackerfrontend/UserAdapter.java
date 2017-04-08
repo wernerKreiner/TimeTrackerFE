@@ -9,17 +9,17 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import java.util.ArrayList;
+import entities.*;
 
-import entities.User;
+import java.util.ArrayList;
 
 /**
  * Created by Anna on 28.03.2017.
  */
 
-public class UserAdapter extends ArrayAdapter<User>{
+public class UserAdapter extends ArrayAdapter<Person> {
 
-    public UserAdapter(Activity context, ArrayList<User> user){
+    public UserAdapter(Activity context, ArrayList<Person> user) {
         super(context, 0, user);
     }
 
@@ -33,7 +33,7 @@ public class UserAdapter extends ArrayAdapter<User>{
                     R.layout.content_listview_members, parent, false);
         }
 
-        User currentItem = getItem(position);
+        Person currentItem = getItem(position);
 
         TextView name = (TextView) listItemView.findViewById(R.id.userName);
         name.setText(currentItem.getNickname());
