@@ -8,9 +8,9 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-
 import entities.TimeEntry;
+
+import java.util.ArrayList;
 
 public class EntryAdapter extends ArrayAdapter<TimeEntry> {
 
@@ -31,7 +31,7 @@ public class EntryAdapter extends ArrayAdapter<TimeEntry> {
         TimeEntry currentItem = getItem(position);
 
         TextView name = (TextView) listItemView.findViewById(R.id.entry_name);
-        name.setText(currentItem.getName());
+        name.setText(currentItem.getNote());
 
         TextView date = (TextView) listItemView.findViewById(R.id.dateListEntry);
         date.setText(currentItem.getTo().toString());

@@ -11,9 +11,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 
-import java.util.ArrayList;
+import entities.*;
 
-import entities.User;
+import java.util.ArrayList;
 
 
 public class ManageProjectTeamActivity extends AppCompatActivity {
@@ -25,9 +25,9 @@ public class ManageProjectTeamActivity extends AppCompatActivity {
 
 
         final ListView listview = (ListView) findViewById(R.id.members);
-        User[] values = new User[] { new User("Anna"), new User("Dominik"), new User("Antonia") };
+        Person[] values = new Person[]{};
 
-        final ArrayList<User> list = new ArrayList<User>();
+        final ArrayList<Person> list = new ArrayList<Person>();
         for (int i = 0; i < values.length; ++i) {
             list.add(values[i]);
         }

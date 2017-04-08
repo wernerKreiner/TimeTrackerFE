@@ -1,6 +1,5 @@
 package at.jku.se.timetrackerfrontend;
 
-import android.app.FragmentManager;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,13 +10,10 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import entities.*;
+
 import java.util.ArrayList;
 import java.util.Date;
-
-import entities.Category;
-import entities.Measurement;
-import entities.TimeEntry;
-import entities.User;
 
 public class EditEntryActivity extends AppCompatActivity {
 
@@ -27,8 +23,8 @@ public class EditEntryActivity extends AppCompatActivity {
         setContentView(R.layout.activity_edit_entry);
 
         final ListView listview = (ListView) findViewById(R.id.entries);
-        TimeEntry[] values = new TimeEntry[]{new TimeEntry(1, "Implementation", new Date(20, 03, 2017), new Date(22, 03, 2017), "blabla", Measurement.MANUAL, new User(), new Category()),
-                new TimeEntry(2, "Organisation", new Date(20, 03, 2017), new Date(22, 03, 2017), "blabla", Measurement.MANUAL, new User(), new Category())};
+        TimeEntry[] values = new TimeEntry[]{new TimeEntry(new Date(20, 03, 2017), new Date(22, 03, 2017), "blabla", Measurement.MANUALLY, new Person(), new Category()),
+                new TimeEntry(new Date(20, 03, 2017), new Date(22, 03, 2017), "blabla", Measurement.MANUALLY, new Person(), new Category())};
 
         final ArrayList<TimeEntry> list = new ArrayList<TimeEntry>();
         for (int i = 0; i < values.length; ++i) {
