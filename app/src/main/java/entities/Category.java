@@ -18,16 +18,20 @@ public class Category {
         this.timeEntries = new LinkedList<>();
     }
 
-    public Category(String name, double estimatedTime, Project project, List<TimeEntry> timeEntries) {
+    public Category(String name, double estimatedTime, Project project) {
         this.name = name;
         this.estimatedTime = estimatedTime;
         this.project = project;
-        this.timeEntries = timeEntries;
+        this.timeEntries = new LinkedList<>();
     }
 
     @Override
     public String toString() {
-        return "Category{" + "id=" + id + ", name=" + name + ", estimatedTime=" + estimatedTime + ", project=" + project + ", timeEntries=" + timeEntries + '}';
+        return "Category{" + "id=" + id + ", name=" + name + ", estimatedTime=" + estimatedTime + ", project=" + project.getId() + '}';
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public long getId() {

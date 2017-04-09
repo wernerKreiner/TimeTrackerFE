@@ -32,7 +32,14 @@ public class TimeEntry {
 
     @Override
     public String toString() {
-        return "TimeEntry{" + "id=" + id + ", from=" + from + ", to=" + to + ", note=" + note + ", measurement=" + measurement + ", person=" + person + ", category=" + category + '}';
+        String cat = "";
+        if (category == null) cat = "null";
+        else cat += category.getId();
+        return "TimeEntry{" + "id=" + id + ", from=" + from + ", to=" + to + ", note=" + note + ", measurement=" + measurement + ", person=" + person.getId() + ", category=" + cat + '}';
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public long getId() {
