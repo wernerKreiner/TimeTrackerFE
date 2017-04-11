@@ -18,16 +18,20 @@ public class Project {
         this.categories = new LinkedList<>();
     }
 
-    public Project(String name, String description, List<Cooperation> cooperations, List<Category> categories) {
+    public Project(String name, String description) {
         this.name = name;
         this.description = description;
-        this.cooperations = cooperations;
-        this.categories = categories;
+        this.cooperations = new LinkedList<>();
+        this.categories = new LinkedList<>();
     }
 
     @Override
     public String toString() {
-        return "Project{" + "id=" + id + ", name=" + name + ", description=" + description + ", cooperations=" + cooperations + ", categories=" + categories + '}';
+        return "Project{" + "id=" + id + ", name=" + name + ", description=" + description + ", categories=" + categories + ", cooperations=" + cooperations + '}';
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public long getId() {

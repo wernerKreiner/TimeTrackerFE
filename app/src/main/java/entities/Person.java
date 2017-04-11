@@ -26,20 +26,24 @@ public class Person {
         this.timeEntries = new LinkedList<>();
     }
 
-    public Person(String firstname, String lastname, String nickname, String email, String password, boolean quickstart, List<Cooperation> cooperations, List<TimeEntry> timeEntries) {
+    public Person(String firstname, String lastname, String nickname, String email, String password, boolean quickstart) {
         this.firstname = firstname;
         this.lastname = lastname;
         this.nickname = nickname;
         this.email = email;
         this.password = password;
         this.quickstart = quickstart;
-        this.cooperations = cooperations;
-        this.timeEntries = timeEntries;
+        this.cooperations = new LinkedList<>();
+        this.timeEntries = new LinkedList<>();
     }
 
     @Override
     public String toString() {
-        return "Person{" + "id=" + id + ", firstname=" + firstname + ", lastname=" + lastname + ", nickname=" + nickname + ", email=" + email + ", password=" + password + ", quickstart=" + quickstart + ", cooperations=" + cooperations + ", timeEntries=" + timeEntries + '}';
+        return "Person{" + "id=" + id + ", firstname=" + firstname + ", lastname=" + lastname + ", nickname=" + nickname + ", email=" + email + ", password=" + password + ", quickstart=" + quickstart + ", cooperations=" + cooperations + '}';
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public long getId() {
