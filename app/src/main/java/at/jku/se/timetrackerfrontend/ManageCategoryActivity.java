@@ -1,7 +1,10 @@
 package at.jku.se.timetrackerfrontend;
 
 
+import android.app.DialogFragment;
 import android.app.FragmentManager;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -10,6 +13,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -19,31 +24,46 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.TextView;
+
+import entities.Category;
+import entities.Cooperation;
+import services.CategoryService;
 
 public class ManageCategoryActivity extends AppCompatActivity {
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage_category);
 
-        final ListView listView = (ListView) findViewById(R.id.listCategories);
-        String [] values = {"Organisation", "Entwicklung", "Testdaten erzeugen"};
+        Bundle bundle = getIntent().getExtras();
+        String projName = bundle.getString("ProjectName");
 
-        final ArrayList<String> list = new ArrayList<>();
-        for (int i = 0; i < values.length; i++) {
-            list.add(values[i]);
-        }
+        CategoryService categoryService = new CategoryService();
 
-        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.content_listview_categories, R.id.categorieName, list);
-        listView.setAdapter(adapter);
+        final ListView listview = (ListView) findViewById(R.id.listCategories);
+
+        List<Category> list = new ArrayList (categoryService.get());
+        list = list.stream().filter(x->x.getProject().getName().equals(projName)).collect(Collectors.toList());
+        ArrayList categoriesList = new ArrayList(list);
+
+        final CategoriesAdapter categoryAdapter= new CategoriesAdapter(this, categoriesList);
+        listview.setAdapter(categoryAdapter);
+
+        TextView titel = (TextView) findViewById(R.id.textTitel);
+        titel.setText(projName + " - Categories");
 
         final FloatingActionButton btnFloatingAdd = (FloatingActionButton) findViewById(R.id.btnFlotingAdd);
         btnFloatingAdd.setOnClickListener(new View.OnClickListener() {
            public void onClick(View v) {
-                FragmentManager fm = getFragmentManager();
-                android.app.DialogFragment dialogFragment = new ManageCategoryEditDialogFragment();
-                dialogFragment.show(fm, "HEADER");
+               FragmentManager fm = getFragmentManager();
+               DialogFragment dialogFragment = new ManageCategoryEditDialogFragment();
+               Bundle args = new Bundle();
+               args.putString("project", projName);
+               dialogFragment.setArguments(args);
+               dialogFragment.show(fm, "HEADER");
            }
         });
     }

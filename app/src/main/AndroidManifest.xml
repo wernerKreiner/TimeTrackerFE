@@ -22,8 +22,8 @@
         <activity android:name=".AutoEntryActivity"/>
         <activity android:name=".EditEntryDetailActivity"/>
         <activity android:name=".EditEntryActivity"/>
-        <activity android:name=".CreateProjectActivity"/>
         <activity android:name=".ManageProjectActivity"/>
+        <activity android:name=".CreateProjectActivity"/>
         <activity android:name=".ManageCategoryActivity"/>
         <activity android:name=".ManageProjectTeamActivity"/>
         <activity android:name=".ProjectReportActivity" />

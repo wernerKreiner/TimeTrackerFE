@@ -10,14 +10,40 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.Toast;
+
+import entities.Person;
+import services.PersonService;
 
 
 public class SettingsActivity extends AppCompatActivity {
 
+    boolean correctPassword;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
+
+        EditText firstname = (EditText) findViewById(R.id.eText_settings_firstname);
+        EditText surname = (EditText) findViewById(R.id.eText_settings_surname);
+        EditText email = (EditText) findViewById(R.id.eText_settings_email);
+        EditText nickname = (EditText) findViewById(R.id.eText_settings_nickname);
+        EditText password = (EditText) findViewById(R.id.eText_settings_password);
+        EditText confirmpassword = (EditText) findViewById(R.id.eText_settings_passwordconfirm);
+        CheckBox quickstart = (CheckBox) findViewById(R.id.checkBox_settings_quickstart);
+
+        PersonService personService = new PersonService();
+        Person person = personService.get().stream().findFirst().get();
+
+        firstname.setText(person.getFirstname());
+        surname.setText(person.getLastname());
+        email.setText(person.getEmail());
+        nickname.setText(person.getNickname());
+        password.setText(person.getPassword());
+        confirmpassword.setText(person.getPassword());
+        quickstart.setChecked(person.getQuickstart());
 
         Button cancel = (Button) findViewById(R.id.btn_settings_cancel);
         Button apply = (Button) findViewById(R.id.btn_settings_apply);
@@ -31,7 +57,24 @@ public class SettingsActivity extends AppCompatActivity {
         apply.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(SettingsActivity.this, EditEntryActivity.class));
+                if(password.getText().toString().equals(confirmpassword.getText().toString())) {
+                    correctPassword = true;
+                }else {
+                    correctPassword = false;
+                }
+                if(!correctPassword){
+                    Toast toast = Toast.makeText(getApplicationContext(), "Password does not match to confirm password", Toast.LENGTH_LONG);
+                    toast.show();
+                }else {
+                    person.setFirstname(firstname.getText().toString());
+                    person.setLastname(surname.getText().toString());
+                    person.setNickname(nickname.getText().toString());
+                    person.setEmail(email.getText().toString());
+                    person.setPassword(password.getText().toString());
+                    person.setQuickstart(quickstart.isChecked());
+                    startActivity(new Intent(SettingsActivity.this, EditEntryActivity.class));
+                }
+
             }
         });
     }

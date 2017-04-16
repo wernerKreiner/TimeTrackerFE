@@ -64,7 +64,7 @@ public class Data {
         Cooperation cooperation17 = createCooperation(new Cooperation(ProjectRole.ADMIN, person6, project3));
 
         try {
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy hh:mm:ss");
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
             TimeEntry timeEntry1 = createTimeEntry(new TimeEntry(dateFormat.parse("09.04.2017 08:00:00"), dateFormat.parse("09.04.2017 12:00:00"), "Besprechung", Measurement.MANUALLY, person1, category6));
             TimeEntry timeEntry2 = createTimeEntry(new TimeEntry(dateFormat.parse("09.04.2017 08:00:00"), dateFormat.parse("09.04.2017 12:00:00"), "Besprechung", Measurement.MANUALLY, person2, category6));
             TimeEntry timeEntry3 = createTimeEntry(new TimeEntry(dateFormat.parse("09.04.2017 08:00:00"), dateFormat.parse("09.04.2017 12:00:00"), "Besprechung", Measurement.MANUALLY, person3, category6));

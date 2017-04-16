@@ -1,11 +1,25 @@
 package at.jku.se.timetrackerfrontend;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.Spinner;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+import entities.Category;
+import entities.Project;
+import entities.ProjectRole;
 
 /**
  * Created by Anna on 26.03.2017.
@@ -13,10 +27,34 @@ import android.view.MenuItem;
 
 public class MemberAddActivity extends AppCompatActivity{
 
+
+    String projectRole;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_member);
+
+        EditText name = (EditText) findViewById(R.id.personName) ;
+
+        Spinner spinner = (Spinner) findViewById(R.id.spinner2);
+        ArrayAdapter<ProjectRole> stringAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, ProjectRole.values());
+        stringAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(stringAdapter);
+
+        class myOnItemSelectedListener implements AdapterView.OnItemSelectedListener {
+
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                projectRole = parent.getSelectedItem().toString();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        }
+
+        spinner.setOnItemSelectedListener(new myOnItemSelectedListener());
     }
 
     @Override
