@@ -11,7 +11,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
+
+import java.sql.Time;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+
+import entities.TimeEntry;
+import services.TimeEntryService;
 
 public class EditEntryDetailActivity extends AppCompatActivity {
 
@@ -19,6 +28,21 @@ public class EditEntryDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_entry_detail);
+
+
+        /*
+        pass the time entry id
+        *************************************
+         */
+        Bundle bundle = getIntent().getExtras();
+        long timeEntryId = bundle.getLong("timeEntry");
+
+        TimeEntryService timeEntryService = new TimeEntryService();
+
+        TimeEntry timeEntry = timeEntryService.getById(timeEntryId);
+        /*
+            *****************************
+         */
 
         final Button btnOk = (Button) findViewById(R.id.btn_editEntry_ok);
         final Button btnCancel = (Button) findViewById(R.id.btn_editEntry_cancel);
@@ -55,6 +79,16 @@ public class EditEntryDetailActivity extends AppCompatActivity {
         String[] categories = new String[]{"Entwurf", "Prototyp", "Doku"};
         ArrayAdapter<String> spinnerAdapter2 = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, categories);
         spnCategory.setAdapter(spinnerAdapter2);
+
+        /*
+         */
+        DateFormat timeFormat = new SimpleDateFormat("H:mm");
+        String timeFormatedFrom = timeFormat.format(timeEntry.getFrom());
+        EditText time = (EditText) findViewById(R.id.textView23);
+        time.setText(timeFormatedFrom);
+        /*
+        Example of using the object timeentry
+         */
     }
 
     @Override

@@ -16,13 +16,13 @@
 
     <EditText
         android:id="@+id/etEstimatedTime"
-        android:inputType="number"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginBottom="0dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginBottom="0dp"
-        android:hint="estimatedTime" />
+        android:layout_marginTop="24dp"
+        android:hint="estimatedTime"
+        android:inputType="number" />
 
 </LinearLayout>

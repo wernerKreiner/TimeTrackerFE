@@ -9,6 +9,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+
+import entities.Project;
+import services.ProjectService;
 
 public class CreateProjectActivity extends AppCompatActivity{
 
@@ -17,12 +21,18 @@ public class CreateProjectActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_project);
 
+        ProjectService projectService = new ProjectService();
+
         Button save = (Button) findViewById(R.id.btn_createProject_save);
         Button cancel = (Button) findViewById(R.id.btn_createProject_cancel);
+
+        EditText name = (EditText) findViewById(R.id.eText_createProject_name);
+        EditText descr = (EditText) findViewById(R.id.eText_createProject_description);
 
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                projectService.create(new Project(name.getText().toString(), descr.getText().toString()));
                 startActivity(new Intent(CreateProjectActivity.this, ManageProjectActivity.class));
             }
         });

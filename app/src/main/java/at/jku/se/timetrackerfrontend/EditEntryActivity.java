@@ -8,12 +8,15 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import entities.*;
+import services.TimeEntryService;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class EditEntryActivity extends AppCompatActivity {
 
@@ -22,30 +25,30 @@ public class EditEntryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_entry);
 
-        final ListView listview = (ListView) findViewById(R.id.entries);
-        TimeEntry[] values = new TimeEntry[]{new TimeEntry(new Date(20, 03, 2017), new Date(22, 03, 2017), "blabla", Measurement.MANUALLY, new Person(), new Category()),
-                new TimeEntry(new Date(20, 03, 2017), new Date(22, 03, 2017), "blabla", Measurement.MANUALLY, new Person(), new Category())};
+        TimeEntryService timeEntryService = new TimeEntryService();
 
-        final ArrayList<TimeEntry> list = new ArrayList<TimeEntry>();
-        for (int i = 0; i < values.length; ++i) {
-            list.add(values[i]);
-        }
+        final ListView listview = (ListView) findViewById(R.id.entries);
+
+        final ArrayList<TimeEntry> list = new ArrayList<>(timeEntryService.get());
         final EntryAdapter adapter = new EntryAdapter(this,
                 list);
         listview.setAdapter(adapter);
 
-        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                    startActivity(new Intent(EditEntryActivity.this, EditEntryDetailActivity.class));
-                    //FragmentManager fm = getFragmentManager();
-                //   android.app.DialogFragment dialogFragment = new EditTimeEntryFragment();
-                //dialogFragment.show(fm, "HEADER");
+        class MyOnItemClickListener implements AdapterView.OnItemClickListener {
 
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(EditEntryActivity.this, EditEntryDetailActivity.class);
+                Bundle bundle = new Bundle();
+                TimeEntry timeEntry =  (TimeEntry) parent.getAdapter().getItem(position);
+                long timeEntryId = timeEntry.getId();
+                bundle.putLong("timeEntry", timeEntryId);
+                intent.putExtras(bundle);
+                startActivity(intent);
             }
-        });
+        }
 
-
-
+        listview.setOnItemClickListener(new MyOnItemClickListener());
     }
 
 

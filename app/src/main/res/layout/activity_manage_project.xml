@@ -38,34 +38,14 @@
         android:layout_marginEnd="8dp" />
 
     <Button
-        android:id="@+id/btn_manageProject_save"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Save"
-        android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@+id/btn_manageProject_projectteam"
-        android:layout_marginLeft="8dp"
-        app:layout_constraintLeft_toLeftOf="parent" />
-
-    <Button
-        android:id="@+id/btn_manageProject_cancel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Cancel"
-        app:layout_constraintLeft_toRightOf="@+id/btn_manageProject_save"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@+id/btn_manageProject_projectteam" />
-
-    <Button
         android:id="@+id/btn_manageProject_removeProject"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Remove Project"
-        app:layout_constraintLeft_toRightOf="@+id/btn_manageProject_cancel"
-        android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@+id/btn_manageProject_projectteam" />
+        app:layout_constraintTop_toBottomOf="@+id/btn_manageProject_projectteam"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toLeftOf="parent" />
 
     <TextView
         android:id="@+id/textView16"
