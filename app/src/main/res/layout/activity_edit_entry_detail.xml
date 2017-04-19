@@ -40,9 +40,9 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 android:id="@+id/textView4"
                 android:layout_marginStart="8dp"
-                app:layout_constraintTop_toTopOf="@+id/textView22"
+                app:layout_constraintTop_toTopOf="@+id/eText_editEntryDetail_fromDate"
                 android:layout_marginTop="0dp"
-                app:layout_constraintBottom_toBottomOf="@+id/textView22"
+                app:layout_constraintBottom_toBottomOf="@+id/eText_editEntryDetail_fromDate"
                 android:layout_marginBottom="0dp" />
 
             <TextView
@@ -55,9 +55,9 @@
                 android:layout_marginTop="0dp"
                 android:text="to:"
                 android:textSize="20dp"
-                app:layout_constraintBottom_toBottomOf="@+id/textView24"
+                app:layout_constraintBottom_toBottomOf="@+id/eText_editEntryDetail_toDate"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/textView24"
+                app:layout_constraintTop_toTopOf="@+id/eText_editEntryDetail_toDate"
                 app:layout_constraintVertical_bias="0.533" />
 
             <TextView
@@ -117,15 +117,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/textView21"
-                app:layout_constraintTop_toTopOf="@+id/eText_manualEntry_notice"
+                app:layout_constraintTop_toTopOf="@+id/eText_editEntryDetail_notice"
                 android:layout_marginTop="8dp"
-                app:layout_constraintBottom_toBottomOf="@+id/eText_manualEntry_notice"
+                app:layout_constraintBottom_toBottomOf="@+id/eText_editEntryDetail_notice"
                 android:layout_marginBottom="8dp"
                 android:layout_marginLeft="8dp"
                 app:layout_constraintLeft_toLeftOf="parent" />
 
             <EditText
-                android:id="@+id/eText_manualEntry_notice"
+                android:id="@+id/eText_editEntryDetail_notice"
                 android:layout_width="302dp"
                 android:layout_height="100dp"
                 android:layout_marginEnd="8dp"
@@ -148,7 +148,7 @@
                 android:textSize="20dp"
                 tools:layout_editor_absoluteX="8dp"
                 android:layout_marginTop="8dp"
-                app:layout_constraintTop_toBottomOf="@+id/eText_manualEntry_notice" />
+                app:layout_constraintTop_toBottomOf="@+id/eText_editEntryDetail_notice" />
 
             <Button
                 android:id="@+id/btn_editEntry_cancel"
@@ -160,7 +160,7 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
-                app:layout_constraintTop_toBottomOf="@+id/eText_manualEntry_notice" />
+                app:layout_constraintTop_toBottomOf="@+id/eText_editEntryDetail_notice" />
 
             <Button
                 android:id="@+id/btn_editEntry_delete"
@@ -176,56 +176,56 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginTop="8dp"
-                app:layout_constraintTop_toBottomOf="@+id/eText_manualEntry_notice" />
+                app:layout_constraintTop_toBottomOf="@+id/eText_editEntryDetail_notice" />
 
             <EditText
-                android:id="@+id/textView22"
+                android:id="@+id/eText_editEntryDetail_fromDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="0dp"
                 android:layout_marginLeft="40dp"
                 android:layout_marginTop="0dp"
                 android:text="30.03.2017"
-                app:layout_constraintBottom_toBottomOf="@+id/textView23"
+                app:layout_constraintBottom_toBottomOf="@+id/eText_editEntryDetail_fromTime"
                 app:layout_constraintLeft_toRightOf="@+id/textView4"
-                app:layout_constraintTop_toTopOf="@+id/textView23"
+                app:layout_constraintTop_toTopOf="@+id/eText_editEntryDetail_fromTime"
                 app:layout_constraintVertical_bias="0.0"
                 tools:text="@string/dateFormat" />
 
             <EditText
-                android:id="@+id/textView23"
+                android:id="@+id/eText_editEntryDetail_fromTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="19dp"
                 android:text="08:00"
-                app:layout_constraintLeft_toRightOf="@+id/textView22"
+                app:layout_constraintLeft_toRightOf="@+id/eText_editEntryDetail_fromDate"
                 app:layout_constraintTop_toBottomOf="@+id/textView15"
                 tools:text="@string/time" />
 
             <EditText
-                android:id="@+id/textView24"
+                android:id="@+id/eText_editEntryDetail_toDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="0dp"
                 android:layout_marginLeft="65dp"
                 android:layout_marginTop="0dp"
                 android:text="30.03.2017"
-                app:layout_constraintBottom_toBottomOf="@+id/textView26"
+                app:layout_constraintBottom_toBottomOf="@+id/eText_editEntryDetail_toTime"
                 app:layout_constraintLeft_toRightOf="@+id/textView17"
-                app:layout_constraintTop_toTopOf="@+id/textView26"
+                app:layout_constraintTop_toTopOf="@+id/eText_editEntryDetail_toTime"
                 tools:text="@string/dateFormat" />
 
             <EditText
-                android:id="@+id/textView26"
+                android:id="@+id/eText_editEntryDetail_toTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="16dp"
                 android:contentDescription="@string/time"
                 android:text="10:00"
-                app:layout_constraintLeft_toRightOf="@+id/textView24"
-                app:layout_constraintTop_toBottomOf="@+id/textView23"
+                app:layout_constraintLeft_toRightOf="@+id/eText_editEntryDetail_toDate"
+                app:layout_constraintTop_toBottomOf="@+id/eText_editEntryDetail_fromTime"
                 tools:text="TIme" />
 
 
@@ -234,23 +234,24 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
-                android:text="Duration:"
+                android:text="duration:"
                 android:textSize="20sp"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/textView28"
+                app:layout_constraintTop_toTopOf="@+id/textView_editEntryDetail_duration"
                 android:layout_marginTop="0dp"
-                app:layout_constraintBottom_toBottomOf="@+id/textView28"
+                app:layout_constraintBottom_toBottomOf="@+id/textView_editEntryDetail_duration"
                 android:layout_marginBottom="0dp" />
 
             <TextView
-                android:id="@+id/textView28"
+                android:id="@+id/textView_editEntryDetail_duration"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
                 android:layout_marginTop="16dp"
                 android:text="2:00"
+                android:textSize="20dp"
                 app:layout_constraintLeft_toRightOf="@+id/textView27"
-                app:layout_constraintTop_toBottomOf="@+id/textView24"
+                app:layout_constraintTop_toBottomOf="@+id/eText_editEntryDetail_toDate"
                 tools:text="Time" />
 
         </android.support.constraint.ConstraintLayout>

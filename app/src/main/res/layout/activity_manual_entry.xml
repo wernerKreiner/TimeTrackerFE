@@ -108,6 +108,23 @@
                 android:background="@android:drawable/btn_dropdown"
                 android:spinnerMode="dropdown" />
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_columnSpan="3"
+                android:textSize="20dp"
+                android:text="notice:"
+
+                />
+
+            <EditText
+                android:id="@+id/eText_manualEntry_notice"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_columnSpan="3"
+                />
+
+
             <Button
                 android:id="@+id/btn_manualEntry_save"
                 android:layout_width="wrap_content"
@@ -116,6 +133,10 @@
                 android:layout_columnSpan="3"
                 android:text="SAVE"
                 android:textSize="20dp" />
+
+
+
+
         </GridLayout>
     </LinearLayout>
 

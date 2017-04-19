@@ -11,12 +11,21 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import entities.Person;
+import services.PersonService;
+
 public class LoginActivity extends AppCompatActivity {
+
+    public static Person user;
+    PersonService personService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        personService = new PersonService();
+        user = personService.getById(2);
 
         Button login = (Button) findViewById(R.id.loginButton);
         Button register = (Button) findViewById(R.id.registerButton);

@@ -35,7 +35,12 @@ public class SettingsActivity extends AppCompatActivity {
         CheckBox quickstart = (CheckBox) findViewById(R.id.checkBox_settings_quickstart);
 
         PersonService personService = new PersonService();
-        Person person = personService.get().stream().findFirst().get();
+
+        //edit Werner wegen eingeloggten User
+        //Person person = personService.get().stream().findFirst().get();
+        Person person = LoginActivity.user;
+
+        //ende edit
 
         firstname.setText(person.getFirstname());
         surname.setText(person.getLastname());
