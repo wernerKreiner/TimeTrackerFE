@@ -7,7 +7,10 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:descendantFocusability="beforeDescendants"
+        android:focusableInTouchMode="true"
+        >
 
         <android.support.constraint.ConstraintLayout
             android:id="@+id/layout_manualEntry_gridLayout"
@@ -186,11 +189,13 @@
                 android:layout_marginLeft="40dp"
                 android:layout_marginTop="0dp"
                 android:text="30.03.2017"
+                android:focusable="false"
                 app:layout_constraintBottom_toBottomOf="@+id/eText_editEntryDetail_fromTime"
                 app:layout_constraintLeft_toRightOf="@+id/textView4"
                 app:layout_constraintTop_toTopOf="@+id/eText_editEntryDetail_fromTime"
                 app:layout_constraintVertical_bias="0.0"
-                tools:text="@string/dateFormat" />
+                tools:text="@string/dateFormat"
+                />
 
             <EditText
                 android:id="@+id/eText_editEntryDetail_fromTime"
@@ -199,6 +204,7 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="19dp"
                 android:text="08:00"
+                android:focusable="false"
                 app:layout_constraintLeft_toRightOf="@+id/eText_editEntryDetail_fromDate"
                 app:layout_constraintTop_toBottomOf="@+id/textView15"
                 tools:text="@string/time" />
@@ -211,6 +217,7 @@
                 android:layout_marginLeft="65dp"
                 android:layout_marginTop="0dp"
                 android:text="30.03.2017"
+                android:focusable="false"
                 app:layout_constraintBottom_toBottomOf="@+id/eText_editEntryDetail_toTime"
                 app:layout_constraintLeft_toRightOf="@+id/textView17"
                 app:layout_constraintTop_toTopOf="@+id/eText_editEntryDetail_toTime"
@@ -223,6 +230,7 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="16dp"
                 android:contentDescription="@string/time"
+                android:focusable="false"
                 android:text="10:00"
                 app:layout_constraintLeft_toRightOf="@+id/eText_editEntryDetail_toDate"
                 app:layout_constraintTop_toBottomOf="@+id/eText_editEntryDetail_fromTime"

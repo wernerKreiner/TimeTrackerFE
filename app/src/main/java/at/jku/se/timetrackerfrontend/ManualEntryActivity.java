@@ -1,8 +1,13 @@
 package at.jku.se.timetrackerfrontend;
 
+import android.app.DatePickerDialog;
+import android.app.DialogFragment;
+import android.app.TimePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -13,11 +18,15 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.TimePicker;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -31,6 +40,8 @@ import services.PersonService;
 import services.ProjectService;
 import services.TimeEntryService;
 
+
+//public class ManualEntryActivity extends FragmentActivity
 public class ManualEntryActivity extends AppCompatActivity {
 
     TimeEntryService timeEntryService;
@@ -121,6 +132,87 @@ public class ManualEntryActivity extends AppCompatActivity {
                 startActivity(new Intent(ManualEntryActivity.this, EditEntryActivity.class));
             }
         });
+
+
+        final EditText fromTime = (EditText) findViewById(R.id.eText_manualEntry_fromTime);
+        fromTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v){
+                Calendar mcurrentTime = Calendar.getInstance();
+                int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
+                int minute = mcurrentTime.get(Calendar.MINUTE);
+                TimePickerDialog mTimePicker;
+                mTimePicker = new TimePickerDialog(ManualEntryActivity.this, new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
+                        fromTime.setText(String.format("%02d:%02d", selectedHour, selectedMinute));
+                    }
+                }, hour, minute, true);//Yes 24 hour time
+                mTimePicker.setTitle("Select Time");
+                mTimePicker.show();
+            }
+        });
+
+        final EditText toTime = (EditText) findViewById(R.id.eText_manualEntry_toTime);
+        toTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v){
+                Calendar mcurrentTime = Calendar.getInstance();
+                int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
+                int minute = mcurrentTime.get(Calendar.MINUTE);
+                TimePickerDialog mTimePicker;
+                mTimePicker = new TimePickerDialog(ManualEntryActivity.this, new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
+                        toTime.setText(String.format("%02d:%02d", selectedHour, selectedMinute));
+                    }
+                }, hour, minute, true);//Yes 24 hour time
+                mTimePicker.setTitle("Select Time");
+                mTimePicker.show();
+            }
+        });
+
+        final EditText fromDate = (EditText) findViewById(R.id.eText_manualEntry_fromDate);
+        fromDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v){
+                Calendar mcurrentTime = Calendar.getInstance();
+                int year = mcurrentTime.get(Calendar.YEAR);
+                int month = mcurrentTime.get(Calendar.MONTH);
+                int day = mcurrentTime.get(Calendar.DAY_OF_MONTH);
+                DatePickerDialog mDatePicker;
+                mDatePicker = new DatePickerDialog(ManualEntryActivity.this, new DatePickerDialog.OnDateSetListener(){
+                    @Override
+                    public void onDateSet(DatePicker datePicker, int selectedYear, int selectedMonth, int selectedDay){
+                        fromDate.setText(String.format("%02d.%02d.%04d",selectedDay,selectedMonth+1,selectedYear));
+                    }
+                }, year, month, day);
+                mDatePicker.setTitle("Select Date");
+                mDatePicker.show();
+            }
+        });
+
+        final EditText toDate = (EditText) findViewById(R.id.eText_manualEntry_toDate);
+        toDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v){
+                Calendar mcurrentTime = Calendar.getInstance();
+                int year = mcurrentTime.get(Calendar.YEAR);
+                int month = mcurrentTime.get(Calendar.MONTH);
+                int day = mcurrentTime.get(Calendar.DAY_OF_MONTH);
+                DatePickerDialog mDatePicker;
+                mDatePicker = new DatePickerDialog(ManualEntryActivity.this, new DatePickerDialog.OnDateSetListener(){
+                    @Override
+                    public void onDateSet(DatePicker datePicker, int selectedYear, int selectedMonth, int selectedDay){
+                        toDate.setText(String.format("%02d.%02d.%04d",selectedDay,selectedMonth+1,selectedYear));
+                    }
+                }, year, month, day);
+                mDatePicker.setTitle("Select Date");
+                mDatePicker.show();
+            }
+        });
+
+
 
     }
 

@@ -1,5 +1,7 @@
 package at.jku.se.timetrackerfrontend;
 
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -12,14 +14,17 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
 import java.sql.Time;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -208,6 +213,80 @@ public class EditEntryDetailActivity extends AppCompatActivity {
             }
         });
 
+
+        fromTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v){
+                String actualTime = fromTime.getText().toString();
+                int hour = Integer.parseInt(actualTime.substring(0,actualTime.indexOf(':')));
+                int minute = Integer.parseInt(actualTime.substring(actualTime.indexOf(':')+1, actualTime.length()));
+                TimePickerDialog mTimePicker;
+                mTimePicker = new TimePickerDialog(EditEntryDetailActivity.this, new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
+                        fromTime.setText(String.format("%02d:%02d", selectedHour, selectedMinute));
+                    }
+                }, hour, minute, true);//Yes 24 hour time
+                mTimePicker.setTitle("Select Time");
+                mTimePicker.show();
+            }
+        });
+
+        toTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v){
+                String actualTime = toTime.getText().toString();
+                int hour = Integer.parseInt(actualTime.substring(0,actualTime.indexOf(':')));
+                int minute = Integer.parseInt(actualTime.substring(actualTime.indexOf(':')+1, actualTime.length()));
+                TimePickerDialog mTimePicker;
+                mTimePicker = new TimePickerDialog(EditEntryDetailActivity.this, new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
+                        toTime.setText(String.format("%02d:%02d", selectedHour, selectedMinute));
+                    }
+                }, hour, minute, true);//Yes 24 hour time
+                mTimePicker.setTitle("Select Time");
+                mTimePicker.show();
+            }
+        });
+
+        fromDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v){
+                String actualDate = fromDate.getText().toString();
+                int year = Integer.parseInt(actualDate.substring(actualDate.lastIndexOf('.')+1, actualDate.length()));
+                int month = Integer.parseInt(actualDate.substring(actualDate.indexOf('.')+1, actualDate.lastIndexOf('.')))-1;
+                int day = Integer.parseInt(actualDate.substring(0, actualDate.indexOf('.')));
+                DatePickerDialog mDatePicker;
+                mDatePicker = new DatePickerDialog(EditEntryDetailActivity.this, new DatePickerDialog.OnDateSetListener(){
+                    @Override
+                    public void onDateSet(DatePicker datePicker, int selectedYear, int selectedMonth, int selectedDay){
+                        fromDate.setText(String.format("%02d.%02d.%04d",selectedDay,selectedMonth+1,selectedYear));
+                    }
+                }, year, month, day);
+                mDatePicker.setTitle("Select Date");
+                mDatePicker.show();
+            }
+        });
+
+        toDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v){
+                String actualDate = toDate.getText().toString();
+                int year = Integer.parseInt(actualDate.substring(actualDate.lastIndexOf('.')+1, actualDate.length()));
+                int month = Integer.parseInt(actualDate.substring(actualDate.indexOf('.')+1, actualDate.lastIndexOf('.')))-1;
+                int day = Integer.parseInt(actualDate.substring(0, actualDate.indexOf('.')));
+                DatePickerDialog mDatePicker;
+                mDatePicker = new DatePickerDialog(EditEntryDetailActivity.this, new DatePickerDialog.OnDateSetListener(){
+                    @Override
+                    public void onDateSet(DatePicker datePicker, int selectedYear, int selectedMonth, int selectedDay){
+                        toDate.setText(String.format("%02d.%02d.%04d",selectedDay,selectedMonth+1,selectedYear));
+                    }
+                }, year, month, day);
+                mDatePicker.setTitle("Select Date");
+                mDatePicker.show();
+            }
+        });
     }
 
     @Override
