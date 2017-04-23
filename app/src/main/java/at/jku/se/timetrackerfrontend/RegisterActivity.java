@@ -59,7 +59,7 @@ public class RegisterActivity extends AppCompatActivity {
                     toast.show();
                 }else {
                     Person p = new Person(firstName.getText().toString(), surname.getText().toString(), nickname.getText().toString(), email.getText().toString(), password.getText().toString(), true);
-                    //edit werner wegen personvariable in loginactivity
+                    //edit werner wegen personvariable in loginactivityl
                     p = personService.create(p);
                     LoginActivity.user = p;
                     //ende edit
