@@ -58,7 +58,11 @@ public class RegisterActivity extends AppCompatActivity {
                     Toast toast = Toast.makeText(getApplicationContext(), "Password does not match to confirm password", Toast.LENGTH_LONG);
                     toast.show();
                 }else {
-                    personService.create(new Person(firstName.getText().toString(), surname.getText().toString(), nickname.getText().toString(), email.getText().toString(), password.getText().toString(), true));
+                    Person p = new Person(firstName.getText().toString(), surname.getText().toString(), nickname.getText().toString(), email.getText().toString(), password.getText().toString(), true);
+                    //edit werner wegen personvariable in loginactivity
+                    p = personService.create(p);
+                    LoginActivity.user = p;
+                    //ende edit
                     startActivity(new Intent(RegisterActivity.this, EditEntryActivity.class));
                 }
             }
