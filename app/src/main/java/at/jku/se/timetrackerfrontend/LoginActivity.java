@@ -33,6 +33,9 @@ public class LoginActivity extends AppCompatActivity {
         final Button btnLogin = (Button) findViewById(R.id.btn_loginView_login);
         final Button btnRegister = (Button) findViewById(R.id.btn_loginView_register);
 
+        //request focus on email  edit werner
+        email.requestFocus();
+
         //Event for Login
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override

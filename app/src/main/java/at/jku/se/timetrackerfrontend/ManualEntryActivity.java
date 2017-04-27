@@ -23,6 +23,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -118,18 +119,26 @@ public class ManualEntryActivity extends AppCompatActivity {
                     from = dateFormat.parse(fromDate + " " + fromTime);
                     to =  dateFormat.parse(toDate + " " + toTime);
                 }catch(Exception ex){};
-                EditText editTextNotice = (EditText) findViewById(R.id.eText_manualEntry_notice);
-                String note = editTextNotice.getText().toString();
-                Person person = LoginActivity.user;
 
-                Category category = null;
-                String categoryString = spnCategory.getSelectedItem().toString();
-                if(!categoryString.equals("")) {
-                    long categoryId = Long.parseLong(categoryString.substring(0, categoryString.indexOf(' ')));
-                    category = categoryService.getById(categoryId);
+
+                if(from.getTime() <= to.getTime()) {
+                    EditText editTextNotice = (EditText) findViewById(R.id.eText_manualEntry_notice);
+                    String note = editTextNotice.getText().toString();
+                    Person person = LoginActivity.user;
+
+                    Category category = null;
+                    String categoryString = spnCategory.getSelectedItem().toString();
+                    if(!categoryString.equals("")) {
+                        long categoryId = Long.parseLong(categoryString.substring(0, categoryString.indexOf(' ')));
+                        category = categoryService.getById(categoryId);
+                    }
+                    timeEntryService.create(new TimeEntry(from, to, note, Measurement.MANUALLY, person, category));
+                    startActivity(new Intent(ManualEntryActivity.this, EditEntryActivity.class));
+                }else{
+                    Toast toast = new Toast(ManualEntryActivity.this);
+                    toast.makeText(ManualEntryActivity.this, "Endtime is earlier than starttime!", Toast.LENGTH_LONG);
                 }
-                timeEntryService.create(new TimeEntry(from, to, note, Measurement.MANUALLY, person, category));
-                startActivity(new Intent(ManualEntryActivity.this, EditEntryActivity.class));
+
             }
         });
 

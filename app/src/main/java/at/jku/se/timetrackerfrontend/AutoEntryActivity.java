@@ -111,7 +111,7 @@ public class AutoEntryActivity extends AppCompatActivity{
                 if(btnStartTimer.getText().equals("Start")){
                     focus.setBase(SystemClock.elapsedRealtime());
                     focus.start();
-                    btnStartTimer.setText("Stop");
+                    btnStartTimer.setText("Save");
                     from[0] = new Date();
                 }else{
                     focus.stop();

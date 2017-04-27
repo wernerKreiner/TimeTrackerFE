@@ -19,6 +19,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import java.sql.Time;
 import java.text.DateFormat;
@@ -78,12 +79,7 @@ public class EditEntryDetailActivity extends AppCompatActivity {
         EditText toTime = (EditText) findViewById(R.id.eText_editEntryDetail_toTime);
         toTime.setText(timeFormat.format(actualTimeEntry.getTo()));
 
-        long diff = (actualTimeEntry.getTo().getTime()- actualTimeEntry.getFrom().getTime())/1000;
-        long hours = diff/3600;
-        long min = (diff%3600)/60;
-
-        TextView duration = (TextView) findViewById(R.id.textView_editEntryDetail_duration);
-        duration.setText(hours + ":" + min);
+        setDuration(actualTimeEntry.getTo().getTime()- actualTimeEntry.getFrom().getTime());
 
         Category actualCategory;
         Project actualProject;
@@ -181,20 +177,27 @@ public class EditEntryDetailActivity extends AppCompatActivity {
                     newTo =  dateFormat.parse(toDate + " " + toTime);
                 }catch(Exception ex){};
 
-                actualTimeEntry.setFrom(newFrom);
-                actualTimeEntry.setTo(newTo);
 
-                Category newCategory = null;
-                String categoryString = spnCategory.getSelectedItem().toString();
-                if(!categoryString.equals("")) {
-                    long categoryId = Long.parseLong(categoryString.substring(0, categoryString.indexOf(' ')));
-                    newCategory = categoryService.getById(categoryId);
+                if(newFrom.getTime() <= newTo.getTime()){
+                    actualTimeEntry.setFrom(newFrom);
+                    actualTimeEntry.setTo(newTo);
+
+                    Category newCategory = null;
+                    String categoryString = spnCategory.getSelectedItem().toString();
+                    if(!categoryString.equals("")) {
+                        long categoryId = Long.parseLong(categoryString.substring(0, categoryString.indexOf(' ')));
+                        newCategory = categoryService.getById(categoryId);
+                    }
+                    actualTimeEntry.setCategory(newCategory);
+
+                    actualTimeEntry.setNote(notice.getText().toString());
+
+                    startActivity(new Intent(EditEntryDetailActivity.this, EditEntryActivity.class));
+                }else{
+                    Toast toast = new Toast(EditEntryDetailActivity.this);
+                    toast.makeText(EditEntryDetailActivity.this, "Endtime is earlier than starttime!", Toast.LENGTH_LONG).show();
                 }
-                actualTimeEntry.setCategory(newCategory);
 
-                actualTimeEntry.setNote(notice.getText().toString());
-
-                startActivity(new Intent(EditEntryDetailActivity.this, EditEntryActivity.class));
             }
         });
 
@@ -225,6 +228,7 @@ public class EditEntryDetailActivity extends AppCompatActivity {
                     @Override
                     public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
                         fromTime.setText(String.format("%02d:%02d", selectedHour, selectedMinute));
+                        setDuration();
                     }
                 }, hour, minute, true);//Yes 24 hour time
                 mTimePicker.setTitle("Select Time");
@@ -243,6 +247,7 @@ public class EditEntryDetailActivity extends AppCompatActivity {
                     @Override
                     public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
                         toTime.setText(String.format("%02d:%02d", selectedHour, selectedMinute));
+                        setDuration();
                     }
                 }, hour, minute, true);//Yes 24 hour time
                 mTimePicker.setTitle("Select Time");
@@ -262,6 +267,7 @@ public class EditEntryDetailActivity extends AppCompatActivity {
                     @Override
                     public void onDateSet(DatePicker datePicker, int selectedYear, int selectedMonth, int selectedDay){
                         fromDate.setText(String.format("%02d.%02d.%04d",selectedDay,selectedMonth+1,selectedYear));
+                        setDuration();
                     }
                 }, year, month, day);
                 mDatePicker.setTitle("Select Date");
@@ -281,12 +287,42 @@ public class EditEntryDetailActivity extends AppCompatActivity {
                     @Override
                     public void onDateSet(DatePicker datePicker, int selectedYear, int selectedMonth, int selectedDay){
                         toDate.setText(String.format("%02d.%02d.%04d",selectedDay,selectedMonth+1,selectedYear));
+                        setDuration();
                     }
                 }, year, month, day);
                 mDatePicker.setTitle("Select Date");
                 mDatePicker.show();
             }
         });
+    }
+
+    public void setDuration(long diff){
+        diff = diff/1000;
+        long hours = diff/3600;
+        long min = (diff%3600)/60;
+        TextView duration = (TextView) findViewById(R.id.textView_editEntryDetail_duration);
+        duration.setText(String.format("%02d:%02d", hours, min));
+    }
+
+    public void setDuration(){
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm");
+        EditText editTextFromDay = (EditText) findViewById(R.id.eText_editEntryDetail_fromDate);
+        EditText editTextFromTime = (EditText) findViewById(R.id.eText_editEntryDetail_fromTime);
+        EditText editTextToDay = (EditText) findViewById(R.id.eText_editEntryDetail_toDate);
+        EditText editTextToTime = (EditText) findViewById(R.id.eText_editEntryDetail_toTime);
+        String fromDate = editTextFromDay.getText().toString();
+        String fromTime = editTextFromTime.getText().toString();
+        String toDate = editTextToDay.getText().toString();
+        String toTime = editTextToTime.getText().toString();
+        Date newFrom = null;
+        Date newTo = null;
+        try {
+            newFrom = dateFormat.parse(fromDate + " " + fromTime);
+            newTo =  dateFormat.parse(toDate + " " + toTime);
+        }catch(Exception ex){};
+
+        long diff = newTo.getTime() - newFrom.getTime();
+        setDuration(diff);
     }
 
     @Override
