@@ -29,7 +29,17 @@ public class EditEntryActivity extends AppCompatActivity {
 
         final ListView listview = (ListView) findViewById(R.id.entries);
 
-        final ArrayList<TimeEntry> list = new ArrayList<>(timeEntryService.get());
+        //edit Werner, Einschränkung auf User
+        //final ArrayList<TimeEntry> list = new ArrayList<>(timeEntryService.get());
+        ArrayList<TimeEntry> allTimeEntrys = new ArrayList<>(timeEntryService.get());
+        ArrayList<TimeEntry> list = new ArrayList();
+        for(TimeEntry t:allTimeEntrys){
+            if(t.getPerson().getId() == LoginActivity.user.getId()){
+                list.add(t);
+            }
+        }
+        //ende Edit
+
         final EntryAdapter adapter = new EntryAdapter(this,
                 list);
         listview.setAdapter(adapter);

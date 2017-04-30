@@ -51,7 +51,8 @@ public class EntryAdapter extends ArrayAdapter<TimeEntry> {
         long hours = diff/3600;
         long min = (diff%3600)/60;
 
-        viewHolder.item_duration.setText(hours + ":" + min);
+        //viewHolder.item_duration.setText(String.format(hours + ":" + min));
+        viewHolder.item_duration.setText(String.format("%02d:%02d",hours,min)); //edit werner
 
         if(currentItem.getCategory() == null) {
             viewHolder.item_nameProj.setText("No Project");

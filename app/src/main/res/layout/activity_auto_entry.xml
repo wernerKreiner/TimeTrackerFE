@@ -24,7 +24,11 @@
             app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginBottom="8dp"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintVertical_bias="0.0">
+            app:layout_constraintVertical_bias="0.0"
+            android:descendantFocusability="beforeDescendants"
+            android:focusableInTouchMode="true"
+            >
+
 
             <TextView
                 android:layout_columnSpan="3"
@@ -84,6 +88,22 @@
 
                 android:background="@android:drawable/btn_dropdown"
                 android:spinnerMode="dropdown" />
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="notice:"
+                android:textSize="20dp"
+                android:layout_columnSpan="3"
+                />
+
+            <EditText
+                android:id="@+id/eText_autoEntry_notice"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:layout_columnSpan="3"
+                />
 
             <Button
                 android:id="@+id/btn_autoEntry_start"
