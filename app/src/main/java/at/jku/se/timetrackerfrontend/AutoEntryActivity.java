@@ -2,14 +2,8 @@ package at.jku.se.timetrackerfrontend;
 
 import android.content.Intent;
 import android.os.SystemClock;
-import android.support.annotation.NonNull;
-import android.support.design.widget.NavigationView;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -19,19 +13,14 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.Spinner;
-import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.Timer;
 
 import entities.Category;
+import entities.Cooperation;
 import entities.Measurement;
 import entities.Person;
 import entities.Project;
@@ -43,7 +32,6 @@ import services.TimeEntryService;
 
 public class AutoEntryActivity extends AppCompatActivity{
 
-    //Date from;
     TimeEntryService timeEntryService;
     ProjectService projectService;
     CategoryService categoryService;
@@ -54,6 +42,7 @@ public class AutoEntryActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_auto_entry);
 
+        //initialise Services
         timeEntryService = new TimeEntryService();
         projectService = new ProjectService();
         categoryService = new CategoryService();
@@ -61,40 +50,46 @@ public class AutoEntryActivity extends AppCompatActivity{
 
         final Button btnStartTimer = (Button) findViewById(R.id.btn_autoEntry_start);
         final Button btnCancel = (Button) findViewById(R.id.btn_autoEntry_cancel);
-
         final Chronometer focus = (Chronometer) findViewById(R.id.chronometer);
 
-        List<Project> projectList = projectService.get();
-        List<String> projectStringList = new ArrayList();
-        projectStringList.add("");
-        for(Project p : projectList){
-            projectStringList.add(p.getId() + " " +p.getName());
+        //initialise projectList and projectspinner
+        List<Project> projectList = new LinkedList<Project>();
+        List<Project> projectListAll = projectService.get();
+        projectList.add(new Project("",""));
+
+        for(Project p : projectListAll){
+            List<Cooperation> cooperationList = p.getCooperations();
+            for(Cooperation c : cooperationList){
+                if(c.getPerson() == LoginActivity.user && c.getProject() == p){
+                    projectList.add(p);
+                }
+            }
         }
         Spinner spnProject = (Spinner) findViewById(R.id.spinner_autoEntry_projectSelection);
-        ArrayAdapter<String> spnAdptProject = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, projectStringList);
+        ArrayAdapter<Project> spnAdptProject = new ArrayAdapter<Project>(this, android.R.layout.simple_spinner_dropdown_item, projectList);
         spnProject.setAdapter(spnAdptProject);
 
+        //initialise categoryList and categoryspinner
         final Spinner spnCategory = (Spinner) findViewById(R.id.spinner_autoEntry_categorySelection);
-        List<String> categoryStringList = new ArrayList();
-        final ArrayAdapter<String> spnAdptCategory = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, categoryStringList);
+        List<Category> categoryList = new LinkedList<Category>();
+        final ArrayAdapter<Category> spnAdptCategory = new ArrayAdapter<Category>(this, android.R.layout.simple_spinner_dropdown_item, categoryList);
         spnCategory.setAdapter(spnAdptCategory);
         spnProject.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id){
-                List<String> categoryStringList = new ArrayList();
-                categoryStringList.add("");
-                String selectedProjectName = parentView.getSelectedItem().toString();
-                if(!selectedProjectName.equals("")) {
-                    long selectedProjectId = Long.parseLong(selectedProjectName.substring(0, selectedProjectName.indexOf(' ')));
-                    List<Category> categoryList = categoryService.get();
-                    for (Category c : categoryList) {
-                        if (c.getProject().getId() == selectedProjectId) {
-                            categoryStringList.add(c.getId() + " " + c.getName());
+                List<Category> categoryList = new LinkedList<Category>();
+                categoryList.add(new Category("",0,null));
+                Project selectedProject = (Project) parentView.getSelectedItem();
+                if(!selectedProject.getName().equals("")) {
+                    List<Category> categoryListAll = categoryService.get();
+                    for(Category c : categoryListAll){
+                        if(c.getProject() == selectedProject){
+                            categoryList.add(c);
                         }
                     }
                 }
                 spnAdptCategory.clear();
-                spnAdptCategory.addAll(categoryStringList);
+                spnAdptCategory.addAll(categoryList);
                 spnAdptCategory.notifyDataSetChanged();
             }
 
@@ -104,6 +99,7 @@ public class AutoEntryActivity extends AppCompatActivity{
             }
         });
 
+        //ButtonListener
         final Date[] from = new Date[1];
         btnStartTimer.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -119,12 +115,11 @@ public class AutoEntryActivity extends AppCompatActivity{
                     String note = editTextNotice.getText().toString();
                     Person person = LoginActivity.user;
 
-                    Category category = null;
-                    String categoryString = spnCategory.getSelectedItem().toString();
-                    if(!categoryString.equals("")) {
-                        long categoryId = Long.parseLong(categoryString.substring(0, categoryString.indexOf(' ')));
-                        category = categoryService.getById(categoryId);
+                    Category category = (Category) spnCategory.getSelectedItem();
+                    if (category.getName().equals("")) {
+                        category = null;
                     }
+
                     focus.getBase();
                     Date to = new Date();
                     timeEntryService.create(new TimeEntry(from[0], to, note, Measurement.AUTOMATICALLY, person, category));

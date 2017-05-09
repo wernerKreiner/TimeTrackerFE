@@ -27,7 +27,8 @@ public class Category {
 
     @Override
     public String toString() {
-        return "Category{" + "id=" + id + ", name=" + name + ", estimatedTime=" + estimatedTime + ", project=" + project.getId() + '}';
+        //return "Category{" + "id=" + id + ", name=" + name + ", estimatedTime=" + estimatedTime + ", project=" + project.getId() + '}';
+        return name;
     }
 
     public void setId(long id) {

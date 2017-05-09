@@ -27,7 +27,8 @@ public class Project {
 
     @Override
     public String toString() {
-        return "Project{" + "id=" + id + ", name=" + name + ", description=" + description + ", categories=" + categories + ", cooperations=" + cooperations + '}';
+       // return "Project{" + "id=" + id + ", name=" + name + ", description=" + description + ", categories=" + categories + ", cooperations=" + cooperations + '}';
+        return name;
     }
 
     public void setId(long id) {
@@ -69,6 +70,5 @@ public class Project {
     public void setCategories(List<Category> categories) {
         this.categories = categories;
     }
-
 
 }
