@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
+import org.apache.*;
 
 import entities.Person;
 import services.PersonService;
@@ -85,7 +86,9 @@ public class RegisterActivity extends AppCompatActivity {
                     toast.show();
                 }
 
-                else if(password.getText().toString().isEmpty()) {
+
+               else if(password.getText().toString().isEmpty()) {
+
                     Toast toast = Toast.makeText(getApplicationContext(), "You did not enter a password", Toast.LENGTH_LONG);
                     toast.show();
                 }
