@@ -86,7 +86,9 @@ public class RegisterActivity extends AppCompatActivity {
                     toast.show();
                 }
 
+
                else if(password.getText().toString().isEmpty()) {
+
                     Toast toast = Toast.makeText(getApplicationContext(), "You did not enter a password", Toast.LENGTH_LONG);
                     toast.show();
                 }
