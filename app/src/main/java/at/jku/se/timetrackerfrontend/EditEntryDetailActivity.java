@@ -3,8 +3,6 @@ package at.jku.se.timetrackerfrontend;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
-import android.support.annotation.NonNull;
-import android.support.design.widget.NavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -21,15 +19,15 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import java.sql.Time;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 import entities.Category;
+import entities.Cooperation;
 import entities.Project;
 import entities.TimeEntry;
 import services.CategoryService;
@@ -49,41 +47,42 @@ public class EditEntryDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_entry_detail);
 
+        //initialise Services
         timeEntryService = new TimeEntryService();
         projectService = new ProjectService();
         categoryService = new CategoryService();
         personService = new PersonService();
 
-        final boolean firstCall = true;
-
+        //get Timeentry from EditEntryActivity
         Bundle bundle = getIntent().getExtras();
         long timeEntryId = bundle.getLong("timeEntry");
         TimeEntry actualTimeEntry = timeEntryService.getById(timeEntryId);
 
+        //fill fields from layout with Entrydata
         final Button btnOk = (Button) findViewById(R.id.btn_editEntry_ok);
         final Button btnCancel = (Button) findViewById(R.id.btn_editEntry_cancel);
         final Button btnDeleteEntry = (Button) findViewById(R.id.btn_editEntry_delete);
 
-
-        EditText notice = (EditText) findViewById(R.id.eText_editEntryDetail_notice);
-        notice.setText(actualTimeEntry.getNote());
+        EditText eTextNotice = (EditText) findViewById(R.id.eText_editEntryDetail_notice);
+        eTextNotice.setText(actualTimeEntry.getNote());
 
         DateFormat timeFormat = new SimpleDateFormat("HH:mm");
         DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
-        EditText fromDate = (EditText) findViewById(R.id.eText_editEntryDetail_fromDate);
-        fromDate.setText(dateFormat.format(actualTimeEntry.getFrom()));
-        EditText fromTime = (EditText) findViewById(R.id.eText_editEntryDetail_fromTime);
-        fromTime.setText(timeFormat.format(actualTimeEntry.getFrom()));
-        EditText toDate = (EditText) findViewById(R.id.eText_editEntryDetail_toDate);
-        toDate.setText(dateFormat.format(actualTimeEntry.getTo()));
-        EditText toTime = (EditText) findViewById(R.id.eText_editEntryDetail_toTime);
-        toTime.setText(timeFormat.format(actualTimeEntry.getTo()));
+        EditText eTextFromDate = (EditText) findViewById(R.id.eText_editEntryDetail_fromDate);
+        eTextFromDate.setText(dateFormat.format(actualTimeEntry.getFrom()));
+        EditText eTextFromTime = (EditText) findViewById(R.id.eText_editEntryDetail_fromTime);
+        eTextFromTime.setText(timeFormat.format(actualTimeEntry.getFrom()));
+        EditText eTextToDate = (EditText) findViewById(R.id.eText_editEntryDetail_toDate);
+        eTextToDate.setText(dateFormat.format(actualTimeEntry.getTo()));
+        EditText eTextToTime = (EditText) findViewById(R.id.eText_editEntryDetail_toTime);
+        eTextToTime.setText(timeFormat.format(actualTimeEntry.getTo()));
 
         setDuration(actualTimeEntry.getTo().getTime()- actualTimeEntry.getFrom().getTime());
 
         Category actualCategory;
         Project actualProject;
 
+        //get category and project
         if(actualTimeEntry.getCategory() != null) {
             actualCategory = actualTimeEntry.getCategory();
             actualProject = actualCategory.getProject();
@@ -92,62 +91,72 @@ public class EditEntryDetailActivity extends AppCompatActivity {
             actualProject = null;
         }
 
-        List<Project> projectList = projectService.get();
-        List<String> projectStringList = new ArrayList();
-        projectStringList.add("");
-        int spnProjectIndex = 0;
-        int i = 0;
-        for(Project p : projectList){
-            projectStringList.add(p.getId() + " " +p.getName());
-            i++;
-            if(actualCategory != null && p.getId() == actualProject.getId()){
-                spnProjectIndex = i;
+        //initialise projectspinner
+        List<Project> projectList = new LinkedList<Project>();
+        List<Project> projectListAll = projectService.get();
+        projectList.add(new Project("",""));
+
+        for(Project p : projectListAll){
+            List<Cooperation> cooperationList = p.getCooperations();
+            for(Cooperation c : cooperationList){
+                if(c.getPerson() == LoginActivity.user && c.getProject() == p){
+                    projectList.add(p);
+                }
             }
         }
 
+        int spnProjectIndex = 0;
+        int i = 0;
+        for(Project p : projectList){
+            if(actualCategory != null && p == actualProject){
+                spnProjectIndex = i;
+            }
+            i++;
+        }
+
         Spinner spnProject = (Spinner) findViewById(R.id.spinner_editEntry_projectSelection);
-        ArrayAdapter<String> spnAdptProject = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, projectStringList);
+        ArrayAdapter<Project> spnAdptProject = new ArrayAdapter<Project>(this, android.R.layout.simple_spinner_dropdown_item, projectList);
         spnProject.setAdapter(spnAdptProject);
         spnProject.setSelection(spnProjectIndex);
 
-        List<String> categoryStringList = new ArrayList();
-        categoryStringList.add("");
+        //initialise categoryList and categoryspinner
+        List<Category> categoryList = new LinkedList();
+        categoryList.add(new Category("",0,null));
         Spinner spnCategory = (Spinner) findViewById(R.id.spinner_editEntry_categorySelection);
-        ArrayAdapter<String> spnAdptCategory = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, categoryStringList);
+        ArrayAdapter<Category> spnAdptCategory = new ArrayAdapter<Category>(this, android.R.layout.simple_spinner_dropdown_item, categoryList);
         spnCategory.setAdapter(spnAdptCategory);
 
         spnProject.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id){
                 int spnCategoryIndex;
-                List<Category> categoryList = categoryService.get();
-                List<String> categoryStringList = new ArrayList();
-                String selectedProjectName = parentView.getSelectedItem().toString();
-                categoryStringList.add("");
+                List<Category> categoryListAll = categoryService.get();
+                List<Category> categoryList = new LinkedList();
+                Project selectedProject = (Project) parentView.getSelectedItem();
+                categoryList.add(new Category("",0,null));
                 spnCategoryIndex = 0;
                 int i = 0;
-                if(!selectedProjectName.equals("")) {
-                    long selectedProjectId = Long.parseLong(selectedProjectName.substring(0, selectedProjectName.indexOf(' ')));
-                    if(actualProject != null && actualProject.getId() == selectedProjectId) {
-                        for (Category c : categoryList) {
-                            if (c.getProject().getId() == actualProject.getId()) {
-                                categoryStringList.add(c.getId() + " " + c.getName());
+                if(!selectedProject.getName().equals("")) {
+                    if(actualProject != null && actualProject == selectedProject) {
+                        for (Category c : categoryListAll) {
+                            if (c.getProject() == actualProject) {
+                                categoryList.add(c);
                                 i++;
-                                if (c.getId() == actualCategory.getId()) {
+                                if (c == actualCategory) {
                                     spnCategoryIndex = i;
                                 }
                             }
                         }
                     }else{
-                        for (Category c : categoryList){
-                            if (c.getProject().getId() == selectedProjectId) {
-                                categoryStringList.add(c.getId() + " " + c.getName());
+                        for (Category c : categoryListAll){
+                            if (c.getProject() == selectedProject) {
+                                categoryList.add(c);
                             }
                         }
                     }
                 }
                 spnAdptCategory.clear();
-                spnAdptCategory.addAll(categoryStringList);
+                spnAdptCategory.addAll(categoryList);
                 spnAdptCategory.notifyDataSetChanged();
                 spnCategory.setSelection(spnCategoryIndex);
             }
@@ -158,18 +167,19 @@ public class EditEntryDetailActivity extends AppCompatActivity {
             }
         });
 
+        //buttonlistener
         btnOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm");
-                EditText editTextFromDay = (EditText) findViewById(R.id.eText_editEntryDetail_fromDate);
-                EditText editTextFromTime = (EditText) findViewById(R.id.eText_editEntryDetail_fromTime);
-                EditText editTextToDay = (EditText) findViewById(R.id.eText_editEntryDetail_toDate);
-                EditText editTextToTime = (EditText) findViewById(R.id.eText_editEntryDetail_toTime);
-                String fromDate = editTextFromDay.getText().toString();
-                String fromTime = editTextFromTime.getText().toString();
-                String toDate = editTextToDay.getText().toString();
-                String toTime = editTextToTime.getText().toString();
+                EditText eTextFromDay = (EditText) findViewById(R.id.eText_editEntryDetail_fromDate);
+                EditText eTextFromTime = (EditText) findViewById(R.id.eText_editEntryDetail_fromTime);
+                EditText eTextToDay = (EditText) findViewById(R.id.eText_editEntryDetail_toDate);
+                EditText eTextToTime = (EditText) findViewById(R.id.eText_editEntryDetail_toTime);
+                String fromDate = eTextFromDay.getText().toString();
+                String fromTime = eTextFromTime.getText().toString();
+                String toDate = eTextToDay.getText().toString();
+                String toTime = eTextToTime.getText().toString();
                 Date newFrom = null;
                 Date newTo = null;
                 try {
@@ -177,27 +187,22 @@ public class EditEntryDetailActivity extends AppCompatActivity {
                     newTo =  dateFormat.parse(toDate + " " + toTime);
                 }catch(Exception ex){};
 
-
                 if(newFrom.getTime() <= newTo.getTime()){
                     actualTimeEntry.setFrom(newFrom);
                     actualTimeEntry.setTo(newTo);
 
-                    Category newCategory = null;
-                    String categoryString = spnCategory.getSelectedItem().toString();
-                    if(!categoryString.equals("")) {
-                        long categoryId = Long.parseLong(categoryString.substring(0, categoryString.indexOf(' ')));
-                        newCategory = categoryService.getById(categoryId);
+                    Category newCategory = (Category) spnCategory.getSelectedItem();
+                    if(newCategory.getName().equals("")) {
+                        newCategory = null;
                     }
                     actualTimeEntry.setCategory(newCategory);
-
-                    actualTimeEntry.setNote(notice.getText().toString());
+                    actualTimeEntry.setNote(eTextNotice.getText().toString());
 
                     startActivity(new Intent(EditEntryDetailActivity.this, EditEntryActivity.class));
                 }else{
                     Toast toast = new Toast(EditEntryDetailActivity.this);
                     toast.makeText(EditEntryDetailActivity.this, "Endtime is earlier than starttime!", Toast.LENGTH_LONG).show();
                 }
-
             }
         });
 
@@ -217,17 +222,17 @@ public class EditEntryDetailActivity extends AppCompatActivity {
         });
 
 
-        fromTime.setOnClickListener(new View.OnClickListener() {
+        eTextFromTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){
-                String actualTime = fromTime.getText().toString();
+                String actualTime = eTextFromTime.getText().toString();
                 int hour = Integer.parseInt(actualTime.substring(0,actualTime.indexOf(':')));
                 int minute = Integer.parseInt(actualTime.substring(actualTime.indexOf(':')+1, actualTime.length()));
                 TimePickerDialog mTimePicker;
                 mTimePicker = new TimePickerDialog(EditEntryDetailActivity.this, new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-                        fromTime.setText(String.format("%02d:%02d", selectedHour, selectedMinute));
+                        eTextFromTime.setText(String.format("%02d:%02d", selectedHour, selectedMinute));
                         setDuration();
                     }
                 }, hour, minute, true);//Yes 24 hour time
@@ -236,17 +241,17 @@ public class EditEntryDetailActivity extends AppCompatActivity {
             }
         });
 
-        toTime.setOnClickListener(new View.OnClickListener() {
+        eTextToTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){
-                String actualTime = toTime.getText().toString();
+                String actualTime = eTextToTime.getText().toString();
                 int hour = Integer.parseInt(actualTime.substring(0,actualTime.indexOf(':')));
                 int minute = Integer.parseInt(actualTime.substring(actualTime.indexOf(':')+1, actualTime.length()));
                 TimePickerDialog mTimePicker;
                 mTimePicker = new TimePickerDialog(EditEntryDetailActivity.this, new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-                        toTime.setText(String.format("%02d:%02d", selectedHour, selectedMinute));
+                        eTextToTime.setText(String.format("%02d:%02d", selectedHour, selectedMinute));
                         setDuration();
                     }
                 }, hour, minute, true);//Yes 24 hour time
@@ -255,10 +260,10 @@ public class EditEntryDetailActivity extends AppCompatActivity {
             }
         });
 
-        fromDate.setOnClickListener(new View.OnClickListener() {
+        eTextFromDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){
-                String actualDate = fromDate.getText().toString();
+                String actualDate = eTextFromDate.getText().toString();
                 int year = Integer.parseInt(actualDate.substring(actualDate.lastIndexOf('.')+1, actualDate.length()));
                 int month = Integer.parseInt(actualDate.substring(actualDate.indexOf('.')+1, actualDate.lastIndexOf('.')))-1;
                 int day = Integer.parseInt(actualDate.substring(0, actualDate.indexOf('.')));
@@ -266,7 +271,7 @@ public class EditEntryDetailActivity extends AppCompatActivity {
                 mDatePicker = new DatePickerDialog(EditEntryDetailActivity.this, new DatePickerDialog.OnDateSetListener(){
                     @Override
                     public void onDateSet(DatePicker datePicker, int selectedYear, int selectedMonth, int selectedDay){
-                        fromDate.setText(String.format("%02d.%02d.%04d",selectedDay,selectedMonth+1,selectedYear));
+                        eTextFromDate.setText(String.format("%02d.%02d.%04d",selectedDay,selectedMonth+1,selectedYear));
                         setDuration();
                     }
                 }, year, month, day);
@@ -275,10 +280,10 @@ public class EditEntryDetailActivity extends AppCompatActivity {
             }
         });
 
-        toDate.setOnClickListener(new View.OnClickListener() {
+        eTextToDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){
-                String actualDate = toDate.getText().toString();
+                String actualDate = eTextToDate.getText().toString();
                 int year = Integer.parseInt(actualDate.substring(actualDate.lastIndexOf('.')+1, actualDate.length()));
                 int month = Integer.parseInt(actualDate.substring(actualDate.indexOf('.')+1, actualDate.lastIndexOf('.')))-1;
                 int day = Integer.parseInt(actualDate.substring(0, actualDate.indexOf('.')));
@@ -286,7 +291,7 @@ public class EditEntryDetailActivity extends AppCompatActivity {
                 mDatePicker = new DatePickerDialog(EditEntryDetailActivity.this, new DatePickerDialog.OnDateSetListener(){
                     @Override
                     public void onDateSet(DatePicker datePicker, int selectedYear, int selectedMonth, int selectedDay){
-                        toDate.setText(String.format("%02d.%02d.%04d",selectedDay,selectedMonth+1,selectedYear));
+                        eTextToDate.setText(String.format("%02d.%02d.%04d",selectedDay,selectedMonth+1,selectedYear));
                         setDuration();
                     }
                 }, year, month, day);
@@ -306,14 +311,14 @@ public class EditEntryDetailActivity extends AppCompatActivity {
 
     public void setDuration(){
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm");
-        EditText editTextFromDay = (EditText) findViewById(R.id.eText_editEntryDetail_fromDate);
-        EditText editTextFromTime = (EditText) findViewById(R.id.eText_editEntryDetail_fromTime);
-        EditText editTextToDay = (EditText) findViewById(R.id.eText_editEntryDetail_toDate);
-        EditText editTextToTime = (EditText) findViewById(R.id.eText_editEntryDetail_toTime);
-        String fromDate = editTextFromDay.getText().toString();
-        String fromTime = editTextFromTime.getText().toString();
-        String toDate = editTextToDay.getText().toString();
-        String toTime = editTextToTime.getText().toString();
+        EditText eTextFromDay = (EditText) findViewById(R.id.eText_editEntryDetail_fromDate);
+        EditText eTextFromTime = (EditText) findViewById(R.id.eText_editEntryDetail_fromTime);
+        EditText eTextToDay = (EditText) findViewById(R.id.eText_editEntryDetail_toDate);
+        EditText eTextToTime = (EditText) findViewById(R.id.eText_editEntryDetail_toTime);
+        String fromDate = eTextFromDay.getText().toString();
+        String fromTime = eTextFromTime.getText().toString();
+        String toDate = eTextToDay.getText().toString();
+        String toTime = eTextToTime.getText().toString();
         Date newFrom = null;
         Date newTo = null;
         try {
@@ -356,7 +361,6 @@ public class EditEntryDetailActivity extends AppCompatActivity {
         } else if (id == R.id.logout) {
             startActivity(new Intent(this, LoginActivity.class));
         }
-
         return true;
     }
 }
