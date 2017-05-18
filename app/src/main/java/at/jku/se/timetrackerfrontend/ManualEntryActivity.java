@@ -22,6 +22,7 @@ import android.widget.Toast;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -130,6 +131,12 @@ public class ManualEntryActivity extends AppCompatActivity {
                         String note = editTextNotice.getText().toString();
                         Person person = LoginActivity.user;
                         Category category = (Category) spnCategory.getSelectedItem();
+
+                        //test
+                        Calendar calendar = GregorianCalendar.getInstance();
+                        calendar.setTime(from);
+                        int minute = calendar.get(Calendar.MINUTE);
+
                         if (category.getName().equals("")) {
                             category = null;
                         }
