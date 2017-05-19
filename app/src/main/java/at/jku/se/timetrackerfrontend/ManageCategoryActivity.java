@@ -7,7 +7,9 @@ import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -38,6 +40,10 @@ public class ManageCategoryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage_category);
 
+
+        ActionBar actionBar = (ActionBar) getSupportActionBar();
+        actionBar.setSubtitle("Categories");
+
         Bundle bundle = getIntent().getExtras();
         String projName = bundle.getString("ProjectName");
 
@@ -53,7 +59,7 @@ public class ManageCategoryActivity extends AppCompatActivity {
         listview.setAdapter(categoryAdapter);
 
         TextView titel = (TextView) findViewById(R.id.textTitel);
-        titel.setText(projName + " - Categories");
+        titel.setText(projName);
 
         final FloatingActionButton btnFloatingAdd = (FloatingActionButton) findViewById(R.id.btnFlotingAdd);
         btnFloatingAdd.setOnClickListener(new View.OnClickListener() {

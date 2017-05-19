@@ -1,125 +1,318 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="match_parent"
+    android:focusableInTouchMode="true">
 
-    <LinearLayout
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/layout_manualEntry_gridLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:columnCount="3"
+        android:orientation="horizontal">
 
-        <GridLayout
-            android:id="@+id/layout_manualEntry_gridLayout"
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/tView_manualEntry_heading"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:columnCount="3"
-            android:orientation="horizontal">
+            android:layout_columnSpan="3"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:text="Manual Entry"
+            android:textSize="24sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp" />
 
-            <TextView
-                android:layout_columnSpan="3"
-                android:layout_gravity="center_horizontal"
-                android:text="Manual Entry"
-                android:textSize="30dp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_columnSpan="1"
-                android:text="from:"
-                android:textSize="20dp" />
-
-            <EditText
-                android:id="@+id/eText_manualEntry_fromDate"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_columnSpan="1"
-                android:layout_gravity="fill_horizontal"
-                android:width="0dp"
-                android:inputType="date"
-                android:hint="dd.mm.yyyy"
-                android:textSize="20dp" />
-
-            <EditText
-                android:id="@+id/eText_manualEntry_fromTime"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_columnSpan="1"
-                android:inputType="time"
-                android:hint="hh:mm"
-                android:textSize="20dp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_columnSpan="1"
-                android:text="to"
-                android:textSize="20dp"
-                />
-
-            <EditText
-                android:id="@+id/eText_manualEntry_toDate"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_columnSpan="1"
-                android:layout_gravity="fill_horizontal"
-                android:width="0dp"
-                android:hint="dd.mm.yyyy"
-                android:inputType="date"
-                android:textSize="20dp" />
-
-            <EditText
-                android:id="@+id/eText_manualEntry_toTime"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_columnSpan="1"
-                android:layout_gravity="fill_horizontal"
-                android:inputType="time"
-                android:hint="hh:mm"
-                android:textSize="20dp" />
-
-            <TextView
-                android:layout_columnSpan="3"
-                android:text="project: "
-                android:textSize="20dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-            <Spinner
-                android:id="@+id/spinner_manualEntry_projectSelection"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_columnSpan="3"
-
-                android:background="@android:drawable/btn_dropdown"
-                android:spinnerMode="dropdown" />
-
-            <TextView
-                android:layout_columnSpan="3"
-                android:text="category: "
-                android:textSize="20dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-            <Spinner
-                android:id="@+id/spinner_manualEntry_categorySelection"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_columnSpan="3"
-
-                android:background="@android:drawable/btn_dropdown"
-                android:spinnerMode="dropdown" />
-
-            <Button
-                android:id="@+id/btn_manualEntry_save"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_columnSpan="3"
-                android:text="SAVE"
-                android:textSize="20dp" />
-        </GridLayout>
-    </LinearLayout>
+        <View
+            style="@style/Divider"
+            android:id="@+id/divider"
+            tools:layout_editor_absoluteX="0dp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintTop_toBottomOf="@+id/tView_manualEntry_heading" />
 
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_columnSpan="1"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="8dp"
+            android:text="Start:"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="20dp"
+            app:layout_constraintBottom_toBottomOf="@+id/eText_manualEntry_fromDate"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/eText_manualEntry_fromDate"
+            android:layout_marginStart="16dp" />
 
+        <EditText
+            android:id="@+id/eText_manualEntry_fromDate"
+            android:layout_width="110dp"
+            android:layout_height="wrap_content"
+            android:layout_columnSpan="1"
+            android:layout_gravity="fill_horizontal"
+            android:width="0dp"
+            android:focusable="false"
+            android:hint="dd.mm.yyyy"
+            android:inputType="date"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="@+id/eText_manualEntry_fromTime"
+            app:layout_constraintLeft_toLeftOf="@+id/eText_manualEntry_toDate"
+            app:layout_constraintTop_toTopOf="@+id/eText_manualEntry_fromTime" />
+
+        <EditText
+            android:id="@+id/eText_manualEntry_fromTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_columnSpan="1"
+            android:layout_marginLeft="0dp"
+            android:layout_marginTop="16dp"
+            android:focusable="false"
+            android:hint="hh:mm"
+
+            android:inputType="time"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            app:layout_constraintLeft_toLeftOf="@+id/eText_manualEntry_toTime"
+            app:layout_constraintTop_toBottomOf="@+id/divider" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_columnSpan="1"
+            android:layout_marginLeft="16dp"
+            android:text="End:"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="20dp"
+            app:layout_constraintBottom_toBottomOf="@+id/eText_manualEntry_toDate"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/eText_manualEntry_toDate"
+            app:layout_constraintVertical_bias="0.545"
+            android:layout_marginStart="16dp" />
+
+        <EditText
+            android:id="@+id/eText_manualEntry_toDate"
+            android:layout_width="110dp"
+            android:layout_height="wrap_content"
+            android:layout_columnSpan="1"
+            android:layout_gravity="fill_horizontal"
+            android:width="0dp"
+            android:focusable="false"
+            android:hint="dd.mm.yyyy"
+            android:inputType="date"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="@+id/eText_manualEntry_toTime"
+            app:layout_constraintLeft_toLeftOf="@+id/tView_manualEntry_duration"
+            app:layout_constraintTop_toTopOf="@+id/eText_manualEntry_toTime"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <EditText
+            android:id="@+id/eText_manualEntry_toTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_columnSpan="1"
+            android:layout_gravity="fill_horizontal"
+            android:layout_marginLeft="23dp"
+            android:layout_marginStart="23dp"
+            android:layout_marginTop="16dp"
+            android:focusable="false"
+            android:hint="hh:mm"
+            android:inputType="time"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            app:layout_constraintLeft_toRightOf="@+id/eText_manualEntry_toDate"
+            app:layout_constraintTop_toBottomOf="@+id/eText_manualEntry_fromTime" />
+
+        <TextView
+            android:id="@+id/textView10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_columnSpan="1"
+            android:layout_marginLeft="16dp"
+            android:text="Duration: "
+            android:textColor="@android:color/darker_gray"
+            android:textSize="20dp"
+            app:layout_constraintBottom_toBottomOf="@+id/tView_manualEntry_duration"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginStart="16dp" />
+
+        <TextView
+            android:id="@+id/tView_manualEntry_duration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_columnSpan="2"
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="20dp"
+            android:hint="hh:mm"
+            android:textSize="18sp"
+            app:layout_constraintLeft_toRightOf="@+id/textView10"
+            app:layout_constraintTop_toBottomOf="@+id/eText_manualEntry_toTime" />
+
+        <TextView
+            android:id="@+id/textView11"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_columnSpan="3"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="8dp"
+            android:text="Project:"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="20dp"
+            app:layout_constraintBottom_toBottomOf="@+id/spinner_manualEntry_projectSelection"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/spinner_manualEntry_projectSelection"
+            android:layout_marginStart="16dp" />
+
+        <android.support.v7.widget.AppCompatSpinner
+            android:id="@+id/spinner_manualEntry_projectSelection"
+            style="@android:style/Widget.Holo.Light.Spinner"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnSpan="3"
+            android:layout_marginTop="16dp"
+            android:spinnerMode="dropdown"
+            app:layout_constraintTop_toBottomOf="@+id/tView_manualEntry_duration"
+            android:layout_marginRight="16dp"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toLeftOf="@+id/tView_manualEntry_duration"
+            android:layout_marginEnd="16dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_columnSpan="3"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="8dp"
+            android:text="Category:"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="20dp"
+            app:layout_constraintBottom_toBottomOf="@+id/spinner_manualEntry_categorySelection"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/spinner_manualEntry_categorySelection"
+            android:layout_marginStart="16dp" />
+
+        <android.support.v7.widget.AppCompatSpinner
+            android:id="@+id/spinner_manualEntry_categorySelection"
+            style="@android:style/Widget.Holo.Light.Spinner"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnSpan="3"
+
+            android:layout_marginTop="16dp"
+            android:spinnerMode="dropdown"
+            app:layout_constraintTop_toBottomOf="@+id/spinner_manualEntry_projectSelection"
+            app:layout_constraintLeft_toLeftOf="@+id/spinner_manualEntry_projectSelection"
+            android:layout_marginRight="16dp"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_marginEnd="16dp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnSpan="3"
+            android:layout_marginLeft="16dp"
+            android:text="Notice: "
+
+            android:textColor="@android:color/darker_gray"
+            android:textSize="20dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginStart="16dp"
+            app:layout_constraintTop_toTopOf="@+id/eText_manualEntry_notice" />
+
+        <EditText
+            android:id="@+id/eText_manualEntry_notice"
+            android:focusableInTouchMode="true"
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:layout_columnSpan="3"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="16dp"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            app:layout_constraintLeft_toLeftOf="@+id/spinner_manualEntry_categorySelection"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/spinner_manualEntry_categorySelection" />
+
+
+        <Button
+            android:id="@+id/btn_manualEntry_save"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnSpan="3"
+            android:layout_gravity="center"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="24dp"
+            android:text="SAVE"
+            android:textSize="16sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/guideline10"
+            app:layout_constraintTop_toBottomOf="@+id/eText_manualEntry_notice" />
+
+        <Button
+            android:id="@+id/cancel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="0dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="16dp"
+            android:text="Cancel"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="@+id/btn_manualEntry_save"
+            app:layout_constraintLeft_toLeftOf="@+id/guideline10"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_marginTop="24dp"
+            app:layout_constraintTop_toBottomOf="@+id/eText_manualEntry_notice"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <android.support.constraint.Guideline
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/guideline2"
+            app:layout_constraintGuide_begin="20dp"
+            android:orientation="horizontal"
+            tools:layout_editor_absoluteY="101dp"
+            tools:layout_editor_absoluteX="0dp" />
+
+        <android.support.constraint.Guideline
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/guideline3"
+            app:layout_constraintGuide_begin="20dp"
+            android:orientation="vertical"
+            tools:layout_editor_absoluteY="81dp"
+            tools:layout_editor_absoluteX="20dp" />
+
+        <android.support.constraint.Guideline
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/guideline9"
+            app:layout_constraintGuide_begin="20dp"
+            android:orientation="horizontal" />
+
+        <android.support.constraint.Guideline
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/guideline10"
+            app:layout_constraintGuide_begin="192dp"
+            android:orientation="vertical" />
+
+
+    </android.support.constraint.ConstraintLayout>
 </ScrollView>
-
