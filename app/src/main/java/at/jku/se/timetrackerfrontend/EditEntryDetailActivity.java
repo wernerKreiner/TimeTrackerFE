@@ -127,7 +127,6 @@ public class EditEntryDetailActivity extends AppCompatActivity {
         categoryList.add(new Category("",0,null));
 
         AppCompatSpinner spnCategory = (AppCompatSpinner) findViewById(R.id.spinner_editEntry_categorySelection);
-spnCategory = (Spinner) findViewById(R.id.spinner_editEntry_categorySelection);
 
         ArrayAdapter<Category> spnAdptCategory = new ArrayAdapter<Category>(this, android.R.layout.simple_spinner_dropdown_item, categoryList);
         spnCategory.setAdapter(spnAdptCategory);
