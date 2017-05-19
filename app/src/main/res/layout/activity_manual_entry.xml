@@ -224,7 +224,7 @@
             android:layout_height="wrap_content"
             android:layout_columnSpan="3"
             android:layout_marginLeft="16dp"
-            android:text="Notice: "
+            android:text="Note: "
 
             android:textColor="@android:color/darker_gray"
             android:textSize="20dp"
