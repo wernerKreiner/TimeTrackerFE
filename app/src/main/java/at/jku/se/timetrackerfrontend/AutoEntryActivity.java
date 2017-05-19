@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.AppCompatSpinner;
+
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -65,12 +67,13 @@ public class AutoEntryActivity extends AppCompatActivity{
                 }
             }
         }
-        Spinner spnProject = (Spinner) findViewById(R.id.spinner_autoEntry_projectSelection);
+        AppCompatSpinner spnProject = (AppCompatSpinner) findViewById(R.id.spinner_autoEntry_projectSelection);
         ArrayAdapter<Project> spnAdptProject = new ArrayAdapter<Project>(this, android.R.layout.simple_spinner_dropdown_item, projectList);
         spnProject.setAdapter(spnAdptProject);
 
         //initialise categoryList and categoryspinner
-        final Spinner spnCategory = (Spinner) findViewById(R.id.spinner_autoEntry_categorySelection);
+        final AppCompatSpinner spnCategory = (AppCompatSpinner) findViewById(R.id.spinner_autoEntry_categorySelection);
+
         List<Category> categoryList = new LinkedList<Category>();
         final ArrayAdapter<Category> spnAdptCategory = new ArrayAdapter<Category>(this, android.R.layout.simple_spinner_dropdown_item, categoryList);
         spnCategory.setAdapter(spnAdptCategory);

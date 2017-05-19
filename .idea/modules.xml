@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/TimeTracker.iml" filepath="$PROJECT_DIR$/TimeTracker.iml" />
       <module fileurl="file://$PROJECT_DIR$/TimeTrackerFE.iml" filepath="$PROJECT_DIR$/TimeTrackerFE.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>

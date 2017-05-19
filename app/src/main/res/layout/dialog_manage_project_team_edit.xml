@@ -5,7 +5,8 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <Spinner
+    <android.support.v7.widget.AppCompatSpinner
+        style="@android:style/Widget.Holo.Light.Spinner"
         android:id="@+id/spRole"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -14,43 +15,48 @@
         android:prompt="@string/rolePrompt"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="16dp"
-        app:layout_constraintLeft_toRightOf="@+id/textView12"
-        android:layout_marginLeft="17dp" />
+        android:layout_marginLeft="0dp"
+        app:layout_constraintLeft_toLeftOf="@+id/editEmail" />
 
     <TextView
         android:id="@+id/textView12"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Role:"
-        app:layout_constraintTop_toTopOf="@+id/spRole"
-        android:layout_marginTop="0dp"
-        app:layout_constraintBottom_toBottomOf="@+id/spRole"
         android:layout_marginBottom="0dp"
         android:layout_marginLeft="8dp"
-        app:layout_constraintVertical_bias="0.571"
-        app:layout_constraintLeft_toLeftOf="parent" />
+        android:layout_marginTop="0dp"
+        android:text="Role:"
+        android:textColor="@android:color/darker_gray"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/spRole"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/spRole"
+        app:layout_constraintVertical_bias="0.571" />
 
     <TextView
         android:id="@+id/textView13"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="E-mail:"
+        android:layout_marginBottom="0dp"
         android:layout_marginLeft="8dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/editEmail"
         android:layout_marginTop="0dp"
+        android:text="E-mail:"
+        android:textColor="@android:color/darker_gray"
+        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="@+id/editEmail"
-        android:layout_marginBottom="0dp" />
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/editEmail" />
 
     <EditText
         android:id="@+id/editEmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textEmailAddress"
-        app:layout_constraintLeft_toRightOf="@+id/textView13"
         android:layout_marginLeft="6dp"
         android:layout_marginTop="8dp"
+        android:ems="10"
+        android:inputType="textEmailAddress"
+        android:textSize="18sp"
+        app:layout_constraintLeft_toRightOf="@+id/textView13"
         app:layout_constraintTop_toBottomOf="@+id/spRole" />
 
 </android.support.constraint.ConstraintLayout>
