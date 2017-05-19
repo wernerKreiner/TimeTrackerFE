@@ -160,6 +160,7 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/spinner_autoEntry_categorySelection" />
 
+
         <Button
             android:id="@+id/btn_autoEntry_start"
             style="@style/Widget.AppCompat.Button"

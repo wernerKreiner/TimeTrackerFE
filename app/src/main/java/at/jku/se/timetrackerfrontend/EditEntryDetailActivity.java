@@ -115,7 +115,9 @@ public class EditEntryDetailActivity extends AppCompatActivity {
             i++;
         }
 
+
         AppCompatSpinner spnProject = (AppCompatSpinner) findViewById(R.id.spinner_editEntry_projectSelection);
+
         ArrayAdapter<Project> spnAdptProject = new ArrayAdapter<Project>(this, android.R.layout.simple_spinner_dropdown_item, projectList);
         spnProject.setAdapter(spnAdptProject);
         spnProject.setSelection(spnProjectIndex);
@@ -123,7 +125,10 @@ public class EditEntryDetailActivity extends AppCompatActivity {
         //initialise categoryList and categoryspinner
         List<Category> categoryList = new LinkedList();
         categoryList.add(new Category("",0,null));
+
         AppCompatSpinner spnCategory = (AppCompatSpinner) findViewById(R.id.spinner_editEntry_categorySelection);
+spnCategory = (Spinner) findViewById(R.id.spinner_editEntry_categorySelection);
+
         ArrayAdapter<Category> spnAdptCategory = new ArrayAdapter<Category>(this, android.R.layout.simple_spinner_dropdown_item, categoryList);
         spnCategory.setAdapter(spnAdptCategory);
 
