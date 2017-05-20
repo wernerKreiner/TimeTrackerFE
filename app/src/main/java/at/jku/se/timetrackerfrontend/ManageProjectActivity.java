@@ -2,6 +2,8 @@ package at.jku.se.timetrackerfrontend;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.LightingColorFilter;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
@@ -16,20 +18,29 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
+import java.io.Console;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import entities.Category;
+import entities.Cooperation;
+import entities.Person;
 import entities.Project;
+import entities.ProjectRole;
+import services.CooperationService;
 import services.ProjectService;
 
 public class ManageProjectActivity extends AppCompatActivity {
 
     String projName;
     Project project;
+    ProjectRole projectRole;
+    Optional<Cooperation> cooperation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,9 +48,15 @@ public class ManageProjectActivity extends AppCompatActivity {
         setContentView(R.layout.activity_manage_project);
 
         ProjectService projectService = new ProjectService();
+        CooperationService cooperationService = new CooperationService();
+        Person currentUser = LoginActivity.user;
 
         TextView estiTime = (TextView) findViewById(R.id.estimateTimeTextView);
         TextView descrption = (TextView) findViewById(R.id.descriptionTextView);
+
+        Button categorieButton = (Button) findViewById(R.id.btn_manageProject_categories);
+        Button projectteam = (Button) findViewById(R.id.btn_manageProject_projectteam);
+        Button remove = (Button) findViewById(R.id.btn_manageProject_removeProject);
 
         List<Project> projects =  projectService.get();
         List<String> projNames = new ArrayList<>();
@@ -65,6 +82,16 @@ public class ManageProjectActivity extends AppCompatActivity {
                 double time = categories.stream().mapToDouble(x->x.getEstimatedTime()).sum();
                 estiTime.setText("" + time);
                 descrption.setText(project.getDescription().toString());
+
+                if(projName != null) {
+                    cooperation = currentUser.getCooperations().stream().filter(x -> x.getProject().equals(project)).findAny();
+                    if (cooperation.isPresent() && cooperation.get().getProjectRole().equals(ProjectRole.COWORKER)) {
+                        projectteam.setEnabled(false);
+                        categorieButton.setEnabled(false);
+                        remove.setEnabled(false);
+                    }
+                }
+
             }
 
             @Override
@@ -75,11 +102,10 @@ public class ManageProjectActivity extends AppCompatActivity {
 
         spinner.setOnItemSelectedListener(new myOnItemSelectedListener());
 
-        Button categories = (Button) findViewById(R.id.btn_manageProject_categories);
-        Button projectteam = (Button) findViewById(R.id.btn_manageProject_projectteam);
-        Button remove = (Button) findViewById(R.id.btn_manageProject_removeProject);
-
-        categories.setOnClickListener(new View.OnClickListener() {
+        if(!projectteam.isEnabled()){
+            projectteam.setBackgroundColor(Color.DKGRAY);
+        }
+        categorieButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = (new Intent(ManageProjectActivity.this, ManageCategoryActivity.class));
@@ -89,6 +115,7 @@ public class ManageProjectActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
         projectteam.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -102,13 +129,18 @@ public class ManageProjectActivity extends AppCompatActivity {
         remove.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                projectService.remove(project.getId());
-                Intent intent = getIntent();
-                finish();
-                startActivity(intent);
+                if(projNames.size() > 0) {
+                    projectService.remove(project.getId());
+                    Intent intent = getIntent();
+                    finish();
+                    startActivity(intent);
+                }
             }
         });
+
+
     }
+
 
 
     @Override
