@@ -21,7 +21,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         android:layout_marginTop="24dp"
         android:layout_marginLeft="16dp"
-        android:layout_marginRight="8dp" />
+        android:layout_marginRight="0dp" />
 
     <Button
         android:id="@+id/btn_loginView_register"
@@ -35,7 +35,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         android:layout_marginTop="24dp"
         android:layout_marginRight="16dp"
-        android:layout_marginLeft="8dp" />
+        android:layout_marginLeft="0dp" />
 
     <TextView
         android:id="@+id/email"
@@ -90,5 +90,5 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_begin="192dp" />
+        app:layout_constraintGuide_percent="0.5" />
 </android.support.constraint.ConstraintLayout>
