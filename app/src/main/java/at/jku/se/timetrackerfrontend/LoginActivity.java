@@ -34,11 +34,10 @@ public class LoginActivity extends AppCompatActivity {
         final Button btnRegister = (Button) findViewById(R.id.btn_loginView_register);
 
         //Quicklogin
-        email.setText("werni@jku.at");
-        password.setText("12345");
+        //email.setText("werni@jku.at");
+        //password.setText("12345");
 
-
-        //request focus on email  edit werner
+        //request focus on email
         email.requestFocus();
 
         //Event for Login
@@ -53,7 +52,7 @@ public class LoginActivity extends AppCompatActivity {
                 for(Person p : personList) {
                     String curEmail = email.getText().toString();
                     String curPEmail = p.getEmail();
-                    if (curPEmail.equals(curEmail)) { //mehr Suchkriterien ???
+                    if (curPEmail.equals(curEmail)) {
                         findUser = p;
                         matchPerson = true;
                         break;
@@ -93,63 +92,4 @@ public class LoginActivity extends AppCompatActivity {
         });
 
     }
-
 }
-
-/*
-package at.jku.se.timetrackerfrontend;
-
-import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Toast;
-
-
-import java.util.List;
-
-import entities.Person;
-import services.PersonService;
-
-public class LoginActivity extends AppCompatActivity {
-    //get enteties and services
-    public static Person user; // = found person
-    PersonService personService;
-
-    public static Person user;
-    PersonService personService;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
-
-        Button login = (Button) findViewById(R.id.loginButton);
-        Button register = (Button) findViewById(R.id.registerButton);
-        final EditText email = (EditText) findViewById(R.id.emailInput);
-        email.setText("test@jku.at");
-        final EditText password = (EditText) findViewById(R.id.passwordInput);
-        password.setText("1234");
-        register.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
-            }
-        });
-        login.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(email.getText().toString().equals("test@jku.at") && password.getText().toString().equals("1234")){
-                    startActivity(new Intent(LoginActivity.this, EditEntryActivity.class));
-                }else {
-                    Toast toast = new Toast(LoginActivity.this);
-                    toast.makeText(LoginActivity.this, "Not a member yet? Yout can register now!", Toast.LENGTH_LONG).show();
-                }
-            }
-        });
-    }
-}
-
-*/
