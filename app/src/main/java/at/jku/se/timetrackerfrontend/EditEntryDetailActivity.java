@@ -5,6 +5,7 @@ import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.AppCompatSpinner;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -114,7 +115,9 @@ public class EditEntryDetailActivity extends AppCompatActivity {
             i++;
         }
 
-        Spinner spnProject = (Spinner) findViewById(R.id.spinner_editEntry_projectSelection);
+
+        AppCompatSpinner spnProject = (AppCompatSpinner) findViewById(R.id.spinner_editEntry_projectSelection);
+
         ArrayAdapter<Project> spnAdptProject = new ArrayAdapter<Project>(this, android.R.layout.simple_spinner_dropdown_item, projectList);
         spnProject.setAdapter(spnAdptProject);
         spnProject.setSelection(spnProjectIndex);
@@ -122,7 +125,9 @@ public class EditEntryDetailActivity extends AppCompatActivity {
         //initialise categoryList and categoryspinner
         List<Category> categoryList = new LinkedList();
         categoryList.add(new Category("",0,null));
-        Spinner spnCategory = (Spinner) findViewById(R.id.spinner_editEntry_categorySelection);
+
+        AppCompatSpinner spnCategory = (AppCompatSpinner) findViewById(R.id.spinner_editEntry_categorySelection);
+
         ArrayAdapter<Category> spnAdptCategory = new ArrayAdapter<Category>(this, android.R.layout.simple_spinner_dropdown_item, categoryList);
         spnCategory.setAdapter(spnAdptCategory);
 

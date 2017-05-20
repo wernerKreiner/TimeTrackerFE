@@ -5,6 +5,7 @@ import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.AppCompatSpinner;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -55,6 +56,7 @@ public class ManualEntryActivity extends AppCompatActivity {
         categoryService = new CategoryService();
         personService = new PersonService();
 
+
         //initialise projectList and projectspinner
         List<Project> projectList = new LinkedList<Project>();
         List<Project> projectListAll = projectService.get();
@@ -69,12 +71,13 @@ public class ManualEntryActivity extends AppCompatActivity {
             }
         }
 
-        Spinner spnProject = (Spinner) findViewById(R.id.spinner_manualEntry_projectSelection);
+        AppCompatSpinner spnProject = (AppCompatSpinner) findViewById(R.id.spinner_manualEntry_projectSelection);
         ArrayAdapter<Project> spnAdptProject = new ArrayAdapter<Project>(this, android.R.layout.simple_spinner_dropdown_item, projectList);
         spnProject.setAdapter(spnAdptProject);
 
         //initialise categoryList and categoryspinner
-        final Spinner spnCategory = (Spinner) findViewById(R.id.spinner_manualEntry_categorySelection);
+        final AppCompatSpinner spnCategory = (AppCompatSpinner) findViewById(R.id.spinner_manualEntry_categorySelection);
+
         List<Category> categoryList = new LinkedList<Category>();
         final ArrayAdapter<Category> spnAdptCategory = new ArrayAdapter<Category>(this, android.R.layout.simple_spinner_dropdown_item, categoryList);
         spnCategory.setAdapter(spnAdptCategory);
@@ -150,6 +153,7 @@ public class ManualEntryActivity extends AppCompatActivity {
                     Toast toast = new Toast(ManualEntryActivity.this);
                     toast.makeText(ManualEntryActivity.this, "Fill out all dates and times", Toast.LENGTH_LONG).show();
                 }
+
             }
         });
 
@@ -193,6 +197,7 @@ public class ManualEntryActivity extends AppCompatActivity {
                 mTimePicker.show();
             }
         });
+
 
         final EditText fromDate = (EditText) findViewById(R.id.eText_manualEntry_fromDate);
         fromDate.setOnClickListener(new View.OnClickListener() {
