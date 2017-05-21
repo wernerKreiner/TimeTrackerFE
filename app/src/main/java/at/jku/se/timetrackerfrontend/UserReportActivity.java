@@ -1,8 +1,10 @@
 package at.jku.se.timetrackerfrontend;
 
+import android.app.FragmentManager;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.SpannableString;
@@ -12,6 +14,7 @@ import android.text.style.StyleSpan;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.WindowManager;
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.PieChart;
@@ -26,6 +29,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import entities.Category;
 import entities.Cooperation;
 import entities.Person;
@@ -50,12 +54,29 @@ public class UserReportActivity extends AppCompatActivity {
 
         this.cooperationService = new CooperationService();
 
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.btnFloting_settings_user_report);
+        fab.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                FragmentManager fm = getFragmentManager();
+                android.app.DialogFragment dialogFragment = new ChangeUserReportDialogFragment();
+                dialogFragment.show(fm, "");
+            }
+        });
+
         mTfRegular = Typeface.createFromAsset(getAssets(), "OpenSans-Regular.ttf");
         mTfLight = Typeface.createFromAsset(getAssets(), "OpenSans-Light.ttf");
 
         this.configurateChart();
+        this.changeChart("All Projects");
+    }
 
-        setData();
+    public void changeChart(String projectName) {
+        if(projectName.compareTo("All Projects") == 0) {
+            this.setDataAllProjects();
+        }
+        else {
+            this.setDataOfProject(projectName);
+        }
     }
 
     private void configurateChart() {
@@ -114,7 +135,7 @@ public class UserReportActivity extends AppCompatActivity {
         return s;
     }
 
-    private void setData() {
+    private void setDataAllProjects() {
         Person actUser = LoginActivity.user;
 
         // Get all cooperations from person.
@@ -162,6 +183,61 @@ public class UserReportActivity extends AppCompatActivity {
 
         PieDataSet dataSet = new PieDataSet(entries, "Projects");
 
+        this.initialiseNewDataSet(dataSet);
+    }
+
+    private void setDataOfProject(String projectName) {
+        Person actUser = LoginActivity.user;
+
+        // Get all cooperations from person of Project.
+        Optional<Cooperation> cooperationOpt = this.cooperationService.get()
+                .stream()
+                .filter(c -> c.getPerson().getId() == actUser.getId() && c.getProject().getName() == projectName)
+                .findFirst();
+
+        Map<String, List<TimeEntry>> nameTimeEntry = new HashMap<>();
+
+        if(cooperationOpt.isPresent()) {
+            Cooperation cooperation = cooperationOpt.get();
+
+            for(Category category : cooperation.getProject().getCategories()) {
+                List<TimeEntry> entries = new ArrayList<>();
+                category.getTimeEntries()
+                        .stream()
+                        .filter(te -> te.getPerson().getId() == actUser.getId())
+                        .forEach(entries::add);
+
+                nameTimeEntry.put(category.getName(), entries);
+            }
+        }
+
+        Map<String, Double> categoryNameTime = new HashMap<>();
+
+        nameTimeEntry.forEach((k,v) -> {
+            double hour = v
+                    .stream()
+                    .mapToDouble(te -> {
+                        long diffInMillies = te.getTo().getTime() - te.getFrom().getTime();
+
+                        return diffInMillies / 3600000;
+                    })
+                    .sum();
+
+            categoryNameTime.put(k, hour);
+        });
+
+        ArrayList<PieEntry> entries = new ArrayList<>();
+
+        categoryNameTime.forEach((k, v) -> {
+            entries.add(new PieEntry(v.floatValue(), k));
+        });
+
+        PieDataSet dataSet = new PieDataSet(entries, "Categories");
+
+        this.initialiseNewDataSet(dataSet);
+    }
+
+    private void initialiseNewDataSet(PieDataSet dataSet) {
         dataSet.setDrawIcons(false);
 
         dataSet.setSliceSpace(3f);
