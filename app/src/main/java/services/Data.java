@@ -83,6 +83,9 @@ public class Data {
 
             TimeEntry timeEntry13 = createTimeEntry(new TimeEntry(dateFormat.parse("09.03.2017 08:00:00"), dateFormat.parse("09.03.2017 12:00:00"), "Pair Programming", Measurement.AUTOMATICALLY, person5, category2));
             TimeEntry timeEntry14 = createTimeEntry(new TimeEntry(dateFormat.parse("09.03.2017 08:00:00"), dateFormat.parse("09.03.2017 12:00:00"), "Pair Programming", Measurement.AUTOMATICALLY, person6, category2));
+
+            TimeEntry timeEntry15 = createTimeEntry(new TimeEntry(dateFormat.parse("11.03.2017 08:00:00"), dateFormat.parse("11.03.2017 12:00:00"), "Chart", Measurement.AUTOMATICALLY, person4, category1));
+            TimeEntry timeEntry16 = createTimeEntry(new TimeEntry(dateFormat.parse("10.03.2017 08:00:00"), dateFormat.parse("10.03.2017 12:00:00"), "Chart", Measurement.AUTOMATICALLY, person4, category3));
         } catch (Exception ex) {
             ex.printStackTrace();
         }
