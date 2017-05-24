@@ -1,10 +1,8 @@
 package at.jku.se.timetrackerfrontend;
 
-import android.app.FragmentManager;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.SpannableString;
@@ -17,8 +15,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 import android.view.ViewGroup.LayoutParams;
-import android.widget.ScrollView;
-
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
@@ -28,13 +24,11 @@ import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.MPPointF;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-
 import entities.Category;
 import entities.Cooperation;
 import entities.Person;
@@ -42,7 +36,6 @@ import entities.Project;
 import entities.TimeEntry;
 import services.CooperationService;
 import services.ProjectService;
-import services.TimeEntryService;
 
 public class ProjectReportActivity extends AppCompatActivity {
     private CooperationService cooperationService;
