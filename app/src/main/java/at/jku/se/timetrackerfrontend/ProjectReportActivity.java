@@ -1,8 +1,10 @@
 package at.jku.se.timetrackerfrontend;
 
+import android.app.FragmentManager;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.SpannableString;
@@ -35,9 +37,11 @@ import entities.Person;
 import entities.Project;
 import entities.TimeEntry;
 import services.CooperationService;
+import services.PersonService;
 import services.ProjectService;
 
 public class ProjectReportActivity extends AppCompatActivity {
+    private PersonService personService;
     private CooperationService cooperationService;
     private ProjectService projectService;
 
@@ -56,14 +60,42 @@ public class ProjectReportActivity extends AppCompatActivity {
         projectReportChart = (PieChart) findViewById(R.id.chart_project_report);
         this.listview = (ListView) findViewById(R.id.lv_project_report);
 
+        this.personService = new PersonService();
         this.cooperationService = new CooperationService();
         this.projectService = new ProjectService();
+
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.btnFloting_settings_project_report);
+        fab.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                FragmentManager fm = getFragmentManager();
+                android.app.DialogFragment dialogFragment = new ChangeProjectReportDialogFragment();
+                dialogFragment.show(fm, "");
+            }
+        });
 
         mTfRegular = Typeface.createFromAsset(getAssets(), "OpenSans-Regular.ttf");
         mTfLight = Typeface.createFromAsset(getAssets(), "OpenSans-Light.ttf");
 
         this.configurateChart();
-        this.changeChart("PR SE Prototyp");
+
+        // Get projectname of first project of user to show.
+        Person actUser = LoginActivity.user;
+
+        Optional<String> projectNameOpt = this.personService.get()
+                .stream()
+                .filter(p -> p.getId() == actUser.getId())
+                .map(person -> {
+                    if(person.getCooperations().stream().findFirst().isPresent()) {
+                        return person.getCooperations().stream().findFirst().get().getProject().getName();
+                    }
+
+                    return "";
+                })
+                .findFirst();
+
+        if(projectNameOpt.isPresent()) {
+            this.changeChart(projectNameOpt.get());
+        }
     }
 
     public void changeChart(String projectName) {
