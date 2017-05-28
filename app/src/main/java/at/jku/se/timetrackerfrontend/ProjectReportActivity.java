@@ -100,9 +100,10 @@ public class ProjectReportActivity extends AppCompatActivity {
 
     public void changeChart(String projectName) {
         if(projectName.compareTo("All Projects") == 0) {
-
+            projectReportChart.setCenterText(generateCenterSpannableText(projectName));
         }
         else {
+            projectReportChart.setCenterText(generateCenterSpannableText(projectName));
             this.setDataOfProject(projectName);
             this.setDataOfListView(projectName);
         }
@@ -255,7 +256,6 @@ public class ProjectReportActivity extends AppCompatActivity {
         projectReportChart.setDragDecelerationFrictionCoef(0.95f);
 
         projectReportChart.setCenterTextTypeface(mTfLight);
-        projectReportChart.setCenterText(generateCenterSpannableText());
 
         projectReportChart.setDrawHoleEnabled(true);
         projectReportChart.setHoleColor(Color.WHITE);
@@ -292,14 +292,11 @@ public class ProjectReportActivity extends AppCompatActivity {
         projectReportChart.setEntryLabelTextSize(12f);
     }
 
-    private SpannableString generateCenterSpannableText() {
-        SpannableString s = new SpannableString("TimeTracker\ndeveloped by SE GROUP 1");
-        s.setSpan(new RelativeSizeSpan(1.7f), 0, 14, 0);
-        s.setSpan(new StyleSpan(Typeface.NORMAL), 14, s.length() - 15, 0);
-        s.setSpan(new ForegroundColorSpan(Color.GRAY), 12, s.length() - 11, 0);
-        s.setSpan(new RelativeSizeSpan(.8f), 11, s.length() - 11, 0);
-        s.setSpan(new StyleSpan(Typeface.ITALIC), s.length() - 11, s.length(), 0);
-        s.setSpan(new ForegroundColorSpan(ColorTemplate.getHoloBlue()), s.length() - 11, s.length(), 0);
+    private SpannableString generateCenterSpannableText(String projectName) {
+        SpannableString s = new SpannableString(projectName);
+        s.setSpan(new RelativeSizeSpan(1.7f), 0, s.length(), 0);
+        s.setSpan(new StyleSpan(Typeface.NORMAL), 0, s.length(), 0);
+
         return s;
     }
 
