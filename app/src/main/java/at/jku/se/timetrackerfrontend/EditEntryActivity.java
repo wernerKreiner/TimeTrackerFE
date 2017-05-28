@@ -61,8 +61,6 @@ public class EditEntryActivity extends AppCompatActivity {
         listview.setOnItemClickListener(new MyOnItemClickListener());
     }
 
-
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
