@@ -199,7 +199,9 @@ public class ProjectReportActivity extends AppCompatActivity {
         ArrayList<PieEntry> entries = new ArrayList<>();
 
         categoryNameTime.forEach((k, v) -> {
-            entries.add(new PieEntry(v.floatValue(), k));
+            if( v.floatValue() > 0) {
+                entries.add(new PieEntry(v.floatValue(), k));
+            }
         });
 
         PieDataSet dataSet = new PieDataSet(entries, "Categories");
