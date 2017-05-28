@@ -177,13 +177,9 @@ public class EditEntryDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm");
-                EditText eTextFromDay = (EditText) findViewById(R.id.eText_editEntryDetail_fromDate);
-                EditText eTextFromTime = (EditText) findViewById(R.id.eText_editEntryDetail_fromTime);
-                EditText eTextToDay = (EditText) findViewById(R.id.eText_editEntryDetail_toDate);
-                EditText eTextToTime = (EditText) findViewById(R.id.eText_editEntryDetail_toTime);
-                String fromDate = eTextFromDay.getText().toString();
+                String fromDate = eTextFromDate.getText().toString();
                 String fromTime = eTextFromTime.getText().toString();
-                String toDate = eTextToDay.getText().toString();
+                String toDate = eTextToDate.getText().toString();
                 String toTime = eTextToTime.getText().toString();
                 Date newFrom = null;
                 Date newTo = null;

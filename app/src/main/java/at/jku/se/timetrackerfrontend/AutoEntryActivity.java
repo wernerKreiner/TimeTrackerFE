@@ -13,10 +13,13 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.Chronometer;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -125,6 +128,44 @@ public class AutoEntryActivity extends AppCompatActivity{
 
                     focus.getBase();
                     Date to = new Date();
+
+                    //round time entry
+                    CheckBox chkRound = (CheckBox) findViewById(R.id.chk_autoEntry_round) ;
+                    if (chkRound.isChecked()) {
+                        from[0] = roundTime(from[0]);
+                        to = roundTime(to);
+                    }
+
+                    // Time Alert
+                    if (category != null) {
+                        //create List with all TimeEntries of selected category
+                        List<TimeEntry> timeEntryList = timeEntryService.get();
+                        List<TimeEntry> timeEntryByCategoryList = new LinkedList<TimeEntry>();
+                        for (TimeEntry te : timeEntryList) {
+                            if (category == te.getCategory()) {
+                                timeEntryByCategoryList.add(te);
+                            }
+                        }
+
+                        //calculate sum of existing TimeEntries
+                        long sumExisting = 0;
+                        for (TimeEntry te : timeEntryByCategoryList) {
+                            long diff = te.getTo().getTime() - te.getFrom().getTime();
+                            sumExisting = sumExisting + diff;
+                        }
+
+                        //add duration of actual timeEntry
+                        sumExisting = sumExisting + to.getTime()-from[0].getTime();
+
+                        //compare estimated time with existing time
+                        long estimatedTime = (long) category.getEstimatedTime();
+                        estimatedTime = estimatedTime*60*60*1000;
+                        if (sumExisting >= estimatedTime) {
+                            Toast toast = new Toast(AutoEntryActivity.this);
+                            toast.makeText(AutoEntryActivity.this, "The estimated time of this category is already reached!", Toast.LENGTH_LONG).show();
+                        }
+                    }
+
                     timeEntryService.create(new TimeEntry(from[0], to, note, Measurement.AUTOMATICALLY, person, category));
                     startActivity(new Intent(AutoEntryActivity.this, EditEntryActivity.class));
                 }
@@ -142,8 +183,38 @@ public class AutoEntryActivity extends AppCompatActivity{
                 spnCategory.setSelection(0);
             }
         });
+    }
 
+    public Date roundTime(Date unrounded){
+        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm");
 
+        String fromString = sdf.format(unrounded);
+        String minString = fromString.substring(14, 16); //"HH:mm" 3,5
+        int min = Integer.parseInt(minString);
+        String hourString = fromString.substring(11, 13); //"HH:mm" 0,2
+        int hour = Integer.parseInt(hourString);
+        String fromDate = fromString.substring(0, 10);
+
+        if (0 <= min && min <= 7) {
+            min = 0;
+        } else if (8 <= min && min <= 22) {
+            min = 15;
+        } else if (23 <= min && min <= 37) {
+            min = 30;
+        } else if (38 <= min && min <= 52) {
+            min = 45;
+        } else if (53 <= min && min <= 59) {
+            hour++;
+            min = 0;
+        }
+
+        Date rounded = null;
+        String fromTimeString = Integer.toString(hour) + ":" + Integer.toString(min);
+        try {
+            rounded = sdf.parse(fromDate + " " + fromTimeString);
+        } catch (Exception ex) {
+        }
+        return rounded;
     }
 
     @Override

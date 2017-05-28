@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -121,6 +122,13 @@ public class ManualEntryActivity extends AppCompatActivity {
                     String toDate = eTextToDay.getText().toString();
                     String toTime = eTextToTime.getText().toString();
 
+                    //Code by Antonia
+                    CheckBox chkRound = (CheckBox) findViewById(R.id.chk_manualEntry_round) ;
+                    if (chkRound.isChecked()){
+                        fromTime = roundTime(fromTime);
+                        toTime = roundTime(toTime);
+                    }
+
                     Date from = null;
                     Date to = null;
                     try {
@@ -135,14 +143,40 @@ public class ManualEntryActivity extends AppCompatActivity {
                         Person person = LoginActivity.user;
                         Category category = (Category) spnCategory.getSelectedItem();
 
-                        //test
-                        Calendar calendar = GregorianCalendar.getInstance();
-                        calendar.setTime(from);
-                        int minute = calendar.get(Calendar.MINUTE);
-
                         if (category.getName().equals("")) {
                             category = null;
                         }
+
+                        // Time Alert
+                        if (category != null) {
+                            //create List with all TimeEntries of selected category
+                            List<TimeEntry> timeEntryList = timeEntryService.get();
+                            List<TimeEntry> timeEntryByCategoryList = new LinkedList<TimeEntry>();
+                            for (TimeEntry te : timeEntryList) {
+                                if (category == te.getCategory()) {
+                                    timeEntryByCategoryList.add(te);
+                                }
+                            }
+
+                            //calculate sum of existing TimeEntries
+                            long sumExisting = 0;
+                            for (TimeEntry te : timeEntryByCategoryList) {
+                                long diff = te.getTo().getTime() - te.getFrom().getTime();
+                                sumExisting = sumExisting + diff;
+                            }
+
+                            //add duration of actual timeEntry
+                            sumExisting = sumExisting + to.getTime()-from.getTime();
+
+                            //compare estimated time with existing time
+                            long estimatedTime = (long) category.getEstimatedTime();
+                            estimatedTime = estimatedTime*60*60*1000;
+                            if (sumExisting >= estimatedTime) {
+                                Toast toast = new Toast(ManualEntryActivity.this);
+                                toast.makeText(ManualEntryActivity.this, "The estimated time of this category is already reached!", Toast.LENGTH_LONG).show();
+                            }
+                        }
+
                         timeEntryService.create(new TimeEntry(from, to, note, Measurement.MANUALLY, person, category));
                         startActivity(new Intent(ManualEntryActivity.this, EditEntryActivity.class));
                     } else {
@@ -240,6 +274,31 @@ public class ManualEntryActivity extends AppCompatActivity {
                 mDatePicker.show();
             }
         });
+    }
+
+    public String roundTime(String unrounded){
+        String minStr = unrounded.substring(3,5);
+        int min= Integer.parseInt(minStr);
+        String hourStr = unrounded.substring(0,2);
+        int hour= Integer.parseInt(hourStr);
+
+        if (0 <= min && min <= 7) {
+            min = 0;
+        }
+        else if (8 <= min && min <= 22) {
+            min = 15;
+        }
+        else if (23 <= min && min <= 37) {
+            min = 30;
+        }
+        else if (38 <= min && min <= 52) {
+            min = 45;
+        }
+        else if (53 <= min && min <= 59) {
+            hour++;
+            min=0;
+        }
+        return Integer.toString(hour) + ":" + Integer.toString(min);
     }
 
     public boolean allDatesFilled(){

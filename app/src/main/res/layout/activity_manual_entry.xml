@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:descendantFocusability="beforeDescendants"
     android:focusableInTouchMode="true">
 
     <android.support.constraint.ConstraintLayout
@@ -281,6 +282,7 @@
             app:layout_constraintLeft_toLeftOf="@+id/guideline10"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintHorizontal_bias="0.0" />
+
 
         <android.support.constraint.Guideline
             android:layout_width="wrap_content"
