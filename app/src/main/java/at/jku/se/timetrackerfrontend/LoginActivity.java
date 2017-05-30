@@ -34,8 +34,8 @@ public class LoginActivity extends AppCompatActivity {
         final Button btnRegister = (Button) findViewById(R.id.btn_loginView_register);
 
         //Quicklogin
-        //email.setText("werni@jku.at");
-        //password.setText("12345");
+        email.setText("werni@jku.at");
+        password.setText("12345");
 
         //request focus on email
         email.requestFocus();
