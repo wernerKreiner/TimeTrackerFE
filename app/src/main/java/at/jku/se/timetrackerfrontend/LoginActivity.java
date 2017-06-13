@@ -12,7 +12,9 @@ import android.widget.Toast;
 import java.util.List;
 
 import entities.Person;
+import services.CooperationService;
 import services.PersonService;
+import services.TimeEntryService;
 
 public class LoginActivity extends AppCompatActivity {
     //get enteties and services
@@ -47,7 +49,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 //find person by email
                 List<Person> personList = personService.get();
-                Person findUser = null; //null statt new Person()
+                Person findUser = null;
                 boolean matchPerson = false;
                 for(Person p : personList) {
                     String curEmail = email.getText().toString();

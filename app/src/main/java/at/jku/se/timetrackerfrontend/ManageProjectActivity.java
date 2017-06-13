@@ -32,6 +32,7 @@ import entities.Cooperation;
 import entities.Person;
 import entities.Project;
 import entities.ProjectRole;
+import services.CategoryService;
 import services.CooperationService;
 import services.ProjectService;
 
@@ -59,6 +60,7 @@ public class ManageProjectActivity extends AppCompatActivity {
         Button remove = (Button) findViewById(R.id.btn_manageProject_removeProject);
 
         List<Project> projects =  projectService.get();
+
         List<String> projNames = new ArrayList<>();
         for (Project p : projects) {
             projNames.add(p.getName());
@@ -77,14 +79,24 @@ public class ManageProjectActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 projName = parent.getSelectedItem().toString();
                 project = (projectService.get().stream().filter(x->x.getName().equals(projName)).findAny()).get();
-                List<Category> categories = (project.getCategories().stream().
-                            filter(x->x.getProject().getName().equals(project.getName())).collect(Collectors.toList()));
+
+                //edit Werner Webservice
+                //List<Category> categories = (project.getCategories().stream().
+                  //          filter(x->x.getProject().getName().equals(project.getName())).collect(Collectors.toList()));
+                CategoryService categoryService = new CategoryService();
+                List<Category> categories = categoryService.getByProject(project);
+                //ende edit werner
+
                 double time = categories.stream().mapToDouble(x->x.getEstimatedTime()).sum();
                 estiTime.setText("" + time);
                 descrption.setText(project.getDescription().toString());
 
                 if(projName != null) {
-                    cooperation = currentUser.getCooperations().stream().filter(x -> x.getProject().equals(project)).findAny();
+                    //edit Werner Webservice
+                    //cooperation = currentUser.getCooperations().stream().filter(x -> x.getProject().equals(project)).findAny();
+                    cooperation = cooperationService.getByPerson(currentUser).stream().filter(x -> x.getProject().equals(project)).findAny();
+                    //ende edit
+
                     if (cooperation.isPresent() && cooperation.get().getProjectRole().equals(ProjectRole.COWORKER)) {
                         projectteam.setEnabled(false);
                         categorieButton.setEnabled(false);

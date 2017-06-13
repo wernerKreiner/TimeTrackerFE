@@ -3,7 +3,7 @@ package entities;
 public class Cooperation {
     private long id;
     private ProjectRole projectRole;
-
+    
     private Person person;
     private Project project;
 
@@ -21,10 +21,10 @@ public class Cooperation {
 
     @Override
     public String toString() {
-        return "Cooperation{" + "id=" + id + ", projectRole=" + projectRole + ", person=" + person.getId() + ", project=" + project.getId() + '}';
+        return "Cooperation{" + "id=" + id + ", projectRole=" + projectRole + ", person=" + person + ", project=" + project + '}';
     }
-
-    public void setId(long id) {
+    
+    public void setId(long id){
         this.id = id;
     }
 
@@ -55,6 +55,6 @@ public class Cooperation {
     public void setProject(Project project) {
         this.project = project;
     }
-
-
+    
+    
 }

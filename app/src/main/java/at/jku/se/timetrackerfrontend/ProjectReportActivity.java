@@ -36,9 +36,11 @@ import entities.Cooperation;
 import entities.Person;
 import entities.Project;
 import entities.TimeEntry;
+import services.CategoryService;
 import services.CooperationService;
 import services.PersonService;
 import services.ProjectService;
+import services.TimeEntryService;
 
 public class ProjectReportActivity extends AppCompatActivity {
     private PersonService personService;
@@ -81,7 +83,8 @@ public class ProjectReportActivity extends AppCompatActivity {
         // Get projectname of first project of user to show.
         Person actUser = LoginActivity.user;
 
-        Optional<String> projectNameOpt = this.personService.get()
+        //edit Werner Webservice
+       /* Optional<String> projectNameOpt = this.personService.get()
                 .stream()
                 .filter(p -> p.getId() == actUser.getId())
                 .map(person -> {
@@ -95,7 +98,32 @@ public class ProjectReportActivity extends AppCompatActivity {
 
         if(projectNameOpt.isPresent()) {
             this.changeChart(projectNameOpt.get());
+        }*/
+
+
+        Optional<String> projectNameOpt = this.personService.get()
+                .stream()
+                .filter(p -> p.getId() == actUser.getId())
+                .map(person -> {
+                    if(cooperationService.getByPerson(person).stream().findFirst().isPresent()) {
+                        return cooperationService.getByPerson(person).stream().findFirst().get().getProject().getName();
+                    }
+
+                    return "";
+                })
+                .findFirst();
+
+        if(projectNameOpt.isPresent()) {
+            this.changeChart(projectNameOpt.get());
         }
+
+
+
+
+
+
+
+        //ende Edit
     }
 
     public void changeChart(String projectName) {
@@ -114,20 +142,35 @@ public class ProjectReportActivity extends AppCompatActivity {
         // Load data.
         Optional<Project> projectOpt = this.projectService.get()
                 .stream()
-                .filter(p -> p.getName() == projectName)
+                .filter(p -> p.getName().equals(projectName)) //edit werner
                 .findFirst();
 
         if(projectOpt.isPresent()) {
             Project project = projectOpt.get();
 
-            ArrayList<TimeEntry> timeEntries = new ArrayList<>();
+            //edit Werner Webservice
+          /*  ArrayList<TimeEntry> timeEntries = new ArrayList<>();
             project.getCategories()
                     .stream()
                     .forEach(c -> {
                         c.getTimeEntries()
                                 .stream()
                                 .forEach(timeEntries::add);
+                    });*/
+
+            CategoryService categoryService = new CategoryService();
+            TimeEntryService timeEntryService = new TimeEntryService();
+            ArrayList<TimeEntry> timeEntries = new ArrayList<>();
+            categoryService.getByProject(project)
+                    .stream()
+                    .forEach(c -> {
+                        timeEntryService.getByCategory(c)
+                                .stream()
+                                .forEach(timeEntries::add);
                     });
+
+
+            //ende Edit
 
             // Fill EntryAdapter.
             this.entryAdapter = new EntryAdapter(this, timeEntries);
@@ -163,7 +206,7 @@ public class ProjectReportActivity extends AppCompatActivity {
         // Get all cooperations from person of Project.
         Optional<Cooperation> cooperationOpt = this.cooperationService.get()
                 .stream()
-                .filter(c -> c.getPerson().getId() == actUser.getId() && c.getProject().getName() == projectName)
+                .filter(c -> c.getPerson().getId() == actUser.getId() && c.getProject().getName().equals(projectName))
                 .findFirst();
 
         Map<String, List<TimeEntry>> nameTimeEntry = new HashMap<>();
@@ -171,14 +214,28 @@ public class ProjectReportActivity extends AppCompatActivity {
         if(cooperationOpt.isPresent()) {
             Cooperation cooperation = cooperationOpt.get();
 
-            for(Category category : cooperation.getProject().getCategories()) {
+            //edit Werner Webservice
+            /*for(Category category : cooperation.getProject().getCategories()) {
                 List<TimeEntry> entries = new ArrayList<>();
                 category.getTimeEntries()
                         .stream()
                         .forEach(entries::add);
 
                 nameTimeEntry.put(category.getName(), entries);
+            }*/
+
+            CategoryService categoryService = new CategoryService();
+            TimeEntryService timeEntryService = new TimeEntryService();
+            for(Category category : categoryService.getByProject(cooperation.getProject())) {
+                List<TimeEntry> entries = new ArrayList<>();
+                timeEntryService.getByCategory(category)
+                        .stream()
+                        .forEach(entries::add);
+
+                nameTimeEntry.put(category.getName(), entries);
             }
+
+            //Ende edit
         }
 
         Map<String, Double> categoryNameTime = new HashMap<>();
