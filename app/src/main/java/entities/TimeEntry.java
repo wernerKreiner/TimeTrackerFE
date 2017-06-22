@@ -8,7 +8,7 @@ public class TimeEntry {
     private Date to;
     private String note;
     private Measurement measurement;
-
+    
     private Person person;
     private Category category;
 
@@ -33,12 +33,11 @@ public class TimeEntry {
     @Override
     public String toString() {
         String cat = "";
-        if (category == null) cat = "null";
-        else cat += category.getId();
-        return "TimeEntry{" + "id=" + id + ", from=" + from + ", to=" + to + ", note=" + note + ", measurement=" + measurement + ", person=" + person.getId() + ", category=" + cat + '}';
+        if (category == null) return "TimeEntry{" + "id=" + id + ", from=" + from + ", to=" + to + ", note=" + note + ", measurement=" + measurement + ", person=" + person + '}';
+        else return "TimeEntry{" + "id=" + id + ", from=" + from + ", to=" + to + ", note=" + note + ", measurement=" + measurement + ", person=" + person + ", category=" + category + '}';
     }
-
-    public void setId(long id) {
+    
+    public void setId(long id){
         this.id = id;
     }
 
@@ -93,6 +92,6 @@ public class TimeEntry {
     public void setCategory(Category category) {
         this.category = category;
     }
-
-
+    
+    
 }

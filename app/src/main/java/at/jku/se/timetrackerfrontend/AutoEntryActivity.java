@@ -31,6 +31,7 @@ import entities.Person;
 import entities.Project;
 import entities.TimeEntry;
 import services.CategoryService;
+import services.CooperationService;
 import services.PersonService;
 import services.ProjectService;
 import services.TimeEntryService;
@@ -41,6 +42,7 @@ public class AutoEntryActivity extends AppCompatActivity{
     ProjectService projectService;
     CategoryService categoryService;
     PersonService personService;
+    CooperationService cooperationService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +54,7 @@ public class AutoEntryActivity extends AppCompatActivity{
         projectService = new ProjectService();
         categoryService = new CategoryService();
         personService = new PersonService();
+        cooperationService = new CooperationService();
 
         final Button btnStartTimer = (Button) findViewById(R.id.btn_autoEntry_start);
         final Button btnCancel = (Button) findViewById(R.id.btn_autoEntry_cancel);
@@ -62,10 +65,13 @@ public class AutoEntryActivity extends AppCompatActivity{
         List<Project> projectListAll = projectService.get();
         projectList.add(new Project("",""));
 
+
+
         for(Project p : projectListAll){
-            List<Cooperation> cooperationList = p.getCooperations();
+            //List<Cooperation> cooperationList = p.getCooperations();
+            List<Cooperation> cooperationList = cooperationService.getByProject(p);
             for(Cooperation c : cooperationList){
-                if(c.getPerson() == LoginActivity.user && c.getProject() == p){
+                if(c.getPerson().getId() == LoginActivity.user.getId() && c.getProject().getId() == p.getId()){
                     projectList.add(p);
                 }
             }
@@ -89,7 +95,7 @@ public class AutoEntryActivity extends AppCompatActivity{
                 if(!selectedProject.getName().equals("")) {
                     List<Category> categoryListAll = categoryService.get();
                     for(Category c : categoryListAll){
-                        if(c.getProject() == selectedProject){
+                        if(c.getProject().getId() == selectedProject.getId()){
                             categoryList.add(c);
                         }
                     }
@@ -142,7 +148,7 @@ public class AutoEntryActivity extends AppCompatActivity{
                         List<TimeEntry> timeEntryList = timeEntryService.get();
                         List<TimeEntry> timeEntryByCategoryList = new LinkedList<TimeEntry>();
                         for (TimeEntry te : timeEntryList) {
-                            if (category == te.getCategory()) {
+                            if (category.getId() == te.getCategory().getId()) {
                                 timeEntryByCategoryList.add(te);
                             }
                         }

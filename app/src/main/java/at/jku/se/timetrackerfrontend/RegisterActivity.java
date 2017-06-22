@@ -8,7 +8,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
-import org.apache.*;
+//import org.apache.*;
 
 import entities.Person;
 import services.PersonService;

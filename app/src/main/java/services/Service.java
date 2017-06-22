@@ -1,17 +1,20 @@
 package services;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.util.List;
 
 public abstract class Service<T> {
-    public static Data data = new Data();
-
+    
+    protected BufferedReader br;
+    protected BufferedWriter bw;
+    protected int code;
+    protected XMLMapping xmlMapper = new XMLMapping();
+    protected String uri = "http://10.0.2.2:8080/TimeTrackerBackend/webresources/";
+    
     public abstract List<T> get();
-
     public abstract T getById(long id);
-
     public abstract T create(T object);
-
     public abstract boolean edit(T object);
-
     public abstract boolean remove(long id);
 }

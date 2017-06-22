@@ -33,8 +33,12 @@ import java.util.Optional;
 import entities.Category;
 import entities.Cooperation;
 import entities.Person;
+import entities.Project;
 import entities.TimeEntry;
+import services.CategoryService;
 import services.CooperationService;
+import services.ProjectService;
+import services.TimeEntryService;
 
 public class UserReportActivity extends AppCompatActivity {
 
@@ -149,12 +153,28 @@ public class UserReportActivity extends AppCompatActivity {
 
         for(Cooperation cooperation : cooperations) {
             List<TimeEntry> entries = new ArrayList<>();
-            for(Category category : cooperation.getProject().getCategories()) {
+
+            //edit Werner Webservice
+            /*for(Category category : cooperation.getProject().getCategories()) {
                 category.getTimeEntries()
                         .stream()
                         .filter(te -> te.getPerson().getId() == actUser.getId())
                         .forEach(entries::add);
             }
+            */
+            CategoryService categoryService = new CategoryService();
+            TimeEntryService timeEntryService = new TimeEntryService();
+
+            for(Category category : categoryService.getByProject(cooperation.getProject())){
+                timeEntryService.getByCategory(category)
+                        .stream()
+                        .filter(te -> te.getPerson().getId() == actUser.getId())
+                        .forEach(entries::add);
+            }
+            //ende edit
+
+
+
             nameTimeEntry.put(cooperation.getProject().getName(), entries);
         }
 
@@ -201,7 +221,8 @@ public class UserReportActivity extends AppCompatActivity {
         if(cooperationOpt.isPresent()) {
             Cooperation cooperation = cooperationOpt.get();
 
-            for(Category category : cooperation.getProject().getCategories()) {
+            //edit Werner Webservice
+            /*for(Category category : cooperation.getProject().getCategories()) {
                 List<TimeEntry> entries = new ArrayList<>();
                 category.getTimeEntries()
                         .stream()
@@ -209,7 +230,21 @@ public class UserReportActivity extends AppCompatActivity {
                         .forEach(entries::add);
 
                 nameTimeEntry.put(category.getName(), entries);
+            }*/
+
+            CategoryService categoryService = new CategoryService();
+            TimeEntryService timeEntryService = new TimeEntryService();
+            for(Category category : categoryService.getByProject(cooperation.getProject())) {
+                List<TimeEntry> entries = new ArrayList<>();
+                timeEntryService.getByCategory(category)
+                        .stream()
+                        .filter(te -> te.getPerson().getId() == actUser.getId())
+                        .forEach(entries::add);
+
+                nameTimeEntry.put(category.getName(), entries);
             }
+            //ende Edit
+
         }
 
         Map<String, Double> categoryNameTime = new HashMap<>();

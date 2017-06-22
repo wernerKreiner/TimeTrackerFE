@@ -32,6 +32,7 @@ import entities.Cooperation;
 import entities.Project;
 import entities.TimeEntry;
 import services.CategoryService;
+import services.CooperationService;
 import services.PersonService;
 import services.ProjectService;
 import services.TimeEntryService;
@@ -42,6 +43,7 @@ public class EditEntryDetailActivity extends AppCompatActivity {
     ProjectService projectService;
     CategoryService categoryService;
     PersonService personService;
+    CooperationService cooperationService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +55,7 @@ public class EditEntryDetailActivity extends AppCompatActivity {
         projectService = new ProjectService();
         categoryService = new CategoryService();
         personService = new PersonService();
+        cooperationService = new CooperationService();
 
         //get Timeentry from EditEntryActivity
         Bundle bundle = getIntent().getExtras();
@@ -98,9 +101,10 @@ public class EditEntryDetailActivity extends AppCompatActivity {
         projectList.add(new Project("",""));
 
         for(Project p : projectListAll){
-            List<Cooperation> cooperationList = p.getCooperations();
+            //List<Cooperation> cooperationList = p.getCooperations();
+            List<Cooperation> cooperationList = cooperationService.getByProject(p);
             for(Cooperation c : cooperationList){
-                if(c.getPerson() == LoginActivity.user && c.getProject() == p){
+                if(c.getPerson().getId() == LoginActivity.user.getId() && c.getProject().getId() == p.getId()){
                     projectList.add(p);
                 }
             }
@@ -109,7 +113,7 @@ public class EditEntryDetailActivity extends AppCompatActivity {
         int spnProjectIndex = 0;
         int i = 0;
         for(Project p : projectList){
-            if(actualCategory != null && p == actualProject){
+            if(actualCategory != null && p.getId() == actualProject.getId()){
                 spnProjectIndex = i;
             }
             i++;
@@ -142,19 +146,19 @@ public class EditEntryDetailActivity extends AppCompatActivity {
                 spnCategoryIndex = 0;
                 int i = 0;
                 if(!selectedProject.getName().equals("")) {
-                    if(actualProject != null && actualProject == selectedProject) {
+                    if(actualProject != null && actualProject.getId() == selectedProject.getId()) {
                         for (Category c : categoryListAll) {
-                            if (c.getProject() == actualProject) {
+                            if (c.getProject().getId() == actualProject.getId()) {
                                 categoryList.add(c);
                                 i++;
-                                if (c == actualCategory) {
+                                if (c.getId() == actualCategory.getId()) {
                                     spnCategoryIndex = i;
                                 }
                             }
                         }
                     }else{
                         for (Category c : categoryListAll){
-                            if (c.getProject() == selectedProject) {
+                            if (c.getProject().getId() == selectedProject.getId()) {
                                 categoryList.add(c);
                             }
                         }
