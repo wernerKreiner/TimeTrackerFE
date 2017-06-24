@@ -17,6 +17,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 import android.view.ViewGroup.LayoutParams;
+
+import com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar;
+import com.akexorcist.roundcornerprogressbar.TextRoundCornerProgressBar;
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
@@ -50,6 +53,7 @@ public class ProjectReportActivity extends AppCompatActivity {
     private ListView listview;
     private static PieChart projectReportChart;
     private EntryAdapter entryAdapter;
+    private TextRoundCornerProgressBar progressbarProject;
 
     protected Typeface mTfRegular;
     protected Typeface mTfLight;
@@ -61,6 +65,8 @@ public class ProjectReportActivity extends AppCompatActivity {
 
         projectReportChart = (PieChart) findViewById(R.id.chart_project_report);
         this.listview = (ListView) findViewById(R.id.lv_project_report);
+
+        this.progressbarProject = (TextRoundCornerProgressBar) findViewById(R.id.pbProject);
 
         this.personService = new PersonService();
         this.cooperationService = new CooperationService();
@@ -83,24 +89,6 @@ public class ProjectReportActivity extends AppCompatActivity {
         // Get projectname of first project of user to show.
         Person actUser = LoginActivity.user;
 
-        //edit Werner Webservice
-       /* Optional<String> projectNameOpt = this.personService.get()
-                .stream()
-                .filter(p -> p.getId() == actUser.getId())
-                .map(person -> {
-                    if(person.getCooperations().stream().findFirst().isPresent()) {
-                        return person.getCooperations().stream().findFirst().get().getProject().getName();
-                    }
-
-                    return "";
-                })
-                .findFirst();
-
-        if(projectNameOpt.isPresent()) {
-            this.changeChart(projectNameOpt.get());
-        }*/
-
-
         Optional<String> projectNameOpt = this.personService.get()
                 .stream()
                 .filter(p -> p.getId() == actUser.getId())
@@ -116,14 +104,6 @@ public class ProjectReportActivity extends AppCompatActivity {
         if(projectNameOpt.isPresent()) {
             this.changeChart(projectNameOpt.get());
         }
-
-
-
-
-
-
-
-        //ende Edit
     }
 
     public void changeChart(String projectName) {
@@ -148,16 +128,6 @@ public class ProjectReportActivity extends AppCompatActivity {
         if(projectOpt.isPresent()) {
             Project project = projectOpt.get();
 
-            //edit Werner Webservice
-          /*  ArrayList<TimeEntry> timeEntries = new ArrayList<>();
-            project.getCategories()
-                    .stream()
-                    .forEach(c -> {
-                        c.getTimeEntries()
-                                .stream()
-                                .forEach(timeEntries::add);
-                    });*/
-
             CategoryService categoryService = new CategoryService();
             TimeEntryService timeEntryService = new TimeEntryService();
             ArrayList<TimeEntry> timeEntries = new ArrayList<>();
@@ -168,9 +138,6 @@ public class ProjectReportActivity extends AppCompatActivity {
                                 .stream()
                                 .forEach(timeEntries::add);
                     });
-
-
-            //ende Edit
 
             // Fill EntryAdapter.
             this.entryAdapter = new EntryAdapter(this, timeEntries);
@@ -211,22 +178,14 @@ public class ProjectReportActivity extends AppCompatActivity {
 
         Map<String, List<TimeEntry>> nameTimeEntry = new HashMap<>();
 
+        Cooperation cooperation = cooperationOpt.get();
+        CategoryService categoryService = new CategoryService();
+        List<Category> categories = categoryService.getByProject(cooperation.getProject());
+
         if(cooperationOpt.isPresent()) {
-            Cooperation cooperation = cooperationOpt.get();
-
-            //edit Werner Webservice
-            /*for(Category category : cooperation.getProject().getCategories()) {
-                List<TimeEntry> entries = new ArrayList<>();
-                category.getTimeEntries()
-                        .stream()
-                        .forEach(entries::add);
-
-                nameTimeEntry.put(category.getName(), entries);
-            }*/
-
-            CategoryService categoryService = new CategoryService();
             TimeEntryService timeEntryService = new TimeEntryService();
-            for(Category category : categoryService.getByProject(cooperation.getProject())) {
+
+            for(Category category : categories) {
                 List<TimeEntry> entries = new ArrayList<>();
                 timeEntryService.getByCategory(category)
                         .stream()
@@ -234,8 +193,6 @@ public class ProjectReportActivity extends AppCompatActivity {
 
                 nameTimeEntry.put(category.getName(), entries);
             }
-
-            //Ende edit
         }
 
         Map<String, Double> categoryNameTime = new HashMap<>();
@@ -264,6 +221,17 @@ public class ProjectReportActivity extends AppCompatActivity {
         PieDataSet dataSet = new PieDataSet(entries, "Categories");
 
         this.initialiseNewDataSet(dataSet);
+        this.initialisePbProject(entries, categories);
+    }
+
+    private void initialisePbProject(ArrayList<PieEntry> entries, List<Category> categories) {
+        // sum all entries
+        double sumOfTimeEntries = entries.stream().mapToDouble(e -> e.getValue()).sum();
+        double sumOfAllCategories = categories.stream().mapToDouble(e -> e.getEstimatedTime()).sum();
+
+        this.progressbarProject.setProgress((float) sumOfTimeEntries);
+        this.progressbarProject.setMax((float) sumOfAllCategories);
+        this.progressbarProject.setProgressText(sumOfTimeEntries + " of " + sumOfAllCategories);
     }
 
     private void initialiseNewDataSet(PieDataSet dataSet) {

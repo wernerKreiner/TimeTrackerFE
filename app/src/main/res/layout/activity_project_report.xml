@@ -26,6 +26,34 @@
                 app:layout_constraintTop_toBottomOf="parent"
                 tools:layout_editor_absoluteX="8dp" />
 
+            <TextView
+                android:id="@+id/textView14"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Time Comparison"
+                android:gravity="center"
+                android:textSize="24sp"
+                app:layout_constraintHorizontal_bias="0.502"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/chart_project_report" />
+
+            <com.akexorcist.roundcornerprogressbar.TextRoundCornerProgressBar
+                android:id="@+id/pbProject"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                app:rcBackgroundColor="@color/gray"
+                app:rcBackgroundPadding="2dp"
+                app:rcProgressColor="@color/colorPrimary"
+                app:rcRadius="10dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="24dp"
+                />
+
             <include
                 android:id="@+id/includeEntries"
                 layout="@layout/content_listview_entries"
