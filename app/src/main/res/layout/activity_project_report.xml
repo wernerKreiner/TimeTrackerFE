@@ -86,6 +86,17 @@
                 app:layout_constraintTop_toBottomOf="@+id/textView14"
                 tools:layout_editor_absoluteX="176dp" />
 
+            <android.support.v7.widget.AppCompatSpinner
+                style="@android:style/Widget.Holo.Light.Spinner"
+                android:id="@+id/spinner_project_report_changeUser"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:spinnerMode="dialog"
+                android:prompt="@string/userPrompt"
+                android:layout_marginTop="16dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginLeft="8dp" />
+
             <ListView
                 android:id="@+id/lv_project_report"
                 android:layout_width="match_parent"

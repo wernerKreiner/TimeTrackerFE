@@ -30,7 +30,7 @@ public class ChangeProjectReportDialogFragment extends DialogFragment {
         builder.setTitle("Change Project");
 
         LayoutInflater inflater = getActivity().getLayoutInflater();
-        View v_iew = inflater.inflate(R.layout.dialog_change_user_report, null);
+        View v_iew = inflater.inflate(R.layout.dialog_change_project_report, null);
         builder.setView(v_iew);
 
         List<String> projects = new ArrayList<>();
@@ -41,18 +41,18 @@ public class ChangeProjectReportDialogFragment extends DialogFragment {
                 .map(c -> c.getProject().getName())
                 .forEach(projects::add);
 
-        Spinner spinner = (Spinner) v_iew.findViewById(R.id.spinner_project_dialog_changeUserReport);
+        Spinner spinnerProject = (Spinner) v_iew.findViewById(R.id.spinner_project_dialog_changeProjectReport);
         ArrayAdapter<String> stringAdapter = new ArrayAdapter(this.getActivity(), android.R.layout.simple_spinner_item, projects.toArray());
         stringAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(stringAdapter);
+        spinnerProject.setAdapter(stringAdapter);
 
         // Add action buttons
         builder.setPositiveButton("Choose", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int id) {
-                String projectName = spinner.getSelectedItem().toString();
+                String projectName = spinnerProject.getSelectedItem().toString();
                 ProjectReportActivity callingActivity = (ProjectReportActivity) getActivity();
-                callingActivity.changeChart(projectName);
+                callingActivity.changeChart(projectName, "All users");
                 dialog.dismiss();
             }
         });

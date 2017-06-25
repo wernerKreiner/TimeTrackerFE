@@ -202,7 +202,7 @@ public class UserReportActivity extends AppCompatActivity {
         // Get all cooperations from person of Project.
         Optional<Cooperation> cooperationOpt = this.cooperationService.get()
                 .stream()
-                .filter(c -> c.getPerson().getId() == actUser.getId() && c.getProject().getName().compareTo(projectName) == 0)
+                .filter(c -> c.getPerson().getId() == actUser.getId() && c.getProject().getName().equals(projectName))
                 .findFirst();
 
         Map<String, List<TimeEntry>> nameTimeEntry = new HashMap<>();

@@ -35,6 +35,7 @@
 
     <string name="rolePrompt">Choose a role</string>
     <string name="chartPrompt">Choose a Project</string>
+    <string name="userPrompt">Choose a User</string>
     <string-array name="rolesArray">
         <item>Project Manager</item>
         <item>Project Co-worker</item>

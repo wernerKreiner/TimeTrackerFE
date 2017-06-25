@@ -1,9 +1,12 @@
 package at.jku.se.timetrackerfrontend;
 
+import android.app.Activity;
 import android.app.FragmentManager;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -15,8 +18,12 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.view.ViewGroup.LayoutParams;
+import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar;
 import com.akexorcist.roundcornerprogressbar.TextRoundCornerProgressBar;
@@ -34,10 +41,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
+
 import entities.Category;
 import entities.Cooperation;
 import entities.Person;
 import entities.Project;
+import entities.ProjectRole;
 import entities.TimeEntry;
 import services.CategoryService;
 import services.CooperationService;
@@ -54,6 +65,11 @@ public class ProjectReportActivity extends AppCompatActivity {
     private static PieChart projectReportChart;
     private EntryAdapter entryAdapter;
     private TextRoundCornerProgressBar progressbarProject;
+    private List<String> users;
+    private Activity activity = this;
+
+    private String actUser;
+    private String actProject;
 
     protected Typeface mTfRegular;
     protected Typeface mTfLight;
@@ -71,6 +87,9 @@ public class ProjectReportActivity extends AppCompatActivity {
         this.personService = new PersonService();
         this.cooperationService = new CooperationService();
         this.projectService = new ProjectService();
+
+        this.users = new ArrayList();
+        this.users.add("All Users");
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.btnFloting_settings_project_report);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -102,22 +121,32 @@ public class ProjectReportActivity extends AppCompatActivity {
                 .findFirst();
 
         if(projectNameOpt.isPresent()) {
-            this.changeChart(projectNameOpt.get());
+            List<Cooperation> cooperations = this.cooperationService.getByProject(this.projectService.getByName(projectNameOpt.get()));
+
+            cooperations.stream()
+                    .map(c -> c.getPerson().getNickname())
+                    .forEach(c -> {
+                        this.users.add(c);
+                    });
+            this.actProject = projectNameOpt.get();
+
+            this.changeChart(this.actProject, "All users");
         }
+
+        Spinner spinnerUser = (Spinner) findViewById(R.id.spinner_project_report_changeUser);
+        ArrayAdapter<String> stringAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, users.toArray());
+        stringAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerUser.setAdapter(stringAdapter);
+        spinnerUser.setOnItemSelectedListener(new myOnItemSelectedListener());
     }
 
-    public void changeChart(String projectName) {
-        if(projectName.compareTo("All Projects") == 0) {
-            projectReportChart.setCenterText(generateCenterSpannableText(projectName));
-        }
-        else {
-            projectReportChart.setCenterText(generateCenterSpannableText(projectName));
-            this.setDataOfProject(projectName);
-            this.setDataOfListView(projectName);
-        }
+    public void changeChart(String projectName, String user) {
+        projectReportChart.setCenterText(generateCenterSpannableText(projectName));
+        this.setDataOfProject(projectName);
+        this.setDataOfListView(projectName, user);
     }
 
-    private void setDataOfListView(String projectName) {
+    private void setDataOfListView(String projectName, String user) {
 
         // Load data.
         Optional<Project> projectOpt = this.projectService.get()
@@ -136,6 +165,17 @@ public class ProjectReportActivity extends AppCompatActivity {
                     .forEach(c -> {
                         timeEntryService.getByCategory(c)
                                 .stream()
+                                .filter(timeEntry -> {
+                                    if(user.equals("All Users")) {
+                                        return true;
+                                    }
+                                    else {
+                                        if(timeEntry.getPerson().getNickname().equals(user)) {
+                                            return true;
+                                        }
+                                        return false;
+                                    }
+                                })
                                 .forEach(timeEntries::add);
                     });
 
@@ -360,5 +400,24 @@ public class ProjectReportActivity extends AppCompatActivity {
         }
 
         return true;
+    }
+
+    class myOnItemSelectedListener implements AdapterView.OnItemSelectedListener, AdapterView.OnItemClickListener {
+
+        @RequiresApi(api = Build.VERSION_CODES.N)
+        @Override
+        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            // change to selected user or all users
+            actUser = users.get(position);
+            setDataOfListView(actProject, actUser);
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> parent) {
+        }
+
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        }
     }
 }
