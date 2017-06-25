@@ -60,6 +60,7 @@ public class ProjectReportActivity extends AppCompatActivity {
     private PersonService personService;
     private CooperationService cooperationService;
     private ProjectService projectService;
+    private CategoryService categoryService;
 
     private ListView listview;
     private static PieChart projectReportChart;
@@ -68,9 +69,13 @@ public class ProjectReportActivity extends AppCompatActivity {
     private List<String> users;
     private Activity activity = this;
     private Spinner spinnerUser;
-    private ArrayAdapter<String> stringAdapter;
+    private ArrayAdapter<String> userStringAdapter;
+    private Spinner spinnerCategory;
+    private ArrayAdapter<String> categoryStringAdapter;
+    private List<String> categories;
 
     private String actUser;
+    private String actCategory;
     private String actProject;
 
     protected Typeface mTfRegular;
@@ -89,9 +94,16 @@ public class ProjectReportActivity extends AppCompatActivity {
         this.personService = new PersonService();
         this.cooperationService = new CooperationService();
         this.projectService = new ProjectService();
+        this.categoryService = new CategoryService();
 
         this.users = new ArrayList();
         this.users.add("All Users");
+
+        this.categories = new ArrayList();
+        this.categories.add("All Categories");
+
+        this.actUser = "All Users";
+        this.actCategory = "All Categories";
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.btnFloting_settings_project_report);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -123,7 +135,12 @@ public class ProjectReportActivity extends AppCompatActivity {
                 .findFirst();
 
         if(projectNameOpt.isPresent()) {
-            List<Cooperation> cooperations = this.cooperationService.getByProject(this.projectService.getByName(projectNameOpt.get()));
+            String projectName = projectNameOpt.get();
+            List<Cooperation> cooperations = this.cooperationService.getByProject(this.projectService.getByName(projectName));
+
+            this.categoryService.getByProject(this.projectService.getByName(projectNameOpt.get())).stream()
+                    .map(c -> c.getName())
+                    .forEach(this.categories::add);
 
             cooperations.stream()
                     .map(c -> c.getPerson().getNickname())
@@ -132,29 +149,36 @@ public class ProjectReportActivity extends AppCompatActivity {
                     });
             this.actProject = projectNameOpt.get();
 
-            this.changeChart(this.actProject, "All Users", true);
+            this.changeChart(this.actProject, "All Users", "All Categories", true);
         }
 
         this.spinnerUser = (Spinner) findViewById(R.id.spinner_project_report_changeUser);
-        this.stringAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, users.toArray());
-        stringAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        this.spinnerUser.setAdapter(stringAdapter);
-        this.spinnerUser.setOnItemSelectedListener(new myOnItemSelectedListener());
+        this.userStringAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, users.toArray());
+        this.userStringAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        this.spinnerUser.setAdapter(this.userStringAdapter);
+        this.spinnerUser.setOnItemSelectedListener(new userSpinnerListener());
+
+        this.spinnerCategory = (Spinner) findViewById(R.id.spinner_project_report_changeCategory);
+        this.categoryStringAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, categories.toArray());
+        this.categoryStringAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        this.spinnerCategory.setAdapter(this.categoryStringAdapter);
+        this.spinnerCategory.setOnItemSelectedListener(new categorySpinnerListener());
     }
 
-    public void changeChart(String projectName, String user, Boolean activityStart) {
+    public void changeChart(String projectName, String user, String category, Boolean activityStart) {
         this.actProject = projectName;
 
         if(!activityStart) {
-            this.spinnerUser.setSelection(this.stringAdapter.getPosition("All Users"));
+            this.spinnerUser.setSelection(this.userStringAdapter.getPosition("All Users"));
+            this.spinnerCategory.setSelection(this.categoryStringAdapter.getPosition("All Categories"));
         }
 
         projectReportChart.setCenterText(generateCenterSpannableText(projectName));
         this.setDataOfProject(projectName);
-        this.setDataOfListView(projectName, user);
+        this.setDataOfListView(projectName, user, category);
     }
 
-    private void setDataOfListView(String projectName, String user) {
+    private void setDataOfListView(String projectName, String user, String category) {
 
         // Load data.
         Optional<Project> projectOpt = this.projectService.get()
@@ -165,11 +189,21 @@ public class ProjectReportActivity extends AppCompatActivity {
         if(projectOpt.isPresent()) {
             Project project = projectOpt.get();
 
-            CategoryService categoryService = new CategoryService();
             TimeEntryService timeEntryService = new TimeEntryService();
             ArrayList<TimeEntry> timeEntries = new ArrayList<>();
-            categoryService.getByProject(project)
+            this.categoryService.getByProject(project)
                     .stream()
+                    .filter(c -> {
+                        if(category.equals("All Categories")) {
+                            return true;
+                        }
+                        else {
+                            if(c.getName().equals(category)) {
+                                return true;
+                            }
+                            return false;
+                        }
+                    })
                     .forEach(c -> {
                         timeEntryService.getByCategory(c)
                                 .stream()
@@ -410,14 +444,33 @@ public class ProjectReportActivity extends AppCompatActivity {
         return true;
     }
 
-    class myOnItemSelectedListener implements AdapterView.OnItemSelectedListener, AdapterView.OnItemClickListener {
+    class userSpinnerListener implements AdapterView.OnItemSelectedListener, AdapterView.OnItemClickListener {
 
         @RequiresApi(api = Build.VERSION_CODES.N)
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
             // change to selected user or all users
             actUser = users.get(position);
-            setDataOfListView(actProject, actUser);
+            setDataOfListView(actProject, actUser, actCategory);
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> parent) {
+        }
+
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        }
+    }
+
+    class categorySpinnerListener implements AdapterView.OnItemSelectedListener, AdapterView.OnItemClickListener {
+
+        @RequiresApi(api = Build.VERSION_CODES.N)
+        @Override
+        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            // change to selected user or all users
+            actCategory = categories.get(position);
+            setDataOfListView(actProject, actUser, actCategory);
         }
 
         @Override
