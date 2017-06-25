@@ -52,7 +52,7 @@ public class ChangeProjectReportDialogFragment extends DialogFragment {
             public void onClick(DialogInterface dialog, int id) {
                 String projectName = spinnerProject.getSelectedItem().toString();
                 ProjectReportActivity callingActivity = (ProjectReportActivity) getActivity();
-                callingActivity.changeChart(projectName, "All users");
+                callingActivity.changeChart(projectName, "All users", false);
                 dialog.dismiss();
             }
         });

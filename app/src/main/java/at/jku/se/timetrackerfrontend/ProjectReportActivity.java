@@ -67,6 +67,8 @@ public class ProjectReportActivity extends AppCompatActivity {
     private TextRoundCornerProgressBar progressbarProject;
     private List<String> users;
     private Activity activity = this;
+    private Spinner spinnerUser;
+    private ArrayAdapter<String> stringAdapter;
 
     private String actUser;
     private String actProject;
@@ -130,17 +132,23 @@ public class ProjectReportActivity extends AppCompatActivity {
                     });
             this.actProject = projectNameOpt.get();
 
-            this.changeChart(this.actProject, "All users");
+            this.changeChart(this.actProject, "All Users", true);
         }
 
-        Spinner spinnerUser = (Spinner) findViewById(R.id.spinner_project_report_changeUser);
-        ArrayAdapter<String> stringAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, users.toArray());
+        this.spinnerUser = (Spinner) findViewById(R.id.spinner_project_report_changeUser);
+        this.stringAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, users.toArray());
         stringAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerUser.setAdapter(stringAdapter);
-        spinnerUser.setOnItemSelectedListener(new myOnItemSelectedListener());
+        this.spinnerUser.setAdapter(stringAdapter);
+        this.spinnerUser.setOnItemSelectedListener(new myOnItemSelectedListener());
     }
 
-    public void changeChart(String projectName, String user) {
+    public void changeChart(String projectName, String user, Boolean activityStart) {
+        this.actProject = projectName;
+
+        if(!activityStart) {
+            this.spinnerUser.setSelection(this.stringAdapter.getPosition("All Users"));
+        }
+
         projectReportChart.setCenterText(generateCenterSpannableText(projectName));
         this.setDataOfProject(projectName);
         this.setDataOfListView(projectName, user);
