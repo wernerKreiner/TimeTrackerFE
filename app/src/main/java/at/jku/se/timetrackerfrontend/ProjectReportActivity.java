@@ -143,7 +143,7 @@ public class ProjectReportActivity extends AppCompatActivity {
                     .forEach(this.categories::add);
 
             cooperations.stream()
-                    .map(c -> c.getPerson().getNickname())
+                    .map(c -> c.getPerson().getLastname())
                     .forEach(c -> {
                         this.users.add(c);
                     });
@@ -169,6 +169,8 @@ public class ProjectReportActivity extends AppCompatActivity {
         this.actProject = projectName;
 
         if(!activityStart) {
+            this.loadUserStrings(projectName);
+            this.loadCategoryStrings(projectName);
             this.spinnerUser.setSelection(this.userStringAdapter.getPosition("All Users"));
             this.spinnerCategory.setSelection(this.categoryStringAdapter.getPosition("All Categories"));
         }
@@ -176,6 +178,34 @@ public class ProjectReportActivity extends AppCompatActivity {
         projectReportChart.setCenterText(generateCenterSpannableText(projectName));
         this.setDataOfProject(projectName);
         this.setDataOfListView(projectName, user, category);
+    }
+
+    private void loadCategoryStrings(String projectName) {
+        this.categories = new ArrayList();
+        this.categories.add("All Categories");
+
+        this.categoryService.getByProject(this.projectService.getByName(projectName)).stream()
+                .map(c -> c.getName())
+                .forEach(this.categories::add);
+
+        this.categoryStringAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, categories.toArray());
+        this.categoryStringAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        this.spinnerCategory.setAdapter(this.categoryStringAdapter);
+        this.spinnerCategory.setOnItemSelectedListener(new categorySpinnerListener());
+    }
+
+    private void loadUserStrings(String projectName) {
+        this.users = new ArrayList();
+        this.users.add("All Users");
+
+        this.cooperationService.getByProject(this.projectService.getByName(projectName)).stream()
+                .map(c -> c.getPerson().getLastname())
+                .forEach(this.users::add);
+
+        this.userStringAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, users.toArray());
+        this.userStringAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        this.spinnerUser.setAdapter(this.userStringAdapter);
+        this.spinnerUser.setOnItemSelectedListener(new userSpinnerListener());
     }
 
     private void setDataOfListView(String projectName, String user, String category) {
@@ -212,7 +242,7 @@ public class ProjectReportActivity extends AppCompatActivity {
                                         return true;
                                     }
                                     else {
-                                        if(timeEntry.getPerson().getNickname().equals(user)) {
+                                        if(timeEntry.getPerson().getLastname().equals(user)) {
                                             return true;
                                         }
                                         return false;
