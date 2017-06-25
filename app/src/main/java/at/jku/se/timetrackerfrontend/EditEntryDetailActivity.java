@@ -203,6 +203,8 @@ public class EditEntryDetailActivity extends AppCompatActivity {
                     actualTimeEntry.setCategory(newCategory);
                     actualTimeEntry.setNote(eTextNotice.getText().toString());
 
+                    timeEntryService.edit(actualTimeEntry);
+
                     startActivity(new Intent(EditEntryDetailActivity.this, EditEntryActivity.class));
                 }else{
                     Toast toast = new Toast(EditEntryDetailActivity.this);
