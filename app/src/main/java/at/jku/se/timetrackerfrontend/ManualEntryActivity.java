@@ -16,7 +16,6 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -24,7 +23,6 @@ import android.widget.Toast;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -65,7 +63,6 @@ public class ManualEntryActivity extends AppCompatActivity {
         List<Project> projectListAll = projectService.get();
         projectList.add(new Project("",""));
         for(Project p : projectListAll){
-            //List<Cooperation> cooperationList = p.getCooperations();
             List<Cooperation> cooperationList = cooperationService.getByProject(p);
             for(Cooperation c : cooperationList){
                 if(c.getPerson().getId() == LoginActivity.user.getId() && c.getProject().getId() == p.getId()){
@@ -73,7 +70,6 @@ public class ManualEntryActivity extends AppCompatActivity {
                     }
             }
         }
-
 
         AppCompatSpinner spnProject = (AppCompatSpinner) findViewById(R.id.spinner_manualEntry_projectSelection);
         ArrayAdapter<Project> spnAdptProject = new ArrayAdapter<Project>(this, android.R.layout.simple_spinner_dropdown_item, projectList);

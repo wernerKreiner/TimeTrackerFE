@@ -145,7 +145,7 @@ public class AutoEntryActivity extends AppCompatActivity{
                         List<TimeEntry> timeEntryList = timeEntryService.get();
                         List<TimeEntry> timeEntryByCategoryList = new LinkedList<TimeEntry>();
                         for (TimeEntry te : timeEntryList) {
-                            if (category.getId() == te.getCategory().getId()) {
+                            if (te.getCategory() != null && category.getId() == te.getCategory().getId()) {
                                 timeEntryByCategoryList.add(te);
                             }
                         }
