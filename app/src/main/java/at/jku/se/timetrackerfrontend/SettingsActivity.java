@@ -1,8 +1,6 @@
 package at.jku.se.timetrackerfrontend;
 
 import android.content.Intent;
-import android.support.annotation.NonNull;
-import android.support.design.widget.NavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -35,12 +33,7 @@ public class SettingsActivity extends AppCompatActivity {
         CheckBox quickstart = (CheckBox) findViewById(R.id.checkBox_settings_quickstart);
 
         PersonService personService = new PersonService();
-
-        //edit Werner wegen eingeloggten User
-        //Person person = personService.get().stream().findFirst().get();
         Person person = LoginActivity.user;
-
-        //ende edit
 
         firstname.setText(person.getFirstname());
         surname.setText(person.getLastname());
@@ -62,24 +55,52 @@ public class SettingsActivity extends AppCompatActivity {
         apply.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(password.getText().toString().equals(confirmpassword.getText().toString())) {
-                    correctPassword = true;
-                }else {
-                    correctPassword = false;
-                }
+
+                boolean emailAlreadyExists = personService.getByEmail(email.getText().toString()) != null
+                        && personService.getByEmail(email.getText().toString()).getId() != person.getId();
+                correctPassword = password.getText().toString().equals(confirmpassword.getText().toString());
+                boolean validEmail = email.getText().toString().matches("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+                        + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
+
+
                 if(!correctPassword){
                     Toast toast = Toast.makeText(getApplicationContext(), "Password does not match to confirm password", Toast.LENGTH_LONG);
                     toast.show();
-                }else {
+                }
+                else if(emailAlreadyExists){
+                    Toast toast = Toast.makeText(getApplicationContext(), "Emailadress already exists for other user", Toast.LENGTH_LONG);
+                    toast.show();
+                }
+                else if(firstname.getText().toString().isEmpty()) {
+                    Toast toast = Toast.makeText(getApplicationContext(), "You did not enter your Firstname.", Toast.LENGTH_LONG);
+                    toast.show();
+                }
+                else if(surname.getText().toString().isEmpty()) {
+                    Toast toast = Toast.makeText(getApplicationContext(), "You did not enter your Surname.", Toast.LENGTH_LONG);
+                    toast.show();
+                }
+                else if(nickname.getText().toString().isEmpty()) {
+                    Toast toast = Toast.makeText(getApplicationContext(), "You did not enter your Nickname.", Toast.LENGTH_LONG);
+                    toast.show();
+                }
+                else if (!validEmail) {
+                    Toast toast = Toast.makeText(getApplicationContext(), "The e-mail is invalid ", Toast.LENGTH_LONG);
+                    toast.show();
+                }
+                else if(password.getText().toString().isEmpty()) {
+                    Toast toast = Toast.makeText(getApplicationContext(), "You did not enter a password", Toast.LENGTH_LONG);
+                    toast.show();
+                }
+                else {
                     person.setFirstname(firstname.getText().toString());
                     person.setLastname(surname.getText().toString());
                     person.setNickname(nickname.getText().toString());
                     person.setEmail(email.getText().toString());
                     person.setPassword(password.getText().toString());
                     person.setQuickstart(quickstart.isChecked());
+                    personService.edit(person);
                     startActivity(new Intent(SettingsActivity.this, EditEntryActivity.class));
                 }
-
             }
         });
     }
@@ -115,8 +136,6 @@ public class SettingsActivity extends AppCompatActivity {
         } else if (id == R.id.logout) {
             startActivity(new Intent(this, LoginActivity.class));
         }
-
         return true;
     }
-
 }

@@ -65,10 +65,7 @@ public class AutoEntryActivity extends AppCompatActivity{
         List<Project> projectListAll = projectService.get();
         projectList.add(new Project("",""));
 
-
-
         for(Project p : projectListAll){
-            //List<Cooperation> cooperationList = p.getCooperations();
             List<Cooperation> cooperationList = cooperationService.getByProject(p);
             for(Cooperation c : cooperationList){
                 if(c.getPerson().getId() == LoginActivity.user.getId() && c.getProject().getId() == p.getId()){
@@ -148,7 +145,7 @@ public class AutoEntryActivity extends AppCompatActivity{
                         List<TimeEntry> timeEntryList = timeEntryService.get();
                         List<TimeEntry> timeEntryByCategoryList = new LinkedList<TimeEntry>();
                         for (TimeEntry te : timeEntryList) {
-                            if (category.getId() == te.getCategory().getId()) {
+                            if (te.getCategory() != null && category.getId() == te.getCategory().getId()) {
                                 timeEntryByCategoryList.add(te);
                             }
                         }

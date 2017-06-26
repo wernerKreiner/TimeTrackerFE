@@ -63,6 +63,7 @@ public class ManageProjectActivity extends AppCompatActivity {
         List<Cooperation> projects =  cooperationService.get().stream().filter(x->x.getPerson().getId()==currentUser.getId()).collect(Collectors.toList());
 
         List<String> projNames = new ArrayList<>();
+
         for (Cooperation p : projects) {
             projNames.add(p.getProject().getName());
         }
@@ -81,22 +82,16 @@ public class ManageProjectActivity extends AppCompatActivity {
                 projName = parent.getSelectedItem().toString();
                 project = (projectService.get().stream().filter(x->x.getName().equals(projName)).findAny()).get();
 
-                //edit Werner Webservice
-                //List<Category> categories = (project.getCategories().stream().
-                  //          filter(x->x.getProject().getName().equals(project.getName())).collect(Collectors.toList()));
                 CategoryService categoryService = new CategoryService();
                 List<Category> categories = categoryService.getByProject(project);
-                //ende edit werner
 
                 double time = categories.stream().mapToDouble(x->x.getEstimatedTime()).sum();
                 estiTime.setText("" + time);
                 descrption.setText(project.getDescription().toString());
 
                 if(projName != null) {
-                    //edit Werner Webservice
-                    //cooperation = currentUser.getCooperations().stream().filter(x -> x.getProject().equals(project)).findAny();
                     cooperation = cooperationService.getByPerson(currentUser).stream().filter(x -> x.getProject().getName().equals(project.getName())).findAny();
-                    //ende edit
+                    
                     if (cooperation.isPresent() && cooperation.get().getProjectRole().name().equals(ProjectRole.COWORKER.toString())) {
                         projectteam.setEnabled(false);
                         categorieButton.setEnabled(false);
@@ -106,7 +101,8 @@ public class ManageProjectActivity extends AppCompatActivity {
                         categorieButton.setTextColor(Color.GRAY);
                         remove.setTextColor(Color.GRAY);
                         exitProjBtn.setTextColor(Color.BLACK);
-                    }else{
+                    }
+                    else {
                         projectteam.setEnabled(true);
                         categorieButton.setEnabled(true);
                         remove.setEnabled(true);
@@ -117,7 +113,6 @@ public class ManageProjectActivity extends AppCompatActivity {
                         exitProjBtn.setTextColor(Color.GRAY);
                     }
                 }
-
             }
 
             @Override
@@ -152,6 +147,7 @@ public class ManageProjectActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+      
         remove.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -176,8 +172,6 @@ public class ManageProjectActivity extends AppCompatActivity {
 
 
     }
-
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -213,5 +207,4 @@ public class ManageProjectActivity extends AppCompatActivity {
 
         return true;
     }
-
 }

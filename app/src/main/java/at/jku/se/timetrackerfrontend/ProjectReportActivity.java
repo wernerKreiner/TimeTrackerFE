@@ -1,22 +1,39 @@
 package at.jku.se.timetrackerfrontend;
 
+import android.Manifest;
+import android.app.Activity;
 import android.app.FragmentManager;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.media.MediaScannerConnection;
+import android.net.Uri;
+import android.os.Build;
+import android.os.Environment;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
 import android.text.style.StyleSpan;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.view.ViewGroup.LayoutParams;
+import android.widget.Spinner;
+import android.widget.Toast;
+
+import com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar;
+import com.akexorcist.roundcornerprogressbar.TextRoundCornerProgressBar;
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
@@ -26,15 +43,25 @@ import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.MPPointF;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
+
 import entities.Category;
 import entities.Cooperation;
 import entities.Person;
 import entities.Project;
+import entities.ProjectRole;
 import entities.TimeEntry;
 import services.CategoryService;
 import services.CooperationService;
@@ -46,13 +73,32 @@ public class ProjectReportActivity extends AppCompatActivity {
     private PersonService personService;
     private CooperationService cooperationService;
     private ProjectService projectService;
+    private CategoryService categoryService;
 
     private ListView listview;
     private static PieChart projectReportChart;
     private EntryAdapter entryAdapter;
+    private TextRoundCornerProgressBar progressbarProject;
+    private List<String> users;
+    private Activity activity = this;
+    private Spinner spinnerUser;
+    private ArrayAdapter<String> userStringAdapter;
+    private Spinner spinnerCategory;
+    private ArrayAdapter<String> categoryStringAdapter;
+    private List<String> categories;
+
+    private String actUser;
+    private String actCategory;
+    private String actProject;
 
     protected Typeface mTfRegular;
     protected Typeface mTfLight;
+
+    static final int REQUEST_EXTERNAL_STORAGE = 1;
+    static String[] PERMISSIONS_STORAGE = {
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,9 +108,21 @@ public class ProjectReportActivity extends AppCompatActivity {
         projectReportChart = (PieChart) findViewById(R.id.chart_project_report);
         this.listview = (ListView) findViewById(R.id.lv_project_report);
 
+        this.progressbarProject = (TextRoundCornerProgressBar) findViewById(R.id.pbProject);
+
         this.personService = new PersonService();
         this.cooperationService = new CooperationService();
         this.projectService = new ProjectService();
+        this.categoryService = new CategoryService();
+
+        this.users = new ArrayList();
+        this.users.add("All Users");
+
+        this.categories = new ArrayList();
+        this.categories.add("All Categories");
+
+        this.actUser = "All Users";
+        this.actCategory = "All Categories";
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.btnFloting_settings_project_report);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -75,6 +133,13 @@ public class ProjectReportActivity extends AppCompatActivity {
             }
         });
 
+        FloatingActionButton floatingActionButtonExport = (FloatingActionButton) findViewById(R.id.btnFloting_export_project_report);
+        floatingActionButtonExport.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                exportProjectReport();
+            }
+        });
+
         mTfRegular = Typeface.createFromAsset(getAssets(), "OpenSans-Regular.ttf");
         mTfLight = Typeface.createFromAsset(getAssets(), "OpenSans-Light.ttf");
 
@@ -82,24 +147,6 @@ public class ProjectReportActivity extends AppCompatActivity {
 
         // Get projectname of first project of user to show.
         Person actUser = LoginActivity.user;
-
-        //edit Werner Webservice
-       /* Optional<String> projectNameOpt = this.personService.get()
-                .stream()
-                .filter(p -> p.getId() == actUser.getId())
-                .map(person -> {
-                    if(person.getCooperations().stream().findFirst().isPresent()) {
-                        return person.getCooperations().stream().findFirst().get().getProject().getName();
-                    }
-
-                    return "";
-                })
-                .findFirst();
-
-        if(projectNameOpt.isPresent()) {
-            this.changeChart(projectNameOpt.get());
-        }*/
-
 
         Optional<String> projectNameOpt = this.personService.get()
                 .stream()
@@ -114,30 +161,80 @@ public class ProjectReportActivity extends AppCompatActivity {
                 .findFirst();
 
         if(projectNameOpt.isPresent()) {
-            this.changeChart(projectNameOpt.get());
+            String projectName = projectNameOpt.get();
+            List<Cooperation> cooperations = this.cooperationService.getByProject(this.projectService.getByName(projectName));
+
+            this.categoryService.getByProject(this.projectService.getByName(projectNameOpt.get())).stream()
+                    .map(c -> c.getName())
+                    .forEach(this.categories::add);
+
+            cooperations.stream()
+                    .map(c -> c.getPerson().getLastname())
+                    .forEach(c -> {
+                        this.users.add(c);
+                    });
+            this.actProject = projectNameOpt.get();
+
+            this.changeChart(this.actProject, "All Users", "All Categories", true);
         }
 
+        this.spinnerUser = (Spinner) findViewById(R.id.spinner_project_report_changeUser);
+        this.userStringAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, users.toArray());
+        this.userStringAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        this.spinnerUser.setAdapter(this.userStringAdapter);
+        this.spinnerUser.setOnItemSelectedListener(new userSpinnerListener());
 
-
-
-
-
-
-        //ende Edit
+        this.spinnerCategory = (Spinner) findViewById(R.id.spinner_project_report_changeCategory);
+        this.categoryStringAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, categories.toArray());
+        this.categoryStringAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        this.spinnerCategory.setAdapter(this.categoryStringAdapter);
+        this.spinnerCategory.setOnItemSelectedListener(new categorySpinnerListener());
     }
 
-    public void changeChart(String projectName) {
-        if(projectName.compareTo("All Projects") == 0) {
-            projectReportChart.setCenterText(generateCenterSpannableText(projectName));
+    public void changeChart(String projectName, String user, String category, Boolean activityStart) {
+        this.actProject = projectName;
+
+        if(!activityStart) {
+            this.loadUserStrings(projectName);
+            this.loadCategoryStrings(projectName);
+            this.spinnerUser.setSelection(this.userStringAdapter.getPosition("All Users"));
+            this.spinnerCategory.setSelection(this.categoryStringAdapter.getPosition("All Categories"));
         }
-        else {
-            projectReportChart.setCenterText(generateCenterSpannableText(projectName));
-            this.setDataOfProject(projectName);
-            this.setDataOfListView(projectName);
-        }
+
+        projectReportChart.setCenterText(generateCenterSpannableText(projectName));
+        this.setDataOfProject(projectName);
+        this.setDataOfListView(projectName, user, category);
     }
 
-    private void setDataOfListView(String projectName) {
+    private void loadCategoryStrings(String projectName) {
+        this.categories = new ArrayList();
+        this.categories.add("All Categories");
+
+        this.categoryService.getByProject(this.projectService.getByName(projectName)).stream()
+                .map(c -> c.getName())
+                .forEach(this.categories::add);
+
+        this.categoryStringAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, categories.toArray());
+        this.categoryStringAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        this.spinnerCategory.setAdapter(this.categoryStringAdapter);
+        this.spinnerCategory.setOnItemSelectedListener(new categorySpinnerListener());
+    }
+
+    private void loadUserStrings(String projectName) {
+        this.users = new ArrayList();
+        this.users.add("All Users");
+
+        this.cooperationService.getByProject(this.projectService.getByName(projectName)).stream()
+                .map(c -> c.getPerson().getLastname())
+                .forEach(this.users::add);
+
+        this.userStringAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, users.toArray());
+        this.userStringAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        this.spinnerUser.setAdapter(this.userStringAdapter);
+        this.spinnerUser.setOnItemSelectedListener(new userSpinnerListener());
+    }
+
+    private void setDataOfListView(String projectName, String user, String category) {
 
         // Load data.
         Optional<Project> projectOpt = this.projectService.get()
@@ -148,29 +245,37 @@ public class ProjectReportActivity extends AppCompatActivity {
         if(projectOpt.isPresent()) {
             Project project = projectOpt.get();
 
-            //edit Werner Webservice
-          /*  ArrayList<TimeEntry> timeEntries = new ArrayList<>();
-            project.getCategories()
-                    .stream()
-                    .forEach(c -> {
-                        c.getTimeEntries()
-                                .stream()
-                                .forEach(timeEntries::add);
-                    });*/
-
-            CategoryService categoryService = new CategoryService();
             TimeEntryService timeEntryService = new TimeEntryService();
             ArrayList<TimeEntry> timeEntries = new ArrayList<>();
-            categoryService.getByProject(project)
+            this.categoryService.getByProject(project)
                     .stream()
+                    .filter(c -> {
+                        if(category.equals("All Categories")) {
+                            return true;
+                        }
+                        else {
+                            if(c.getName().equals(category)) {
+                                return true;
+                            }
+                            return false;
+                        }
+                    })
                     .forEach(c -> {
                         timeEntryService.getByCategory(c)
                                 .stream()
+                                .filter(timeEntry -> {
+                                    if(user.equals("All Users")) {
+                                        return true;
+                                    }
+                                    else {
+                                        if(timeEntry.getPerson().getLastname().equals(user)) {
+                                            return true;
+                                        }
+                                        return false;
+                                    }
+                                })
                                 .forEach(timeEntries::add);
                     });
-
-
-            //ende Edit
 
             // Fill EntryAdapter.
             this.entryAdapter = new EntryAdapter(this, timeEntries);
@@ -211,22 +316,14 @@ public class ProjectReportActivity extends AppCompatActivity {
 
         Map<String, List<TimeEntry>> nameTimeEntry = new HashMap<>();
 
+        Cooperation cooperation = cooperationOpt.get();
+        CategoryService categoryService = new CategoryService();
+        List<Category> categories = categoryService.getByProject(cooperation.getProject());
+
         if(cooperationOpt.isPresent()) {
-            Cooperation cooperation = cooperationOpt.get();
-
-            //edit Werner Webservice
-            /*for(Category category : cooperation.getProject().getCategories()) {
-                List<TimeEntry> entries = new ArrayList<>();
-                category.getTimeEntries()
-                        .stream()
-                        .forEach(entries::add);
-
-                nameTimeEntry.put(category.getName(), entries);
-            }*/
-
-            CategoryService categoryService = new CategoryService();
             TimeEntryService timeEntryService = new TimeEntryService();
-            for(Category category : categoryService.getByProject(cooperation.getProject())) {
+
+            for(Category category : categories) {
                 List<TimeEntry> entries = new ArrayList<>();
                 timeEntryService.getByCategory(category)
                         .stream()
@@ -234,8 +331,6 @@ public class ProjectReportActivity extends AppCompatActivity {
 
                 nameTimeEntry.put(category.getName(), entries);
             }
-
-            //Ende edit
         }
 
         Map<String, Double> categoryNameTime = new HashMap<>();
@@ -264,6 +359,17 @@ public class ProjectReportActivity extends AppCompatActivity {
         PieDataSet dataSet = new PieDataSet(entries, "Categories");
 
         this.initialiseNewDataSet(dataSet);
+        this.initialisePbProject(entries, categories);
+    }
+
+    private void initialisePbProject(ArrayList<PieEntry> entries, List<Category> categories) {
+        // sum all entries
+        double sumOfTimeEntries = entries.stream().mapToDouble(e -> e.getValue()).sum();
+        double sumOfAllCategories = categories.stream().mapToDouble(e -> e.getEstimatedTime()).sum();
+
+        this.progressbarProject.setProgress((float) sumOfTimeEntries);
+        this.progressbarProject.setMax((float) sumOfAllCategories);
+        this.progressbarProject.setProgressText(sumOfTimeEntries + " of " + sumOfAllCategories);
     }
 
     private void initialiseNewDataSet(PieDataSet dataSet) {
@@ -392,5 +498,124 @@ public class ProjectReportActivity extends AppCompatActivity {
         }
 
         return true;
+    }
+
+    private void exportProjectReport(){
+        verifyStoragePermissions(this);
+
+        TimeEntryService timeEntryService = new TimeEntryService();
+        CooperationService cooperationService = new CooperationService();
+        CategoryService categoryService = new CategoryService();
+        ProjectService projectService = new ProjectService();
+
+        List<TimeEntry> timeEntryList = new LinkedList<>();
+
+        //returns all timeEntrys where user has cooperation
+        List<Project> projects = projectService.getByPerson(LoginActivity.user);
+        List<Category> categories = new LinkedList<Category>();
+        for(Project p : projects) {
+            categories.addAll(categoryService.getByProject(p));
+        }
+        for(Category c : categories){
+            timeEntryList.addAll(timeEntryService.getByCategory(c));
+        }
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("id;user;project;category;from;to;note\n");
+        for(TimeEntry t : timeEntryList){
+            sb.append(t.getId() + ";" + t.getPerson().getEmail() + ";" + t.getCategory().getProject().getName() + ";"
+                    + t.getCategory().getName() + ";" + t.getFrom().toString() + ";" + t.getTo().toString() + ";" + t.getNote()+ ";\n");
+        }
+        String string = sb.toString();
+
+        File path = Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_DOWNLOADS);
+
+        Calendar calendar = Calendar.getInstance();
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        int month = calendar.get(Calendar.MONTH)+1;
+        int year = calendar.get(Calendar.YEAR);
+        int hour = calendar.get(Calendar.HOUR_OF_DAY);
+        int min = calendar.get(Calendar.MINUTE);
+
+        String filename = "projectReport_"+LoginActivity.user.getNickname()+"_"+year+month+day+hour+min+".txt";
+
+        File file = new File(path, filename);
+
+        try{
+            path.mkdirs();
+            FileOutputStream os = new FileOutputStream(file);
+            OutputStreamWriter osw = new OutputStreamWriter(os);
+            osw.append(string);
+            osw.close();
+            os.close();
+
+            MediaScannerConnection.scanFile(this,
+                    new String[] { file.toString() }, null,
+                    new MediaScannerConnection.OnScanCompletedListener() {
+                        public void onScanCompleted(String path, Uri uri) {
+                            Log.i("ExternalStorage", "Scanned " + path + ":");
+                            Log.i("ExternalStorage", "-> uri=" + uri);
+                        }
+                    });
+
+        } catch (java.io.IOException e) {
+            e.printStackTrace();
+        }
+
+        Toast toast = new Toast(this);
+        toast.makeText(this, "ProjectReport successfully downloaded!", Toast.LENGTH_LONG).show();
+    }
+
+    private static void verifyStoragePermissions(Activity activity) {
+        // Check if we have write permission
+        int permission = ActivityCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+
+        if (permission != PackageManager.PERMISSION_GRANTED) {
+            // We don't have permission so prompt the user
+            ActivityCompat.requestPermissions(
+                    activity,
+                    PERMISSIONS_STORAGE,
+                    REQUEST_EXTERNAL_STORAGE
+            );
+        }
+    }
+
+    class userSpinnerListener implements AdapterView.OnItemSelectedListener, AdapterView.OnItemClickListener {
+
+        @RequiresApi(api = Build.VERSION_CODES.N)
+        @Override
+        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            // change to selected user or all users
+            actUser = users.get(position);
+            setDataOfListView(actProject, actUser, actCategory);
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> parent) {
+        }
+
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        }
+    }
+
+    class categorySpinnerListener implements AdapterView.OnItemSelectedListener, AdapterView.OnItemClickListener {
+
+        @RequiresApi(api = Build.VERSION_CODES.N)
+        @Override
+        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            // change to selected user or all users
+            actCategory = categories.get(position);
+            setDataOfListView(actProject, actUser, actCategory);
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> parent) {
+        }
+
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        }
     }
 }
