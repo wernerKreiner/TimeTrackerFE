@@ -63,6 +63,7 @@ public class ManageProjectActivity extends AppCompatActivity {
 
         List<String> projNames = new ArrayList<>();
         for (Project p : projects) {
+            if(p.getName().compareTo("NULL") != 0)
             projNames.add(p.getName());
         }
 
@@ -80,22 +81,15 @@ public class ManageProjectActivity extends AppCompatActivity {
                 projName = parent.getSelectedItem().toString();
                 project = (projectService.get().stream().filter(x->x.getName().equals(projName)).findAny()).get();
 
-                //edit Werner Webservice
-                //List<Category> categories = (project.getCategories().stream().
-                  //          filter(x->x.getProject().getName().equals(project.getName())).collect(Collectors.toList()));
                 CategoryService categoryService = new CategoryService();
                 List<Category> categories = categoryService.getByProject(project);
-                //ende edit werner
 
                 double time = categories.stream().mapToDouble(x->x.getEstimatedTime()).sum();
                 estiTime.setText("" + time);
                 descrption.setText(project.getDescription().toString());
 
                 if(projName != null) {
-                    //edit Werner Webservice
-                    //cooperation = currentUser.getCooperations().stream().filter(x -> x.getProject().equals(project)).findAny();
                     cooperation = cooperationService.getByPerson(currentUser).stream().filter(x -> x.getProject().equals(project)).findAny();
-                    //ende edit
 
                     if (cooperation.isPresent() && cooperation.get().getProjectRole().equals(ProjectRole.COWORKER)) {
                         projectteam.setEnabled(false);
@@ -103,7 +97,6 @@ public class ManageProjectActivity extends AppCompatActivity {
                         remove.setEnabled(false);
                     }
                 }
-
             }
 
             @Override
@@ -149,11 +142,7 @@ public class ManageProjectActivity extends AppCompatActivity {
                 }
             }
         });
-
-
     }
-
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -189,5 +178,4 @@ public class ManageProjectActivity extends AppCompatActivity {
 
         return true;
     }
-
 }

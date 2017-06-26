@@ -71,7 +71,6 @@ public class ManualEntryActivity extends AppCompatActivity {
                 if(c.getPerson().getId() == LoginActivity.user.getId() && c.getProject().getId() == p.getId()){
                         projectList.add(p);
                     }
-
             }
         }
 

@@ -1,21 +1,31 @@
 package at.jku.se.timetrackerfrontend;
 
+import android.Manifest;
+import android.app.Activity;
 import android.app.FragmentManager;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.media.MediaScannerConnection;
+import android.net.Uri;
+import android.os.Environment;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
 import android.text.style.StyleSpan;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Toast;
+
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
@@ -25,7 +35,12 @@ import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.MPPointF;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -47,6 +62,12 @@ public class UserReportActivity extends AppCompatActivity {
     protected Typeface mTfRegular;
     protected Typeface mTfLight;
 
+    static final int REQUEST_EXTERNAL_STORAGE = 1;
+    static String[] PERMISSIONS_STORAGE = {
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,6 +85,13 @@ public class UserReportActivity extends AppCompatActivity {
                 FragmentManager fm = getFragmentManager();
                 android.app.DialogFragment dialogFragment = new ChangeUserReportDialogFragment();
                 dialogFragment.show(fm, "");
+            }
+        });
+
+        FloatingActionButton floatingActionButtonExport = (FloatingActionButton) findViewById(R.id.btnFloting_export_user_report);
+        floatingActionButtonExport.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                exportUserReport();
             }
         });
 
@@ -154,14 +182,6 @@ public class UserReportActivity extends AppCompatActivity {
         for(Cooperation cooperation : cooperations) {
             List<TimeEntry> entries = new ArrayList<>();
 
-            //edit Werner Webservice
-            /*for(Category category : cooperation.getProject().getCategories()) {
-                category.getTimeEntries()
-                        .stream()
-                        .filter(te -> te.getPerson().getId() == actUser.getId())
-                        .forEach(entries::add);
-            }
-            */
             CategoryService categoryService = new CategoryService();
             TimeEntryService timeEntryService = new TimeEntryService();
 
@@ -171,9 +191,6 @@ public class UserReportActivity extends AppCompatActivity {
                         .filter(te -> te.getPerson().getId() == actUser.getId())
                         .forEach(entries::add);
             }
-            //ende edit
-
-
 
             nameTimeEntry.put(cooperation.getProject().getName(), entries);
         }
@@ -213,24 +230,13 @@ public class UserReportActivity extends AppCompatActivity {
         // Get all cooperations from person of Project.
         Optional<Cooperation> cooperationOpt = this.cooperationService.get()
                 .stream()
-                .filter(c -> c.getPerson().getId() == actUser.getId() && c.getProject().getName() == projectName)
+                .filter(c -> c.getPerson().getId() == actUser.getId() && c.getProject().getName().equals(projectName))
                 .findFirst();
 
         Map<String, List<TimeEntry>> nameTimeEntry = new HashMap<>();
 
         if(cooperationOpt.isPresent()) {
             Cooperation cooperation = cooperationOpt.get();
-
-            //edit Werner Webservice
-            /*for(Category category : cooperation.getProject().getCategories()) {
-                List<TimeEntry> entries = new ArrayList<>();
-                category.getTimeEntries()
-                        .stream()
-                        .filter(te -> te.getPerson().getId() == actUser.getId())
-                        .forEach(entries::add);
-
-                nameTimeEntry.put(category.getName(), entries);
-            }*/
 
             CategoryService categoryService = new CategoryService();
             TimeEntryService timeEntryService = new TimeEntryService();
@@ -243,8 +249,6 @@ public class UserReportActivity extends AppCompatActivity {
 
                 nameTimeEntry.put(category.getName(), entries);
             }
-            //ende Edit
-
         }
 
         Map<String, Double> categoryNameTime = new HashMap<>();
@@ -314,6 +318,73 @@ public class UserReportActivity extends AppCompatActivity {
         userReportChart.highlightValues(null);
 
         userReportChart.invalidate();
+    }
+
+    private void exportUserReport(){
+        verifyStoragePermissions(this);
+
+        TimeEntryService timeEntryService = new TimeEntryService();
+        List<TimeEntry> timeEntryList = timeEntryService.getByPerson(LoginActivity.user);
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("id;user;project;category;from;to;note\n");
+        for(TimeEntry t : timeEntryList){
+            sb.append(t.getId() + ";" + t.getPerson().getEmail() + ";" + t.getCategory().getProject().getName() + ";"
+                    + t.getCategory().getName() + ";" + t.getFrom().toString() + ";" + t.getTo().toString() + ";" + t.getNote()+ ";\n");
+        }
+        String string = sb.toString();
+
+        Calendar calendar = Calendar.getInstance();
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        int month = calendar.get(Calendar.MONTH)+1;
+        int year = calendar.get(Calendar.YEAR);
+        int hour = calendar.get(Calendar.HOUR_OF_DAY);
+        int min = calendar.get(Calendar.MINUTE);
+
+        String filename = "userReport_"+LoginActivity.user.getNickname()+"_"+year+month+day+hour+min+".txt";
+
+        File path = Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_DOWNLOADS);
+
+        File file = new File(path, filename);
+
+        try{
+            path.mkdirs();
+            FileOutputStream os = new FileOutputStream(file);
+            OutputStreamWriter osw = new OutputStreamWriter(os);
+            osw.append(string);
+            osw.close();
+            os.close();
+
+            MediaScannerConnection.scanFile(this,
+                    new String[] { file.toString() }, null,
+                    new MediaScannerConnection.OnScanCompletedListener() {
+                        public void onScanCompleted(String path, Uri uri) {
+                            Log.i("ExternalStorage", "Scanned " + path + ":");
+                            Log.i("ExternalStorage", "-> uri=" + uri);
+                        }
+                    });
+
+        } catch (java.io.IOException e) {
+            e.printStackTrace();
+        }
+
+        Toast toast = new Toast(this);
+        toast.makeText(this, "UserReport successfully downloaded!", Toast.LENGTH_LONG).show();
+    }
+
+    public static void verifyStoragePermissions(Activity activity) {
+        // Check if we have write permission
+        int permission = ActivityCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+
+        if (permission != PackageManager.PERMISSION_GRANTED) {
+            // We don't have permission so prompt the user
+            ActivityCompat.requestPermissions(
+                    activity,
+                    PERMISSIONS_STORAGE,
+                    REQUEST_EXTERNAL_STORAGE
+            );
+        }
     }
 
     @Override

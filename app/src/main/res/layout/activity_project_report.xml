@@ -26,6 +26,34 @@
                 app:layout_constraintTop_toBottomOf="parent"
                 tools:layout_editor_absoluteX="8dp" />
 
+            <TextView
+                android:id="@+id/textView14"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Time Comparison"
+                android:gravity="center"
+                android:textSize="24sp"
+                app:layout_constraintHorizontal_bias="0.502"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/chart_project_report" />
+
+            <com.akexorcist.roundcornerprogressbar.TextRoundCornerProgressBar
+                android:id="@+id/pbProject"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                app:rcBackgroundColor="@color/gray"
+                app:rcBackgroundPadding="2dp"
+                app:rcProgressColor="@color/colorPrimary"
+                app:rcRadius="10dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="24dp"
+                />
+
             <include
                 android:id="@+id/includeEntries"
                 layout="@layout/content_listview_entries"
@@ -58,6 +86,28 @@
                 app:layout_constraintTop_toBottomOf="@+id/textView14"
                 tools:layout_editor_absoluteX="176dp" />
 
+            <android.support.v7.widget.AppCompatSpinner
+                style="@android:style/Widget.Holo.Light.Spinner"
+                android:id="@+id/spinner_project_report_changeUser"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:spinnerMode="dialog"
+                android:prompt="@string/userPrompt"
+                android:layout_marginTop="16dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginLeft="8dp" />
+
+            <android.support.v7.widget.AppCompatSpinner
+                style="@android:style/Widget.Holo.Light.Spinner"
+                android:id="@+id/spinner_project_report_changeCategory"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:spinnerMode="dialog"
+                android:prompt="@string/userPrompt"
+                android:layout_marginTop="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginLeft="8dp" />
+
             <ListView
                 android:id="@+id/lv_project_report"
                 android:layout_width="match_parent"
@@ -85,6 +135,20 @@
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginBottom="8dp"
         app:layout_constraintRight_toRightOf="parent" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/btnFloting_export_project_report"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        app:elevation="0dp"
+        app:fabSize="normal"
+        app:srcCompat="@drawable/ic_file_download_black_24dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginRight="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/btnFloting_settings_project_report" />
 
 </android.support.constraint.ConstraintLayout>
 
