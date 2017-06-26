@@ -1,19 +1,26 @@
 package at.jku.se.timetrackerfrontend;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.media.MediaScannerConnection;
+import android.net.Uri;
 import android.os.Build;
+import android.os.Environment;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
 import android.text.style.StyleSpan;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -36,8 +43,14 @@ import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.MPPointF;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -81,6 +94,12 @@ public class ProjectReportActivity extends AppCompatActivity {
     protected Typeface mTfRegular;
     protected Typeface mTfLight;
 
+    static final int REQUEST_EXTERNAL_STORAGE = 1;
+    static String[] PERMISSIONS_STORAGE = {
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -111,6 +130,13 @@ public class ProjectReportActivity extends AppCompatActivity {
                 FragmentManager fm = getFragmentManager();
                 android.app.DialogFragment dialogFragment = new ChangeProjectReportDialogFragment();
                 dialogFragment.show(fm, "");
+            }
+        });
+
+        FloatingActionButton floatingActionButtonExport = (FloatingActionButton) findViewById(R.id.btnFloting_export_project_report);
+        floatingActionButtonExport.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                exportProjectReport();
             }
         });
 
@@ -472,6 +498,87 @@ public class ProjectReportActivity extends AppCompatActivity {
         }
 
         return true;
+    }
+
+    private void exportProjectReport(){
+        verifyStoragePermissions(this);
+
+        TimeEntryService timeEntryService = new TimeEntryService();
+        CooperationService cooperationService = new CooperationService();
+        CategoryService categoryService = new CategoryService();
+        ProjectService projectService = new ProjectService();
+
+        List<TimeEntry> timeEntryList = new LinkedList<>();
+
+        //returns all timeEntrys where user has cooperation
+        List<Project> projects = projectService.getByPerson(LoginActivity.user);
+        List<Category> categories = new LinkedList<Category>();
+        for(Project p : projects) {
+            categories.addAll(categoryService.getByProject(p));
+        }
+        for(Category c : categories){
+            timeEntryList.addAll(timeEntryService.getByCategory(c));
+        }
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("id;user;project;category;from;to;note\n");
+        for(TimeEntry t : timeEntryList){
+            sb.append(t.getId() + ";" + t.getPerson().getEmail() + ";" + t.getCategory().getProject().getName() + ";"
+                    + t.getCategory().getName() + ";" + t.getFrom().toString() + ";" + t.getTo().toString() + ";" + t.getNote()+ ";\n");
+        }
+        String string = sb.toString();
+
+        File path = Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_DOWNLOADS);
+
+        Calendar calendar = Calendar.getInstance();
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        int month = calendar.get(Calendar.MONTH)+1;
+        int year = calendar.get(Calendar.YEAR);
+        int hour = calendar.get(Calendar.HOUR_OF_DAY);
+        int min = calendar.get(Calendar.MINUTE);
+
+        String filename = "projectReport_"+LoginActivity.user.getNickname()+"_"+year+month+day+hour+min+".txt";
+
+        File file = new File(path, filename);
+
+        try{
+            path.mkdirs();
+            FileOutputStream os = new FileOutputStream(file);
+            OutputStreamWriter osw = new OutputStreamWriter(os);
+            osw.append(string);
+            osw.close();
+            os.close();
+
+            MediaScannerConnection.scanFile(this,
+                    new String[] { file.toString() }, null,
+                    new MediaScannerConnection.OnScanCompletedListener() {
+                        public void onScanCompleted(String path, Uri uri) {
+                            Log.i("ExternalStorage", "Scanned " + path + ":");
+                            Log.i("ExternalStorage", "-> uri=" + uri);
+                        }
+                    });
+
+        } catch (java.io.IOException e) {
+            e.printStackTrace();
+        }
+
+        Toast toast = new Toast(this);
+        toast.makeText(this, "ProjectReport successfully downloaded!", Toast.LENGTH_LONG).show();
+    }
+
+    private static void verifyStoragePermissions(Activity activity) {
+        // Check if we have write permission
+        int permission = ActivityCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+
+        if (permission != PackageManager.PERMISSION_GRANTED) {
+            // We don't have permission so prompt the user
+            ActivityCompat.requestPermissions(
+                    activity,
+                    PERMISSIONS_STORAGE,
+                    REQUEST_EXTERNAL_STORAGE
+            );
+        }
     }
 
     class userSpinnerListener implements AdapterView.OnItemSelectedListener, AdapterView.OnItemClickListener {
