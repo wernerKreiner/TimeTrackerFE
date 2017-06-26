@@ -58,12 +58,13 @@ public class ManageProjectActivity extends AppCompatActivity {
         Button categorieButton = (Button) findViewById(R.id.btn_manageProject_categories);
         Button projectteam = (Button) findViewById(R.id.btn_manageProject_projectteam);
         Button remove = (Button) findViewById(R.id.btn_manageProject_removeProject);
+        Button exitProjBtn = (Button) findViewById(R.id.btn_manageProj_exitProj);
 
-        List<Project> projects =  projectService.get();
+        List<Cooperation> projects =  cooperationService.get().stream().filter(x->x.getPerson().getId()==currentUser.getId()).collect(Collectors.toList());
 
         List<String> projNames = new ArrayList<>();
-        for (Project p : projects) {
-            projNames.add(p.getName());
+        for (Cooperation p : projects) {
+            projNames.add(p.getProject().getName());
         }
 
         Spinner spinner = (Spinner) findViewById(R.id.spinnerProj);
@@ -94,13 +95,26 @@ public class ManageProjectActivity extends AppCompatActivity {
                 if(projName != null) {
                     //edit Werner Webservice
                     //cooperation = currentUser.getCooperations().stream().filter(x -> x.getProject().equals(project)).findAny();
-                    cooperation = cooperationService.getByPerson(currentUser).stream().filter(x -> x.getProject().equals(project)).findAny();
+                    cooperation = cooperationService.getByPerson(currentUser).stream().filter(x -> x.getProject().getName().equals(project.getName())).findAny();
                     //ende edit
-
-                    if (cooperation.isPresent() && cooperation.get().getProjectRole().equals(ProjectRole.COWORKER)) {
+                    if (cooperation.isPresent() && cooperation.get().getProjectRole().name().equals(ProjectRole.COWORKER.toString())) {
                         projectteam.setEnabled(false);
                         categorieButton.setEnabled(false);
                         remove.setEnabled(false);
+                        exitProjBtn.setEnabled(true);
+                        projectteam.setTextColor(Color.GRAY);
+                        categorieButton.setTextColor(Color.GRAY);
+                        remove.setTextColor(Color.GRAY);
+                        exitProjBtn.setTextColor(Color.BLACK);
+                    }else{
+                        projectteam.setEnabled(true);
+                        categorieButton.setEnabled(true);
+                        remove.setEnabled(true);
+                        exitProjBtn.setEnabled(false);
+                        projectteam.setTextColor(Color.BLACK);
+                        categorieButton.setTextColor(Color.BLACK);
+                        remove.setTextColor(Color.BLACK);
+                        exitProjBtn.setTextColor(Color.GRAY);
                     }
                 }
 
@@ -147,6 +161,16 @@ public class ManageProjectActivity extends AppCompatActivity {
                     finish();
                     startActivity(intent);
                 }
+            }
+        });
+
+        exitProjBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cooperationService.removeByProject(project);
+                Intent intent = getIntent();
+                finish();
+                startActivity(intent);
             }
         });
 

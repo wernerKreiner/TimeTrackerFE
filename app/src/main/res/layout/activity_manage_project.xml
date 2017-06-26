@@ -10,6 +10,38 @@
 
 
     <Button
+        android:id="@+id/button2"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="14dp"
+        android:layout_marginRight="0dp"
+        android:layout_marginTop="8dp"
+        android:text="Delete Project"
+        android:textColor="@color/colorPrimary"
+        android:textSize="16sp"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/guideline15"
+        app:layout_constraintTop_toBottomOf="@+id/btn_manageProject_projectteam" />
+
+    <Button
+        android:id="@+id/btn_manageProj_exitProj"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Exit Project"
+        android:textColor="@color/colorPrimary"
+        android:textSize="16sp"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toRightOf="@+id/button2"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_manageProject_projectteam" />
+
+    <Button
         android:id="@+id/btn_manageProject_categories"
         style="@style/Widget.AppCompat.Button.Small"
         android:layout_width="0dp"

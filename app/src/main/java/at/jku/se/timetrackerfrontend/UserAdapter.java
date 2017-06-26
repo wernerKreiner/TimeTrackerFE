@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,6 +35,9 @@ public class UserAdapter extends ArrayAdapter<Cooperation> {
     @NonNull
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+
+
+        CooperationService coop = new CooperationService();
 
         View listItemView = convertView;
         if(listItemView == null) {
@@ -65,6 +69,7 @@ public class UserAdapter extends ArrayAdapter<Cooperation> {
                 String obj = parent.getSelectedItem().toString();
                 ProjectRole role = ProjectRole.valueOf(obj);
                 currentItem.setProjectRole(role);
+                coop.edit(currentItem);
             }
 
             @Override
@@ -78,7 +83,6 @@ public class UserAdapter extends ArrayAdapter<Cooperation> {
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CooperationService coop = new CooperationService();
                 coop.remove(currentItem.getId());
                 remove(currentItem);
             }
