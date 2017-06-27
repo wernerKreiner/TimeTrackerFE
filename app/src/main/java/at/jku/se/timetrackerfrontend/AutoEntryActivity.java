@@ -16,6 +16,8 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.Chronometer;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -133,10 +135,17 @@ public class AutoEntryActivity extends AppCompatActivity{
                     Date to = new Date();
 
                     //round time entry
-                    CheckBox chkRound = (CheckBox) findViewById(R.id.chk_autoEntry_round) ;
-                    if (chkRound.isChecked()) {
-                        from[0] = roundTime(from[0]);
-                        to = roundTime(to);
+                    RadioGroup rg = (RadioGroup) findViewById(R.id.radioGr_autoEntry) ;
+
+                    RadioButton round5 = (RadioButton) findViewById(R.id.radioBtn_autoEntry_round5);
+                    RadioButton round15 = (RadioButton) findViewById(R.id.radioBtn_autoEntry_round15);
+
+                    if(round5.isChecked()) {
+                        from[0] = roundTime5(from[0]);
+                        to = roundTime5(to);
+                    } else if(round15.isChecked()) {
+                        from[0] = roundTime15(from[0]);
+                        to = roundTime15(to);
                     }
 
                     // Time Alert
@@ -209,6 +218,98 @@ public class AutoEntryActivity extends AppCompatActivity{
         } else if (53 <= min && min <= 59) {
             hour++;
             min = 0;
+        }
+
+        Date rounded = null;
+        String fromTimeString = Integer.toString(hour) + ":" + Integer.toString(min);
+        try {
+            rounded = sdf.parse(fromDate + " " + fromTimeString);
+        } catch (Exception ex) {
+        }
+        return rounded;
+    }
+
+    public Date roundTime15(Date unrounded){
+        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm");
+
+        String fromString = sdf.format(unrounded);
+        String minString = fromString.substring(14, 16); //"HH:mm" 3,5
+        int min = Integer.parseInt(minString);
+        String hourString = fromString.substring(11, 13); //"HH:mm" 0,2
+        int hour = Integer.parseInt(hourString);
+        String fromDate = fromString.substring(0, 10);
+
+        if (0 <= min && min <= 7) {
+            min = 0;
+        } else if (8 <= min && min <= 22) {
+            min = 15;
+        } else if (23 <= min && min <= 37) {
+            min = 30;
+        } else if (38 <= min && min <= 52) {
+            min = 45;
+        } else if (53 <= min && min <= 59) {
+            hour++;
+            min = 0;
+        }
+
+        Date rounded = null;
+        String fromTimeString = Integer.toString(hour) + ":" + Integer.toString(min);
+        try {
+            rounded = sdf.parse(fromDate + " " + fromTimeString);
+        } catch (Exception ex) {
+        }
+        return rounded;
+    }
+
+    public Date roundTime5(Date unrounded){
+        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm");
+
+        String fromString = sdf.format(unrounded);
+        String minString = fromString.substring(14, 16); //"HH:mm" 3,5
+        int min = Integer.parseInt(minString);
+        String hourString = fromString.substring(11, 13); //"HH:mm" 0,2
+        int hour = Integer.parseInt(hourString);
+        String fromDate = fromString.substring(0, 10);
+
+        if (0 <= min && min <= 2) {
+            min = 0;
+        }
+        else if (3 <= min && min <= 7) {
+            min = 5;
+        }
+        else if (8 <= min && min <= 12) {
+            min = 10;
+        }
+        else if (13 <= min && min <= 17) {
+            min = 15;
+        }
+        else if (18 <= min && min <= 22) {
+            min=20;
+        }
+        else if (23 <= min && min <= 27) {
+            min=25;
+        }
+        else if (28 <= min && min <= 32) {
+            min=30;
+        }
+        else if (33 <= min && min <= 37) {
+            min=35;
+        }
+        else if (38 <= min && min <= 42) {
+            min=40;
+        }
+        else if (43 <= min && min <= 47) {
+            min=45;
+        }
+        else if (48 <= min && min <= 52) {
+            min=50;
+        }
+        else if (53 <= min && min <= 57) {
+            min=55;
+        }
+        else if (58 <= min && min <= 59) {
+            hour++;
+            min=0;
         }
 
         Date rounded = null;
