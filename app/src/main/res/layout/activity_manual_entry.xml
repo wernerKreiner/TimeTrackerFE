@@ -266,7 +266,7 @@
             android:textSize="16sp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toLeftOf="@+id/guideline10"
-            app:layout_constraintTop_toBottomOf="@+id/chk_manualEntry_round"
+            app:layout_constraintTop_toBottomOf="@+id/radioGr_manualEntry"
             app:layout_constraintHorizontal_bias="0.0" />
 
         <Button
@@ -316,16 +316,34 @@
             app:layout_constraintGuide_begin="192dp"
             android:orientation="vertical" />
 
-        <CheckBox
-            android:id="@+id/chk_manualEntry_round"
+        <RadioGroup
+            android:id="@+id/radioGr_manualEntry"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="0dp"
-            android:layout_marginTop="16dp"
-            android:text="Round out the time entry"
-            android:textColor="@android:color/darker_gray"
-            app:layout_constraintLeft_toLeftOf="@+id/textView7"
-            app:layout_constraintTop_toBottomOf="@+id/eText_manualEntry_notice" />
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginStart="16dp"
+            app:layout_constraintTop_toBottomOf = "@+id/eText_manualEntry_notice" >
+
+
+            <RadioButton
+                android:id="@+id/radioBtn_manualEntry_round15"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="0dp"
+                android:layout_marginTop="16dp"
+                android:text="Round to 15 minutes"
+                android:textColor="@android:color/darker_gray" />
+
+            <RadioButton
+                android:id="@+id/radioBtn_manualEntry_round5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="0dp"
+                android:layout_marginTop="16dp"
+                android:text="Round to 5 minutes"
+                android:textColor="@android:color/darker_gray" />
+
+        </RadioGroup>
 
 
     </android.support.constraint.ConstraintLayout>

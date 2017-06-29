@@ -16,6 +16,8 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -121,11 +123,18 @@ public class ManualEntryActivity extends AppCompatActivity {
                     String toDate = eTextToDay.getText().toString();
                     String toTime = eTextToTime.getText().toString();
 
-                    //Code by Antonia
-                    CheckBox chkRound = (CheckBox) findViewById(R.id.chk_manualEntry_round) ;
-                    if (chkRound.isChecked()){
-                        fromTime = roundTime(fromTime);
-                        toTime = roundTime(toTime);
+                   //round time entry
+                    RadioGroup rg = (RadioGroup) findViewById(R.id.radioGr_manualEntry) ;
+
+                    RadioButton round5 = (RadioButton) findViewById(R.id.radioBtn_manualEntry_round5);
+                    RadioButton round15 = (RadioButton) findViewById(R.id.radioBtn_manualEntry_round15);
+
+                    if(round5.isChecked()) {
+                        fromTime = roundTime5(fromTime);
+                        toTime = roundTime5(toTime);
+                    } else if(round15.isChecked()) {
+                        fromTime = roundTime15(fromTime);
+                        toTime = roundTime15(toTime);
                     }
 
                     Date from = null;
@@ -135,6 +144,7 @@ public class ManualEntryActivity extends AppCompatActivity {
                         to = dateFormat.parse(toDate + " " + toTime);
                     } catch (Exception ex) {
                     };
+
 
                     if (from.getTime() <= to.getTime()) {
                         EditText editTextNotice = (EditText) findViewById(R.id.eText_manualEntry_notice);
@@ -276,6 +286,81 @@ public class ManualEntryActivity extends AppCompatActivity {
     }
 
     public String roundTime(String unrounded){
+        String minStr = unrounded.substring(3,5);
+        int min= Integer.parseInt(minStr);
+        String hourStr = unrounded.substring(0,2);
+        int hour= Integer.parseInt(hourStr);
+
+        if (0 <= min && min <= 7) {
+            min = 0;
+        }
+        else if (8 <= min && min <= 22) {
+            min = 15;
+        }
+        else if (23 <= min && min <= 37) {
+            min = 30;
+        }
+        else if (38 <= min && min <= 52) {
+            min = 45;
+        }
+        else if (53 <= min && min <= 59) {
+            hour++;
+            min=0;
+        }
+        return Integer.toString(hour) + ":" + Integer.toString(min);
+    }
+
+    public String roundTime5(String unrounded){
+        String minStr = unrounded.substring(3,5);
+        int min= Integer.parseInt(minStr);
+        String hourStr = unrounded.substring(0,2);
+        int hour= Integer.parseInt(hourStr);
+
+        if (0 <= min && min <= 2) {
+            min = 0;
+        }
+        else if (3 <= min && min <= 7) {
+            min = 5;
+        }
+        else if (8 <= min && min <= 12) {
+            min = 10;
+        }
+        else if (13 <= min && min <= 17) {
+            min = 15;
+        }
+        else if (18 <= min && min <= 22) {
+            min=20;
+        }
+        else if (23 <= min && min <= 27) {
+            min=25;
+        }
+        else if (28 <= min && min <= 32) {
+            min=30;
+        }
+        else if (33 <= min && min <= 37) {
+            min=35;
+        }
+        else if (38 <= min && min <= 42) {
+            min=40;
+        }
+        else if (43 <= min && min <= 47) {
+            min=45;
+        }
+        else if (48 <= min && min <= 52) {
+            min=50;
+        }
+        else if (53 <= min && min <= 57) {
+            min=55;
+        }
+        else if (58 <= min && min <= 59) {
+            hour++;
+            min=0;
+        }
+
+        return Integer.toString(hour) + ":" + Integer.toString(min);
+    }
+
+    public String roundTime15(String unrounded){
         String minStr = unrounded.substring(3,5);
         int min= Integer.parseInt(minStr);
         String hourStr = unrounded.substring(0,2);
