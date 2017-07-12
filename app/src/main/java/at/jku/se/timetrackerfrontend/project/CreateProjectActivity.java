@@ -1,9 +1,8 @@
-package at.jku.se.timetrackerfrontend;
+package at.jku.se.timetrackerfrontend.project;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -12,6 +11,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import at.jku.se.timetrackerfrontend.user.LoginActivity;
+import at.jku.se.timetrackerfrontend.R;
+import at.jku.se.timetrackerfrontend.user.SettingsActivity;
+import at.jku.se.timetrackerfrontend.report.ProjectReportActivity;
+import at.jku.se.timetrackerfrontend.report.UserReportActivity;
+import at.jku.se.timetrackerfrontend.timeEntry.AutoEntryActivity;
+import at.jku.se.timetrackerfrontend.timeEntry.EditEntryActivity;
+import at.jku.se.timetrackerfrontend.timeEntry.ManualEntryActivity;
 import entities.Cooperation;
 import entities.Project;
 import entities.ProjectRole;
@@ -39,7 +46,7 @@ public class CreateProjectActivity extends AppCompatActivity{
             public void onClick(View v) {
                 if(name.getText() != null){
                     Project project = new Project(name.getText().toString(), descr.getText().toString());
-                    projectService.create(project);
+                    project = projectService.create(project);
                     cooperationService.create(new Cooperation(ProjectRole.ADMIN, LoginActivity.user, project));
                     startActivity(new Intent(CreateProjectActivity.this, ManageProjectActivity.class));
                 }else {

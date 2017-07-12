@@ -1,4 +1,4 @@
-package at.jku.se.timetrackerfrontend;
+package at.jku.se.timetrackerfrontend.timeEntry;
 
 import android.app.Activity;
 import android.content.Context;
@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import at.jku.se.timetrackerfrontend.R;
 import entities.TimeEntry;
 
 import java.text.DateFormat;

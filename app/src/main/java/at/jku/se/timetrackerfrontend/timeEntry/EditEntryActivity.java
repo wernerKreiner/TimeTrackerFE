@@ -1,4 +1,4 @@
-package at.jku.se.timetrackerfrontend;
+package at.jku.se.timetrackerfrontend.timeEntry;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -8,15 +8,19 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import at.jku.se.timetrackerfrontend.project.CreateProjectActivity;
+import at.jku.se.timetrackerfrontend.user.LoginActivity;
+import at.jku.se.timetrackerfrontend.project.ManageProjectActivity;
+import at.jku.se.timetrackerfrontend.report.ProjectReportActivity;
+import at.jku.se.timetrackerfrontend.R;
+import at.jku.se.timetrackerfrontend.user.SettingsActivity;
+import at.jku.se.timetrackerfrontend.report.UserReportActivity;
 import entities.*;
 import services.TimeEntryService;
 
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 public class EditEntryActivity extends AppCompatActivity {
 

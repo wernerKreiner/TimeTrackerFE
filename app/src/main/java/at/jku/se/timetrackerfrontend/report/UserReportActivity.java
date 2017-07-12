@@ -1,4 +1,4 @@
-package at.jku.se.timetrackerfrontend;
+package at.jku.se.timetrackerfrontend.report;
 
 import android.Manifest;
 import android.app.Activity;
@@ -15,7 +15,6 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.SpannableString;
-import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
 import android.text.style.StyleSpan;
 import android.util.Log;
@@ -45,14 +44,21 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+
+import at.jku.se.timetrackerfrontend.project.CreateProjectActivity;
+import at.jku.se.timetrackerfrontend.user.LoginActivity;
+import at.jku.se.timetrackerfrontend.project.ManageProjectActivity;
+import at.jku.se.timetrackerfrontend.R;
+import at.jku.se.timetrackerfrontend.user.SettingsActivity;
+import at.jku.se.timetrackerfrontend.timeEntry.AutoEntryActivity;
+import at.jku.se.timetrackerfrontend.timeEntry.EditEntryActivity;
+import at.jku.se.timetrackerfrontend.timeEntry.ManualEntryActivity;
 import entities.Category;
 import entities.Cooperation;
 import entities.Person;
-import entities.Project;
 import entities.TimeEntry;
 import services.CategoryService;
 import services.CooperationService;
-import services.ProjectService;
 import services.TimeEntryService;
 
 public class UserReportActivity extends AppCompatActivity {

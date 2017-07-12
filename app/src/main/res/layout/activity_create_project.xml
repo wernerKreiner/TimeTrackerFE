@@ -4,7 +4,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="at.jku.se.timetrackerfrontend.CreateProjectActivity">
+        tools:context="at.jku.se.timetrackerfrontend.project.CreateProjectActivity">
 
         <TextView
             android:id="@+id/tView_createProject_title"

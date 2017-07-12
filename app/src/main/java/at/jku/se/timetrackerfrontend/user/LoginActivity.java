@@ -1,7 +1,6 @@
 
-package at.jku.se.timetrackerfrontend;
+package at.jku.se.timetrackerfrontend.user;
 
-import android.Manifest;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,6 +9,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import at.jku.se.timetrackerfrontend.R;
+import at.jku.se.timetrackerfrontend.timeEntry.AutoEntryActivity;
+import at.jku.se.timetrackerfrontend.timeEntry.EditEntryActivity;
 import entities.Person;
 import services.PersonService;
 

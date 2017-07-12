@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="at.jku.se.timetrackerfrontend.EditEntryActivity">
+    tools:context="at.jku.se.timetrackerfrontend.timeEntry.EditEntryActivity">
 
     <ScrollView
         android:id="@+id/scrollView_report"

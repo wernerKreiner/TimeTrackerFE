@@ -1,14 +1,11 @@
-package at.jku.se.timetrackerfrontend;
+package at.jku.se.timetrackerfrontend.project;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.LightingColorFilter;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -18,15 +15,21 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 
-import java.io.Console;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import at.jku.se.timetrackerfrontend.user.LoginActivity;
+import at.jku.se.timetrackerfrontend.R;
+import at.jku.se.timetrackerfrontend.user.SettingsActivity;
+import at.jku.se.timetrackerfrontend.report.ProjectReportActivity;
+import at.jku.se.timetrackerfrontend.report.UserReportActivity;
+import at.jku.se.timetrackerfrontend.timeEntry.AutoEntryActivity;
+import at.jku.se.timetrackerfrontend.timeEntry.EditEntryActivity;
+import at.jku.se.timetrackerfrontend.timeEntry.ManualEntryActivity;
 import entities.Category;
 import entities.Cooperation;
 import entities.Person;

@@ -1,10 +1,9 @@
-package at.jku.se.timetrackerfrontend;
+package at.jku.se.timetrackerfrontend.project;
 
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
@@ -18,11 +17,11 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import at.jku.se.timetrackerfrontend.R;
 import entities.Cooperation;
 import entities.Person;
 import entities.Project;

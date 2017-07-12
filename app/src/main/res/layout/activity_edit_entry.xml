@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
-    tools:context="at.jku.se.timetrackerfrontend.EditEntryActivity">
+    tools:context="at.jku.se.timetrackerfrontend.timeEntry.EditEntryActivity">
 
     <include layout="@layout/content_listview_entries"
         android:visibility="invisible"

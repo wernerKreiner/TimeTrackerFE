@@ -1,4 +1,4 @@
-package at.jku.se.timetrackerfrontend;
+package at.jku.se.timetrackerfrontend.timeEntry;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
@@ -15,18 +15,23 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
+import at.jku.se.timetrackerfrontend.project.CreateProjectActivity;
+import at.jku.se.timetrackerfrontend.user.LoginActivity;
+import at.jku.se.timetrackerfrontend.project.ManageProjectActivity;
+import at.jku.se.timetrackerfrontend.report.ProjectReportActivity;
+import at.jku.se.timetrackerfrontend.R;
+import at.jku.se.timetrackerfrontend.user.SettingsActivity;
+import at.jku.se.timetrackerfrontend.report.UserReportActivity;
 import entities.Category;
 import entities.Cooperation;
 import entities.Project;

@@ -1,4 +1,4 @@
-package at.jku.se.timetrackerfrontend;
+package at.jku.se.timetrackerfrontend.project;
 
 import android.app.Activity;
 import android.os.Build;
@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import at.jku.se.timetrackerfrontend.R;
 import entities.Category;
 import entities.Cooperation;
 import entities.ProjectRole;

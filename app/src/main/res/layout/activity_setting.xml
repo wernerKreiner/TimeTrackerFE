@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
-    tools:context="at.jku.se.timetrackerfrontend.SettingsActivity">
+    tools:context="at.jku.se.timetrackerfrontend.user.SettingsActivity">
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"

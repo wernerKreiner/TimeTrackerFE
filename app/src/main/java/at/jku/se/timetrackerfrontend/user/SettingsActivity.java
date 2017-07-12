@@ -1,4 +1,4 @@
-package at.jku.se.timetrackerfrontend;
+package at.jku.se.timetrackerfrontend.user;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -12,6 +12,14 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import at.jku.se.timetrackerfrontend.R;
+import at.jku.se.timetrackerfrontend.project.CreateProjectActivity;
+import at.jku.se.timetrackerfrontend.project.ManageProjectActivity;
+import at.jku.se.timetrackerfrontend.report.ProjectReportActivity;
+import at.jku.se.timetrackerfrontend.report.UserReportActivity;
+import at.jku.se.timetrackerfrontend.timeEntry.AutoEntryActivity;
+import at.jku.se.timetrackerfrontend.timeEntry.EditEntryActivity;
+import at.jku.se.timetrackerfrontend.timeEntry.ManualEntryActivity;
 import entities.Person;
 import services.PersonService;
 

@@ -17,26 +17,24 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true">
         <activity
-            android:name=".LoginActivity">
+            android:name=".user.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".HomeActivity" />
-        <activity android:name=".RegisterActivity" />
-        <activity android:name=".ManualEntryActivity" />
-        <activity android:name=".AutoEntryActivity"/>
-        <activity android:name=".EditEntryDetailActivity"/>
-        <activity android:name=".EditEntryActivity"/>
-        <activity android:name=".ManageProjectActivity"/>
-        <activity android:name=".CreateProjectActivity"/>
-        <activity android:name=".ManageCategoryActivity"/>
-        <activity android:name=".ManageProjectTeamActivity"/>
-        <activity android:name=".ProjectReportActivity" />
-        <activity android:name=".UserReportActivity" />
-        <activity android:name=".SettingsActivity"/>
-        <activity android:name=".MemberAddActivity" />
+        <activity android:name=".user.RegisterActivity" />
+        <activity android:name=".timeEntry.ManualEntryActivity" />
+        <activity android:name=".timeEntry.AutoEntryActivity"/>
+        <activity android:name=".timeEntry.EditEntryDetailActivity"/>
+        <activity android:name=".timeEntry.EditEntryActivity"/>
+        <activity android:name=".project.ManageProjectActivity"/>
+        <activity android:name=".project.CreateProjectActivity"/>
+        <activity android:name=".project.ManageCategoryActivity"/>
+        <activity android:name=".project.ManageProjectTeamActivity"/>
+        <activity android:name=".report.ProjectReportActivity" />
+        <activity android:name=".report.UserReportActivity" />
+        <activity android:name=".user.SettingsActivity"/>
     </application>
 
 </manifest>

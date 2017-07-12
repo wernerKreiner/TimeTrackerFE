@@ -1,4 +1,4 @@
-package at.jku.se.timetrackerfrontend;
+package at.jku.se.timetrackerfrontend.report;
 
 import android.Manifest;
 import android.app.Activity;
@@ -17,7 +17,6 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.SpannableString;
-import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
 import android.text.style.StyleSpan;
 import android.util.Log;
@@ -32,7 +31,6 @@ import android.view.ViewGroup.LayoutParams;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar;
 import com.akexorcist.roundcornerprogressbar.TextRoundCornerProgressBar;
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.PieChart;
@@ -54,14 +52,20 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
 
+import at.jku.se.timetrackerfrontend.project.CreateProjectActivity;
+import at.jku.se.timetrackerfrontend.timeEntry.EntryAdapter;
+import at.jku.se.timetrackerfrontend.user.LoginActivity;
+import at.jku.se.timetrackerfrontend.project.ManageProjectActivity;
+import at.jku.se.timetrackerfrontend.R;
+import at.jku.se.timetrackerfrontend.user.SettingsActivity;
+import at.jku.se.timetrackerfrontend.timeEntry.AutoEntryActivity;
+import at.jku.se.timetrackerfrontend.timeEntry.EditEntryActivity;
+import at.jku.se.timetrackerfrontend.timeEntry.ManualEntryActivity;
 import entities.Category;
 import entities.Cooperation;
 import entities.Person;
 import entities.Project;
-import entities.ProjectRole;
 import entities.TimeEntry;
 import services.CategoryService;
 import services.CooperationService;
